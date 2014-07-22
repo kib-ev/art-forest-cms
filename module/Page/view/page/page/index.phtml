@@ -1,0 +1,68 @@
+<?php
+//
+
+$sm = $this->getServiceManager();
+$pageTable = $sm->get('page_table');
+$pages = $pageTable->fetchAll();
+
+//
+?>
+<style>
+    body.page-module #vip-ads
+    {
+        display: none;
+    }
+    body.page-module #content table
+    {
+        width: 810px;
+    }
+    body.page-module #content
+    {
+        width: 810px;
+    }
+    body.page-module #content table td,
+    body.page-module #content table th
+    {
+        border:1px solid #ccc;
+        font-size: 14px;
+        line-height: 16px;
+        padding: 5px;
+    }
+    .page-module .add-page-button {
+        margin: 10px 0px;
+        display: block;
+        padding: 5px 10px;
+        background: #009cff;
+        color: #fff;
+        width: 100px;
+        text-align: center;
+    }
+</style>
+<a class="add-page-button" href="<?php echo '/page/add'; ?>">Add page</a>
+<table border="1">
+    <tr>
+        <th>id</th>
+        <th>user_id</th>
+        <th>url</th>
+        <th>title</th>
+        <th>body</th>
+        <th>create_date</th>
+        <th>ACTIONS</th>
+    </tr>
+    <?php foreach ($pages as $page) : ?>
+        <tr>
+            <td><?php echo $this->escapeHtml($page->id); ?></td>
+            <td><?php echo $this->escapeHtml($page->user_id); ?></td>
+            <td><?php echo $this->escapeHtml($page->url); ?></td>
+            <td><?php echo $this->escapeHtml($page->title); ?></td>
+            <td><?php echo $this->escapeHtml($page->body); ?></td>
+            <td><?php echo $this->escapeHtml($page->create_date); ?></td>
+            <td>
+                <a href="<?php echo '/page/view/' . $this->escapeHtml($page->id); ?>">view</a><br/>
+                <a href="<?php echo '/page/edit/' . $this->escapeHtml($page->id); ?>">edit</a><br/>
+                <a href="<?php echo '/page/delete/' . $this->escapeHtml($page->id); ?>">del</a>
+            </td>
+        </tr>
+
+    <?php endforeach; ?>
+</table>

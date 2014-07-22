@@ -1,0 +1,219 @@
+<?php
+
+use Banners\Model\Banner;
+
+$sm = $this->getServiceManager();
+$dialogTable = $sm->get('dialogs_table');
+$userTable = $sm->get('users_table');
+$pageTable = $sm->get('page_table');
+$user = $this->identity();
+$isUserLoggedIn = isset($user) ? TRUE : FALSE;
+?>
+
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>ARDFO - Международный информационный ресурс 
+            бесплатных объявлений частных лиц и рекламы организаций</title>
+        <?php //echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false)     ?>
+
+        <?php
+//        echo $this->headMeta()
+//                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+//                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.png'))
+                ->prependStylesheet($this->basePath() . '/css/reset.css')
+                ->prependStylesheet($this->basePath() . '/css/style.css')
+//->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
+//->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') 
+        ?>
+
+
+        <!-- Scripts -->
+        <?php
+        echo $this->headScript()
+                //->prependFile($this->basePath() . '/js/bootstrap.min.js')lemmon-slider
+                ->prependFile($this->basePath() . '/js/jquery.cookie.js')
+                ->prependFile($this->basePath() . '/js/jquery.min.js')
+                ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath() . '/js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+        ;
+        ?>
+
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    </head>
+    <body class="<?php echo $this->controllerName(); ?>">
+        <header>
+
+            <div class="hgroup">
+                <h1><a href="/">ARDFO</a></h1>
+                <h2>Международный информационный ресурс<br/>бесплатных объявлений частных лиц и рекламы организаций</h2>
+            </div>
+
+            <?php echo $this->searchWidget();
+            ?>
+
+            <div id="user-control-panel">
+                <?php if ($isUserLoggedIn) : ?>
+                    <?php
+                    $userData = $this->getUserData($user->getId());
+                    $avatar_url = $userData->getAvatarUrl();
+                    ?>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2" style="width: 50px; height: 50px;">
+                                    <div class="avatar" style="background-image: url(<?php echo $this->thumb($avatar_url, 50, 50); ?>);">
+                                        <input  name="avatar-file" class="avatar-file" type="file" value="<?php echo $avatar_url; ?>" accept="image/*">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="user_name">
+                                        <a href="/post/list/<?= $user->getId(); ?>">
+                                            <?php
+                                            if (isset($user->display_name)) {
+                                                echo $user->display_name;
+                                            } else {
+                                                echo $user->email;
+                                            }
+                                            ?>
+                                        </a>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="user_actions">
+                                    <?php if (!$sm->get('is_activated')) : //temp  ?>
+
+                                        <a class="activate firm_red" href="/users/activate">Активация аккаунта</a>
+
+                                    <?php else : ?>
+
+                                        <a class="favorite" href="/favorite/list">Закладки</a>
+
+                                        <?php if ($user->reg_type != '1') : ?>
+                                            <div class="divide">|</div>
+                                            <a class="banners_button" href="<?php echo $this->url('banners') ?>">Баннеры</a>
+                                        <?php endif; ?>
+
+                                        <div class="divide">|</div>
+                                        <?php
+                                        $dialogs = $dialogTable->getNewDialogsCountByUserId($user->user_id);
+                                        $newDialogsCount = sizeof($dialogs);
+                                        if ($newDialogsCount > 0) :
+                                            ?>
+                                            <a class="dialog_button firm_blue" href="/dialog/list">Сообщения<?= ' +' . $newDialogsCount . ''; ?></a>
+                                        <?php else : ?>
+                                            <a class="dialog_button" href="/dialog/list">Сообщения</a>
+                                        <?php endif; ?>
+
+
+                                    <?php endif; ?>
+
+                                    <?php if ($user->role_id == '3') : ?>
+                                        <div class="divide">|</div>
+                                        <a class="activate-control" href="/users/activate/control">Активация</a>
+
+                                        <div class="divide">|</div>
+                                        <a class="page-list" href="/page/list">Страницы</a>
+                                    <?php endif; ?>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+            </div>
+
+            <div id="right-control-panel">
+                <?php if ($isUserLoggedIn) : ?>
+                    <a class="add-message" href="/post/add">Создать объявление</a>
+                    <ul>
+                        <li><a class="register" href="/users/auth/logout">Выйти</a></li>
+                    </ul>
+                <?php else : ?>
+                    <a class="add-message" href="/users/register">Создать объявление</a>
+                    <ul>
+                        <li><a class="login" href="/users/auth/login">Войти</a></li>
+                        <li><span>|</span></li>
+                        <li><a class="register" href="/users/register">Регистрация</a></li>
+                    </ul>
+                <?php endif; ?>
+            </div>
+
+        </header>
+
+        <div id="ads">
+            <?php echo $this->bannerHelper(Banner::SIMPLE_BANNER); ?>
+        </div>
+
+        <div id="vip-ads">
+            <?php echo $this->bannerHelper(Banner::VIP_BANNER); ?>
+        </div>
+
+        <div id="content">
+            <div class ="top_line"></div>
+            <?php echo $this->content; ?>
+        </div>
+
+        <footer>
+
+            <section id="ads-slider" >
+                <?php echo $this->bannerHelper(Banner::LOGO_BANNER); ?>
+            </section>
+            
+            <div style="clear: both"></div>
+            
+            <div class="footer-menu">
+                <ul class="line2">		
+                    <?php foreach ($pageTable->fetchAll() as $staticPage) : ?>
+                        <?php $classCurrentPage = (strpos($_SERVER["REQUEST_URI"], $staticPage->url)) ? 'current-page' : ''; ?>
+                        <li><a class="<?= $classCurrentPage; ?>" id="<?= $staticPage->url; ?>" href="/page/view/<?= $staticPage->url; ?>"><?= $staticPage->title; ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <div class="copyright">
+                <span>&copy; 2014 ardfo.by Все права защищены.</span>
+            </div>
+        </footer>
+
+        <?php echo $this->inlineScript() ?>
+
+        <script>
+            $(document).ready(function() {
+                $('.avatar-file').on('change', function(e) {
+                    var data = new FormData();
+                    var file = $('.avatar-file')[0].files[0];
+                    data.append('file', file);
+                    $.ajax({
+                        type: "POST",
+                        url: '/users/user-data/ajax-set-avatar',
+                        data: data,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response && response.status === 'ok') {
+                                // $('.user_image').attr('src', response.avatar_url);
+                                $('.avatar').css('background-image', 'url(' + response.avatar_url + ')');
+                                location.reload();
+                            }
+                        }
+                    });
+                });
+
+                $('input').attr('autocomplete', 'off'); // todo fix
+                $('.register input, .auth input').attr('autocomplete', 'on'); // todo fix
+
+            });
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,60 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Text</th>
+            <th>Date</th>            
+            <th>Price</th>
+            <th>Chaffer</th>
+            <th>Удалить!</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->favorites as $favor) { ?>
+            <?php
+            $row = $this->postTable->fetchById($favor->getPostId());
+            $attachment = $this->attachmentTable->getAttachmentById($favor->getPostId());
+            ?>
+            <tr>
+                <?php if ($attachment) { ?>
+                    <td>
+                        <img style="height: 50px" src="<?= $this->uploadfilemanager->getFilePath($attachment->getUploadId()); ?>">
+                    </td>
+                <?php } else { ?>
+                    <td>
+                        LOL
+                    </td>
+                <?php } ?>
+                <td class="id"><?= $row->getId() ?></td>
+                <td><?= $row->getTitle() ?></td>
+                <td><?= $row->getText() ?></td>
+                <td><?= $row->getCreateDate() ?></td>
+                <td><?= $row->getPrice() ?></td>
+                <td><?= $row->getChaffer() ?></td>
+                <td class="delete">DELETE</td>
+            </tr>
+        <?php } ?>
+    </tbody>
+
+    <script>
+        $(document).ready(function() {
+            $('.delete').on('click', function() {
+                var row = $(this).parent();
+                var post_id = $(this).parent().children('.id').text();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/favorite/delete",
+                    data: {"post_id": post_id},
+                    cache: false,
+                    success: function(response) {
+                        if (response && response.status === 'ok') {
+                            row.remove();
+                        }
+                    }
+                });
+            });
+        });
+    </script>

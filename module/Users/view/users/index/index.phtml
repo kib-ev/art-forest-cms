@@ -1,0 +1,31 @@
+<?php
+
+use Users\Controller\AuthController as URL;
+
+$user = $this->getUserHelper()->getLoggedInUser();
+$email = $user->getEmail();
+$isUserLoggedIn = $this->getUserHelper()->isUserLoggedIn();
+?>
+
+<h1> Welcome to Users Module </h1>
+<?php if ($isUserLoggedIn) : ?>
+    <h2><?php echo $this->translate('You are logged in as: ') . $email; ?></h2>
+    <hr>
+    <a href="<?php echo $this->url('dialogs') ?>" class="ui-button"> dialogs </a>
+    <a href="<?php echo $this->url('post') ?>" class="ui-button"> post </a>
+    <hr>
+
+<?php endif; ?>
+
+<hr>
+
+<a href="<?= AuthController::LOGIN ?>" class="ui-button"> Login </a> | 
+<a href="<?php echo $this->url('users/register') ?>"  class="ui-button"> New User Registration </a> | 
+<a href="<?= AuthController::LOGOUT_ACTION ?>"  class="ui-button"> Logout </a>
+
+
+<?php
+$this->headScript()->appendScript(
+        '$(function() {$("a.ui-button").button();});', 'text/javascript'
+)
+?>

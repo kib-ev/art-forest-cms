@@ -1,0 +1,133 @@
+<?php
+$imageUrl = (!empty($banner->image)) ? $banner->image : '/img/115x110_load.jpg';
+?>
+
+<table class="load-image" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>
+            <div class="wrap banner-view vip">
+                <div class="input-file" style="background-image: url(<?php echo $imageUrl; ?>); background-color: <?php if (!empty($imageUrl)) echo '#fff'; ?>;">
+                    <input  name="file" class="file" type="file" value="">
+                </div>
+                <div class="vip-label">VIP-объявление</div>
+                <div class="title" value=""><span class="text_"></span> <span class="price cost_"></span></div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+<form class="form" id="MyUploadForm" method="post" enctype="multipart/form-data" action="/banners/vip/process">
+
+    <input type="hidden" name="id" class="id" value="<?php echo $banner->id; ?>">
+    <input type="hidden" name="user_id" class="user_id" value="<?php echo $banner->user_id; ?>">
+    <input type="hidden" name="image_id" class="image_id" value="<?php echo $banner->image_id; ?>">
+    <input type="hidden" name="image" class="image" value="<?php echo $banner->image; ?>">
+
+    <table class="" cellpadding="0" cellspacing="0">
+        <tr>
+            <td colspan="2"><p>Размещение VIP-баннера является платной услугой. В случае публикации VIP-баннера соответствующая сумма спишется с вашего счета.
+                    Загрузите изрбражение разрешением 115х110 пикселей. Заполните поля для ввода.</p></td>
+        </tr>
+
+        <tr>
+            <td>
+                <dl>
+                    <dd></dd>
+
+                    <dt><label for="title">Заголовок (20 символов)</label></dt>
+                    <dd><input name="title" required class="title" type="text" maxlength="20" autocomplete="off" value="<?php echo $banner->title; ?>"></dd>
+
+                    <dt><label for="cost">Цена (у.е.)</label></dt>
+                    <dd><input name="cost" required class="cost" type="number" min="0" max="999999999" autocomplete="off" value="<?php echo $banner->cost; ?>"></dd>
+
+                    <!--<dt><label for="hits">Кол-во показов в день </label></dt>
+                    <dd><input name="hits" class="hits" type="text" value="<?php echo $banner->hits; ?>"></dd>-->
+                </dl>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2"><p>Стоимость размещения: <span class="firm_blue">20 000</span></p></td>
+        </tr>
+
+        <tr>
+            <td colspan="2"><input class="submit" type="submit" name="submit" value="Сохранить"></td>
+        </tr>
+    </table>
+
+
+</form>
+
+<script>
+    $(document).ready(function() {
+
+
+        var text = $('.form input.title').val();
+        $('.load-image .title .text_').empty().text(text);
+
+        var text = $('.form input.cost').val();
+        var ue = 'у.е.';
+        if (text !== '') {
+            text = text + ' ' + ue;
+        }
+        $('.load-image .title .cost_').empty().text(text);
+        $('.form .title').on('keyup', function(e) {
+            var text = $(this).val();
+            $('.load-image .title .text_').empty().text(text);
+        });
+
+
+        $('.form .title').on('change', function(e) {
+            var text = $(this).val();
+            $('.load-image .title .text_').empty().text(text);
+        });
+
+        $('.form .cost').on('keyup', function(e) {
+            var text = $(this).val();
+            var ue = 'у.е.';
+            if (text !== '') {
+                text = text + ' ' + ue;
+            }
+            $('.load-image .title .cost_').empty().text(text);
+        });
+
+        $('.form .cost').on('change', function(e) {
+            var text = $(this).val();
+            var ue = 'у.е.';
+            if (text !== '') {
+                text = text + ' ' + ue;
+            }
+            $('.load-image .title .cost_').empty().text(text);
+        });
+
+        $('.file').on('change', function() {
+
+            var data = new FormData();
+            var file = $('.file')[0].files[0];
+            data.append('file', file);
+            data.append('id', $('.id').attr('value'));
+
+            $.ajax({
+                type: "POST",
+                url: '/banners/vip/ajax-process',
+                data: data,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response && response.status === 'ok') {
+                        var imageSrc = "/scripts/timthumb/timthumb.php?src=" + response.src + "&w=115&h=110";
+
+                        $(".input-file").css('background-image', 'url(' + imageSrc + ')');
+                        $(".image_id").attr('value', response.image_id);
+                        $(".id").attr('value', response.banner_id);
+
+                        $('input[name="image"]').attr('value', imageSrc);
+                    }
+                }
+            });
+        });
+    });
+</script>
+

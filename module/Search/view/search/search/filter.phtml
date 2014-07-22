@@ -1,0 +1,395 @@
+<section class="search_filter">
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="sort">Сортировать по: <a class="by_date" href="#">по дате</a> 
+                <a href="#" class="by_cost">по цене</a></td>
+            <td class="view">
+                <div class="list" data-view="list"></div>
+                <div class="small_icon" data-view="small-icon"></div>
+                <div class="large_icon" data-view="large-icon"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="region unselectable">
+                <a href="">Регион:</a>
+                <!--<div class="edit_filter">фильтр</div>-->
+                <a class="unselectable bc_lnk cnt_lnk" data-link="cnt" data-id="" href="#"></a>
+                <a class="unselectable bc_lnk rgn_lnk" data-link="rgn" data-id="" href="#"></a>
+                <a class="unselectable bc_lnk cty_lnk" data-link="cty" data-id="" href="#"></a>
+
+            </td>
+            <td class="count">Найдено: <span class="firm_gray search-count"></span></td>
+        </tr>
+    </table>
+</section><!-- .search_result_filter -->
+
+<div class="list-group">
+    
+    <div id="border" ></div>
+    <div id="cnt" class="cnt list"></div>
+    <div id="rgn" class="rgn list"><div id="border" ></div></div>
+    <div id="cty" class="cty list"><div id="border" ></div></div>
+</div>   
+
+<style>
+    #border {
+        border-right: 1px solid #dbdbdb;
+        position: absolute;
+        height: 309px;
+        margin-left: 642px;
+        display: none;
+    }
+    .rgn,
+    .cnt,
+    .cty {
+        display: none;
+        height: 308px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+    .unselectable {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .rgn div,
+    .cty div,
+    .cnt div {
+        height: 25px;
+        line-height: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        padding-left: 6px;
+    }
+    .search-module.filter #content
+    {
+        border-bottom: 1px solid #dbdbdb;
+        font-size: 12px;
+        border-top: 1px solid #dbdbdb;
+    }
+    .search-module.filter .list-group
+    {
+        display: block;
+        margin-top: 70px;
+        border-left: 1px solid #dbdbdb;
+        border-right: 1px solid #dbdbdb;
+        width: 641px;
+    }
+    .search-module.filter .list-group div[data-selected='true'] {
+        background: #009cff;
+        color: #fff;
+    }
+    .cnt_lnk, .rgn_lnk, .cty_lnk {
+        text-decoration: underline;
+    }
+    .search-module .list-group {
+        margin-top: 70px;
+        width: 763px;
+        border-left: 1px solid #dbdbdb;
+        border-right: 1px solid #dbdbdb;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var count = document.getElementsByClassName("block_result").length;
+        $('.search-count').text(count);
+        
+        
+        
+
+        /* Active View */
+        $('.view div[data-view="small-icon"]').on('click', function() {
+            activeView($(this));
+        });
+        $('.view div[data-view="list"]').on('click', function() {
+            activeView($(this));
+        });
+        $('.view div[data-view="large-icon"]').on('click', function() {
+            activeView($(this));
+        });
+        function activeView(current) {
+            $('.view div').removeClass('active');
+            current.addClass('active');
+            var view = current.data('view');
+            saveCookie('filter-view', view);
+            $('.search-result').attr('data-view', view);
+        }
+        applyView();
+        function applyView() {
+            var view = $.cookie('filter-view');
+            if (view == undefined) {
+                view = 'small-icon';
+            }
+            var div = $('div[data-view="' + view + '"]');
+            activeView(div);
+        }
+        /* Active View End */
+
+        getCatalog();
+        var timeout = 200;
+
+        /**********************************************************************/
+        function showCntList() {
+
+            $('.bc_lnk').text('');
+            $('.bc_lnk').attr('data-id', '');
+
+            $('.rgn').hide();
+            $('.cty').hide();
+            $('#border').show();
+            $('.cnt.list').empty();
+
+            var any = $('<div unselectable="on" class="unselectable" data-id="">Все страны</div>');
+            $('.cnt.list').append(any);
+
+            catalog.forEach(function(entry) {
+
+                if (entry.parent_id === 0) {
+                    var country = $('<div unselectable="on" class="unselectable" data-id="' + entry.id + '">' + entry.name + '</div>');
+                    $('.cnt.list').append(country);
+                }
+
+            });
+            cntDivOnClick();
+            $('.cnt').fadeIn(timeout);
+
+        }
+        /**********************************************************************/
+        function showRgnList() {
+            
+            var parent_id = $('.cnt_lnk').attr('data-id');
+
+            $('.rgn_lnk').text('');
+            $('.rgn_lnk').attr('data-id', '');
+            $('.cty_lnk').text('');
+            $('.cty_lnk').attr('data-id', '');
+
+            $('.cty').hide();
+            $('.cnt').hide();
+            $('#border').show();
+
+            $('.rgn.list').empty();
+
+            var any = $('<div unselectable="on" class="unselectable" data-id="">Все области</div>');
+            $('.rgn.list').append(any);
+
+            catalog.forEach(function(entry) {
+                if (entry.parent_id == parent_id) {
+                    var region = $('<div unselectable="on" class="unselectable" data-id="' + entry.id + '">' + entry.name + '</div>');
+                    $('.rgn.list').append(region);
+
+                }
+            });
+            rgnDivOnClick();
+            $('.rgn').fadeIn(timeout);
+        }
+        /**********************************************************************/
+        function showCtyList() {
+
+            var parent_id = $('.rgn_lnk').attr('data-id');
+
+            $('.cty_lnk').text('');
+            $('.cty_lnk').attr('data-id', '');
+
+            $('.rgn').hide();
+            $('.cty').hide();
+            $('.cnt').hide();
+            
+            $('#border').show();
+
+            $('.cty.list').empty();
+
+            var any = $('<div unselectable="on" class="unselectable" data-id="">Все города</div>');
+            $('.cty.list').append(any);
+
+            catalog.forEach(function(entry) {
+                if (entry.parent_id == parent_id) {
+                    var city = $('<div unselectable="on" class="unselectable" data-id="' + entry.id + '">' + entry.name + '</div>');
+                    $('.cty.list').append(city);
+                }
+            });
+
+            ctyDivOnClick();
+            $('.cty').fadeIn(timeout);
+        }
+        /**********************************************************************/
+        $('.cnt_lnk').on('click', (function(event) {
+            event.preventDefault();
+            $('.search-result').hide();
+            $('.list-group').show();
+            showCntList();
+        }));
+
+        $('.rgn_lnk').on('click', (function(event) {
+            event.preventDefault();
+            $('.search-result').hide();
+            $('.list-group').show();
+            showRgnList();
+        }));
+
+        $('.cty_lnk').on('click', (function(event) {
+            event.preventDefault();
+
+            $('.search-result').hide();
+            $('.list-group').show();
+            showCtyList();
+        }));
+        /**********************************************************************/
+        cntDivOnClick();
+        function cntDivOnClick() {
+            $('.cnt div').on('click', (function() {
+                if ($(this).attr('data-selected') === 'false' || $(this).attr('data-selected') === undefined) {
+                    $('.cnt div[data-selected="true"]').attr('data-selected', 'false');
+                    $(this).attr('data-selected', 'true');
+                }
+
+                $(this).parent('.cnt').fadeOut(timeout, function() {
+                    $('.cnt_lnk').text($('.cnt div[data-selected="true"]').text());
+
+                    var cnt_id = $('.cnt div[data-selected="true"]').attr('data-id');
+                    $('.cnt_lnk').attr('data-id', cnt_id);
+
+                    if (cnt_id === '') {
+                        completeFilter();
+                    } else {
+                        showRgnList();
+                    }
+                });
+            }));
+        }
+        /**********************************************************************/
+        rgnDivOnClick();
+        function rgnDivOnClick() {
+            $('.rgn div').on('click', (function() {
+                if ($(this).attr('data-selected') === 'false' || $(this).attr('data-selected') === undefined) {
+                    $('.rgn div[data-selected="true"]').attr('data-selected', 'false');
+                    $(this).attr('data-selected', 'true');
+                }
+
+                $(this).parent('.rgn').fadeOut(timeout, function() {
+                    $('.rgn_lnk').text($('.rgn div[data-selected="true"]').text());
+                    var rgn_id = $('.rgn div[data-selected="true"]').attr('data-id');
+                    $('.rgn_lnk').attr('data-id', rgn_id);
+
+                    if (rgn_id === '') {
+                        completeFilter();
+                    } else {
+                        showCtyList();
+                    }
+
+                });
+            }));
+        }
+        /**********************************************************************/
+        ctyDivOnClick();
+        function ctyDivOnClick() {
+            $('.cty div').on('click', (function() {
+                if ($(this).attr('data-selected') === 'false' || $(this).attr('data-selected') === undefined) {
+                    $('.cty div[data-selected="true"]').attr('data-selected', 'false');
+                    $(this).attr('data-selected', 'true');
+                }
+
+                $(this).parent('.cty').fadeOut(timeout, function() {
+                    $('.cty_lnk').text($('.cty div[data-selected="true"]').text());
+                    var cty_id = $('.cty div[data-selected="true"]').attr('data-id');
+                    $('.cty_lnk').attr('data-id', cty_id);
+
+                    completeFilter();
+//                    $.post(
+//                        "/ajaxtest.php",
+//                        {
+//                          param1: "param1",
+//                          param2: 2
+//                        },
+//                    );
+                });
+
+            }));
+        }
+        /**********************************************************************/
+        function completeFilter() {
+
+            saveCookie('ardfo_fltr', 'true');
+
+            var cnt_id = $('.cnt_lnk').attr('data-id');
+            var cnt_name = $('.cnt_lnk').text();
+
+            saveCookie('ardfo_fltr_cnt_id', cnt_id);
+            saveCookie('ardfo_fltr_cnt_name', cnt_name);
+
+            var rgn_id = $('.rgn_lnk').attr('data-id');
+            var rgn_name = $('.rgn_lnk').text();
+
+            saveCookie('ardfo_fltr_rgn_id', rgn_id);
+            saveCookie('ardfo_fltr_rgn_name', rgn_name);
+
+            var cty_id = $('.cty_lnk').attr('data-id');
+            var cty_name = $('.cty_lnk').text();
+
+            saveCookie('ardfo_fltr_cty_id', cty_id);
+            saveCookie('ardfo_fltr_cty_name', cty_name);
+
+
+            $('.list-group').hide();
+
+            $('.search-result').show();
+            // insert your code here
+            $('.search-result').data("order", 'DESC');
+            $('.by_date').click();
+        }
+
+        function saveCookie(name, value) {
+            $.cookie(name, value, {
+                expires: 30,
+                path: '/',
+            });
+        }
+        /**********************************************************************/
+        function readCookieFilter() {
+            $('.cnt_lnk').attr('data-id', $.cookie('ardfo_fltr_cnt_id'));
+            $('.cnt_lnk').text($.cookie('ardfo_fltr_cnt_name'));
+
+            $('.rgn_lnk').attr('data-id', $.cookie('ardfo_fltr_rgn_id'));
+            $('.rgn_lnk').text($.cookie('ardfo_fltr_rgn_name'));
+
+            $('.cty_lnk').attr('data-id', $.cookie('ardfo_fltr_cty_id'));
+            $('.cty_lnk').text($.cookie('ardfo_fltr_cty_name'));
+        }
+        /**********************************************************************/
+        var catalog = '';
+        function getCatalog() {
+            var data = new FormData();
+
+            $.ajax({
+                type: "post",
+                url: '/search/filter/ajax-catalog',
+                data: data,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response && response.status === 'ok') {
+                        catalog = response.catalog;
+
+                        if ($.cookie('ardfo_fltr') == 'true') {
+                            readCookieFilter();
+                        } else {
+                            $('.cnt_lnk').text('Все страны');
+                        }
+                        return catalog;
+                    }
+                }
+            });
+        }
+    });
+
+
+</script>
+
+
+

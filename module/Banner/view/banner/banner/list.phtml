@@ -1,0 +1,49 @@
+<style>
+    .banner-list {
+        margin: 5px;
+        width: 100%;
+    }
+    .banner-list, .banner-list td, .banner-list th {
+        border: 1px solid blue;
+        padding: 5px;
+    }
+</style>
+<table class="banner-list" cellpadding="0" cellspacing="0">
+    <tr>
+        <th>id</th>
+        <th>user_id</th>
+        <th>image_id</th>
+        <th>type</th>
+        <th>url</th> 
+        <th>title</th>
+        <th>cost</th>
+        <th>sale</th>
+        <th>hits</th>
+        <th>create_date</th>
+        <th>off_date</th>
+        <th>is_on</th>
+        <th>status</th>
+    </tr>
+
+    <?php foreach ($bannerList as $banner) { ?> 
+
+        <tr>
+            <td><?php echo $banner->id; ?></td>
+            <td><?php echo $banner->user_id; ?></td>
+            <td><?php echo $banner->image_id; ?></td>
+            <td><?php echo $banner->type; ?></td>
+            <td><?php echo $banner->url; ?></td>
+            <td><?php echo $banner->title; ?></td>
+            <td><?php echo $banner->cost; ?></td>
+            <td><?php echo $banner->sale; ?></td>
+            <td><?php echo $banner->hits; ?></td>
+            <td><?php echo $banner->create_date; ?></td>
+            <td><?php echo $banner->off_date; ?></td>
+            <td><?php echo $banner->is_on; ?></td>
+            <td><?php echo $banner->status; ?></td>
+        </tr>
+
+    <?php } ?>
+
+
+</table>

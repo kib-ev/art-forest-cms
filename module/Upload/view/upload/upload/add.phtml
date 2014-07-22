@@ -1,0 +1,29 @@
+
+<div id="my-awesome-dropzone" style="width:500px;height:500px; background-color: #ccc;border:10px dotted #555; " ></div>
+<button id="do-it">Go</button>
+
+
+
+
+
+<script>
+Dropzone.options.myAwesomeDropzone = {
+paramName: "file",    
+parallelUploads: 6,
+autoProcessQueue: true,
+maxFiles: 2,
+addRemoveLinks: true,
+uploadMultiple: true,
+accept: function(file, done) {
+if (file.name == "justinbieber.jpg") {
+done();
+}
+else { done(); }
+}
+};
+var myDropzone = new Dropzone("#my-awesome-dropzone", { url: "/upload/add"});
+
+$('#do-it').on('click', function(){
+myDropzone.processQueue();
+})	
+</script>

@@ -1,0 +1,319 @@
+<style>
+    .thumb_74x56 {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    .delete {
+
+        float: right;   
+    }
+
+</style>
+
+<?php
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url(
+                'post', array(
+            'action' => 'edit',
+            'id' => $this->id,
+                )
+));
+echo $this->form()->openTag($form);
+$records = array();
+?>
+
+<div class="post-edit">
+
+    <div class="wrap">
+        <div class="border">
+            <?php echo $this->formElement($form->get('title')); ?>
+            <div class="divide">|</div>
+            <?php echo $this->formElement($form->get('price')); ?>
+            <div class="divide">|</div>
+            <div class="checkbox">Договорная <?php echo $this->formElement($form->get('chaffer')); ?></div>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div><?php echo $this->formElement($form->get('text')); ?></div>
+    </div>
+
+    <div class="wrap">
+        <div class="images">
+            <?php
+            foreach ($this->files as $fi) {
+                $records[] = $fi;
+                if ($fi->getType() == 'image') {
+                    ?>
+
+                    <div class="thumb_74x56" style="background-image: url(<?= $this->uploadfilemanager->getFilePath($fi->getUploadId()); ?>); 
+                         "><div class="delete icon" data-id="<?= $fi->getUploadId(); ?>"></div></div>
+                         <?php
+                     }
+                 }
+                 ?>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="files">
+            <?php
+            foreach ($records as $fi) {
+                if ($fi->getType() != 'image') {
+                    ?>
+
+                    <div class="attachment">
+                        <div class="delete icon" data-id="<?= $fi->getUploadId(); ?>"></div>
+                        <div class="icon-icon">
+                        </div>
+                        <div class="label">
+                            <p><?= $this->uploadfilemanager->getFilename($fi->getUploadId()); ?></p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <?php
+                }
+            }
+            ?>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div><?php echo $this->formElement($form->get('tags')); ?></div>
+    </div>
+</div>
+
+
+<div class="post-edit-actions">
+    
+    <div class="icon image" id="my-images-dropzone"></div>
+    <div class="icon file" id="my-files-dropzone"></div>
+    <!--<div class="icon map"></div>-->
+    <div class="icon tag"></div>
+    <div class="border-button"></div>
+    <?php echo $this->formHidden($form->get('id')); ?>
+    <?php echo $this->formElement($form->get('submit')); ?>
+</div>
+<style>
+    
+    .border-button {
+        
+    }
+    
+    .form-control.tags {
+
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+
+        var tags = $('.form-control.tags').text();
+        if (tags == '') {
+            $('.form-control.tags').hide();
+        }
+
+        $('.tag').on('click', function(e) {
+
+            var tags = $('.form-control.tags').text();
+            if (tags == '') {
+                $('.form-control.tags').toggle().focus();
+            }
+
+
+        })
+
+//        $('.form-control.desc').on('');
+    })
+</script>
+
+<?php
+//echo $this->formLabel($form->get('title'));
+//echo $this->formElement($form->get('title'));
+//echo $this->formElementErrors($form->get('title'));
+?>
+
+<?php
+//echo $this->formLabel($form->get('text'));
+//echo $this->formElement($form->get('text'));
+//echo $this->formElementErrors($form->get('text'));
+?>
+
+<?php
+//echo $this->formLabel($form->get('price'));
+//echo $this->formElement($form->get('price'));
+//echo $this->formElementErrors($form->get('price'));
+?>
+
+<?php
+//echo $this->formLabel($form->get('chaffer'));
+//echo $this->formElement($form->get('chaffer'));
+//echo $this->formElementErrors($form->get('chaffer'));
+?>
+
+<?php
+//echo $this->formLabel($form->get('tags'));
+//echo $this->formElement($form->get('tags'));
+//echo $this->formElementErrors($form->get('tags'));
+?>
+
+<?php
+echo $this->formElementErrors($form->get('submit'));
+?>
+
+
+
+<?php echo $this->form()->closeTag() ?>
+
+<!--<div id="images123">
+<?php
+//foreach ($records as $fi) {
+// if ($fi->getType() == 'image') {
+?>
+            <div id="images">
+                <img class="img" src=" //$this->uploadfilemanager->getFilePath($fi->getUploadId()); ">
+                <div class="del" data-id=" //$fi->getUploadId(); ">Delete</div>
+            </div>
+<?php
+//}
+// }
+?>
+</div>-->
+
+
+
+<!--<p>А тут ФАЙЛЫ</p>
+<div id="files123">
+<?php
+// foreach ($records as $fi) {
+//if ($fi->getType() != 'image') {
+?>
+            <div id="files">
+                <img class="img" src="http://zend.local/uploads/c4ca4238a0b923820dcc509a6f75849b/7c539a6c23968be3232f4189475e8465.jpg">
+                <div><?//= $this->uploadfilemanager->getFilename($fi->getUploadId()); ?></div>
+                <div class="del" data-id="<?//= $fi->getUploadId(); ?>">Delete</div>
+            </div>
+<?php
+//  }
+// }
+?>
+</div>-->
+
+<?php $this->headScript()->appendFile($this->basePath() . '/js/dropzone.js', 'text/javascript');?>
+
+
+<script>
+    Dropzone.options.myImagesDropzone = {
+        paramName: "file",
+        parallelUploads: 6,
+        maxFilesize: 2,
+        autoProcessQueue: true,
+        uploadMultiple: false,
+        acceptedFiles: "image/*, ",
+        accept: function(file, done) {
+            done();
+        },
+        success: function(file, response) {
+            if (response && response.status === 'ok') {
+                /*var div_x = $('<div/>').attr('id', 'images');
+                 var img_x = $('<img/>').attr('class', 'img').attr('src', response.src);
+                 var a_x = $('<div/>').attr('class', 'del').attr('data-id', response.upload_id).text('Delete');
+                 $('#images123').append(div_x.append(img_x).append(a_x));
+                 $('.del').on('click', t);*/
+
+                var div_x = $('<div/>').attr('class', 'thumb_74x56').attr('style', 'background-image: url(' + response.src + ');');
+                var del_div = $('<div/>').attr('class', "delete icon").attr('data-id', response.upload_id);
+                $('.images').append(div_x.append(del_div));
+                $('.delete').on('click', t);
+            }
+        }
+    };
+
+    Dropzone.options.myFilesDropzone = {
+        paramName: "file",
+        parallelUploads: 4,
+        maxFilesize: 2,
+        autoProcessQueue: true,
+        uploadMultiple: false,
+        acceptedFiles: "text/*, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel  ",
+        accept: function(file, done) {
+            done();
+        },
+        success: function(file, response) {
+            if (response && response.status === 'ok') {
+                /*var div_x = $('<div/>').attr('id', 'files');
+                 var img_x = $('<img/>').attr('class', 'img').attr('src', "http://zend.local/uploads/c4ca4238a0b923820dcc509a6f75849b/7c539a6c23968be3232f4189475e8465.jpg");
+                 var name_x = $('<div/>').text(response.filename);
+                 var a_x = $('<div/>').attr('class', 'del').attr('data-id', response.upload_id).text('Delete');
+                 $('#files123').append(div_x.append(img_x).append(name_x).append(a_x));
+                 $('.del').on('click', t);*/
+
+                var div_x = $('<div/>').attr('class', 'attachment');
+                var div_icon = $('<div/>').attr('class', 'icon-icon');
+                var div_label = $('<div/>').attr('class', 'label').append($('<p/>').text(response.filename));
+                var del_div = $('<div/>').attr('class', "delete icon").attr('data-id', response.upload_id);
+                $('.files').append(div_x.append(del_div).append(div_icon).append(div_label));
+                $('.delete').on('click', t);
+            }
+        }
+    };
+    var myDropzone = new Dropzone("#my-images-dropzone", {url: "/post/edit/<?= $this->id ?>"});
+    var myDropzone2 = new Dropzone("#my-files-dropzone", {url: "/post/edit/<?= $this->id ?>"});
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.delete').on('click', t = function() {
+            var row = $(this).parent();
+            var upload_id = $(this).parent().children('.delete').data('id');
+            var post_id = <?= $this->id ?>;
+            $.ajax({
+                type: "POST",
+                url: "/attachment/delete",
+                data: {"upload_id": upload_id, "post_id": post_id},
+                cache: false,
+                success: function(response) {
+                    if (response && response.status === 'ok') {
+                        row.remove();
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+<style type="text/css">
+    .thumb_74x56 
+    {
+        display: inline-block;
+        width: 74px;
+        height: 56px;
+        vertical-align: top;
+        margin: 2px 0px 2px 2px;
+    }
+    .thumb_74x56 img
+    {
+    }
+    .thumb_74x56 .delete {
+        position: static;
+        width: 20px;
+        height: 20px;
+    }
+</style>
+
+<script type="text/javascript">
+    $('#content').on('keyup', 'textarea', function(e) {
+        $(this).css('height', 'auto');
+        $(this).height(this.scrollHeight);
+    });
+    $('#content').find('textarea').keyup();
+</script>

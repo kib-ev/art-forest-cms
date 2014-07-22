@@ -1,0 +1,89 @@
+<?php
+
+use Users\Controller\RegisterController as RC;
+
+//
+?>
+    <?php
+    
+    if ($this->favorites->count()) {
+    
+    foreach ($this->favorites as $favor) {
+        $row = $this->postTable->fetchById($favor->getPostId());
+        $attachments = $this->attachmentTable->getAttachmentById($favor->getPostId());
+
+        $userId = $favor->getUserId();
+        $sm = $this->getServiceManager();
+        $userTable = $sm->get('users_table');
+        $user = $userTable->getUser($userId);
+        ?>
+        <table class="item<?php echo ($user->reg_type == RC::PHYSICAL_REG_TYPE) ? '' : ' legal'; ?>" cellpadding="0" cellspacing="0" >
+            <tr>
+                <td>
+                    <div class="delete_block">
+                        <div class="delete icon" data-post-id="<?php echo $favor->getPostId(); ?>"></div>
+                    </div>
+                </td>
+
+                <?php $src = "/img/358x238_none.jpg"; ?>
+                <?php
+                foreach ($attachments as $attachment) {
+                    if ($attachment->getType() == 'image') {
+                        $src = $this->uploadfilemanager->getFilePath($attachment->getUploadId());
+                        break;
+                    }
+                }
+                ?>
+                <td class="thumb">
+                    <div class="favorite-item-image" style="background-image: url('<?=$src; ?>');"></div>
+                </td>
+
+                <td onclick="window.location = '/post/details/<?php echo $favor->getPostId(); ?>'">
+                    <div class="title_box">
+                        <div class="title">
+    <?php echo $row->getTitle(); ?>
+                        </div>
+                    </div>
+                    <div class="text_box">
+                        <div class="text">
+    <?= $row->getText(); ?>
+                        </div>
+                    </div>
+                </td>
+
+                <td class="info" onclick="window.location = '/post/details/<?php echo $favor->getPostId(); ?>'">
+                    <div class="cost"><?= $row->getPrice(); ?> у.е.</div>
+                    <div class="trade chaffer_box"><?php echo $row->getChaffer() ? '' : 'Договорная'; ?></div>
+                    <div class="date"><?= $row->getCreateDate() ?></div>
+                </td>
+            </tr>
+        </table>
+<?php } ?>
+
+    
+    <?php } else { ?>
+        <div class="no-posts-favorites-dialogs">Нет закладок</div>
+    <?php }
+    ?>
+
+
+<script>
+    $(document).ready(function() {
+        $('.delete').on('click', function() {
+            var item = $(this).parents('.item');
+            var post_id = $(this).data('post-id');
+            $.ajax({
+                type: "POST",
+                url: "/favorite/delete",
+                data: {"post_id": post_id},
+                cache: false,
+                success: function(response) {
+                    if (response && response.status === 'ok') {
+                        item.remove();
+                    }
+                }
+            });
+        });
+    });
+</script><?php
+

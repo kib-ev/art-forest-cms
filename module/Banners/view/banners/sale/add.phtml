@@ -1,0 +1,75 @@
+<?php
+$imageUrl = (!empty($banner->image)) ? $banner->image : '/img/170x160_load.jpg';
+?>
+
+<table class="load-image" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>
+            <div class="input-file" style="background-image: url(<?php echo $imageUrl; ?>); background-color: <?php if (!empty($imageUrl)) echo '#fff'; ?>;">
+                <input name="file" class="file" type="file" value="">
+            </div>
+        </td>
+    </tr>
+</table>
+
+<form class="form" method="post" enctype="multipart/form-data" action="/banners/sale/process">
+
+    <input type="hidden" name="id" class="id" value="<?php echo $banner->id; ?>">
+    <input type="hidden" name="user_id" class="user_id" value="<?php echo $banner->user_id; ?>">
+    <input type="hidden" name="image_id" class="image_id" value="<?php echo $banner->image_id; ?>">
+    <input type="hidden" name="image" class="image" value="<?php echo $banner->image; ?>">
+
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td colspan="2"><p>Загрузите изрбражение разрешением 170х160 пикселей. Заплните поля для ввода.</p></td>
+        </tr>
+
+        <tr>
+            <td>
+                <dl>
+                    <dt><label for="percent">процент скидки</label></dt>
+                    <dd><input required name="sale" class="sale" type="number" max="99" value="<?php echo $banner->sale; ?>"></dd>
+                </dl>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2"><input class="submit" type="submit" name="submit" value="Сохранить"></td>
+        </tr>
+    </table>
+
+</form>
+
+<script>
+    $(document).ready(function() {
+
+        $('.file').on('change', function(e) {
+
+            var data = new FormData();
+            var file = $('.file')[0].files[0];
+            data.append('sale', $('input[name="sale"]'));
+            data.append('file', file);
+            data.append('id', $('.id').attr('value'));
+
+            $.ajax({
+                type: "POST",
+                url: '/banners/sale/ajax-process',
+                data: data,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response && response.status === 'ok') {
+                        var imageSrc = "/scripts/timthumb/timthumb.php?src=" + response.src + "&w=170&h=160";
+
+                        $(".input-file").css('background-image', 'url(' + imageSrc + ')');
+                        $(".image_id").attr('value', response.image_id);
+                        $(".id").attr('value', response.banner_id);
+                        $('input[name="image"]').attr('value', imageSrc);
+                    }
+                }
+            });
+        });
+    });
+</script>
+

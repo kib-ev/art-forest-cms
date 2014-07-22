@@ -1,0 +1,33 @@
+<?php
+$user = $this->getUserHelper()->getLoggedInUser();
+$email = $user->getEmail();
+$isUserLoggedIn = $this->getUserHelper()->isUserLoggedIn();
+
+//
+?>
+<?php $trustEntity = $this->getTrustEntity(); ?>
+
+
+
+<!--<div class="trust-block" style="background: url('<?= $trustEntity->src; ?>');">
+    <div class="voice-count-block">
+        <div class="voice-count-label">Голосов доверия</div>
+        <div class="voice-count">
+
+            <?php $trustVoiceCount = number_format($trustEntity->count, 0, '.', '.'); ?>
+
+            <?php //implode('.', str_split($trustVoiceCount, 3)); 
+            echo $trustVoiceCount;
+            ?>
+        </div>
+
+    </div>
+    <div class="trust-label-block">
+        <div class="trust-label"><?php echo ($trustEntity->type == 'mark-trust') ? 'Марка доверия' : 'Человек доверия'; ?></div>
+    </div>
+</div>-->
+
+<div class="trust-block" style="background: url('/img/ardfo.jpg');">
+
+ 
+</div>

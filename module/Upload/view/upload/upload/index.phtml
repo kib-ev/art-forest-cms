@@ -1,0 +1,59 @@
+<style>
+    .lol {
+        width: 150px;
+    }
+</style>
+<div id="content">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>User_id</th>
+                <th>filename</th>
+                <th>filepath</th>
+                <th>Image</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->uploads as $upload) { ?>
+
+                <tr>
+                    <td class="text"><?= $upload->getId(); ?></td>
+                    <td><?= $upload->getUserId(); ?></td>
+                    <td><?= $upload->getFilename(); ?></td>
+                    <td><?= $upload->getFilepath(); ?></td>
+                    <td>
+                        <div class="lol">
+                            <img class="lol" src="<?= $upload->getFilepath(); ?>">
+                        </div>
+                    </td>
+                    <td class="del" data-id="<?= $upload->getId(); ?>" 
+                        data-full_filename="<?= $upload->getFullFilename(); ?>">Delete</td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('.del').on('click', function() {
+            var row = $(this).parent();
+            var id = $(this).parent().children('.del').data("id");
+            var full_filename = $(this).parent().children('.del').data("full_filename");
+            $.ajax({
+                type: "POST",
+                url: "/upload/delete",
+                data: {"id": id, "full_filename": full_filename},
+                cache: false,
+                success: function(response) {
+                    if (response && response.status === 'ok') {
+                        row.remove();
+                    }
+                }
+            });
+        });
+    });
+</script>

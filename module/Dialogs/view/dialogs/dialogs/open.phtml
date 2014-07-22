@@ -1,0 +1,81 @@
+<?php
+$sm = $this->getServiceManager();
+
+$userTable = $sm->get('users_table');
+$loggedInUser = $sm->get('logged_in_user');
+
+//
+?>
+
+<table cellpadding="0" cellspacing="0" class="chat_log"> 
+    <tr><td class="td-chat-log">
+            <table class="ms" cellpadding="0" cellspacing="0">
+                <?php
+                $dialogs = $this->dialogs;
+                foreach ($dialogs as $dialog):
+
+                    // get users id
+                    $loggedInUserId = $loggedInUser->user_id;
+
+                    if ($loggedInUserId == $dialog->sender_id) {
+                        $selectedUserId = $dialog->recipient_id;
+                    } else {
+                        $selectedUserId = $dialog->sender_id;
+                    }
+                    $selectedUser = $userTable->getUser($selectedUserId);
+                    //
+
+                    $senderId = $dialog->getSenderId();
+                    $sender = $userTable->getUser($senderId);
+                    $senderName = $this->escapeHtml($sender->display_name);
+                    $text = $this->escapeHtml($dialog->getText());
+                    $avatar_url = $this->getUserData($sender->user_id)->getAvatarUrl();
+
+                    $dialogCreateDate = $dialog->create_date;
+                    $dialogDate = new DateTime($dialogCreateDate);
+                    $formatedDialogDate = date_format($dialogDate, 'd.m.y H:i');
+                    ?>
+
+                    <tr>
+                        <td rowspan="2" class="ms_sender_img">
+                            <a href="/post/list/<?= $sender->user_id ?>">
+                                <div class="senter-avatar" style="background-image: url('<?php echo $this->thumb($avatar_url, 37, 37); ?>');"></div></a>
+                        </td>
+                        <td class="sender-name firm_blue">
+                            <a href="/post/list/<?= $sender->user_id ?>">
+                                <div class="sender-name-block"><?= $senderName; ?></div></a>
+                        </td>
+                        <td rowspan="2" class="ms_date">
+                            <div class="date"><?= $formatedDialogDate; ?></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-text">
+                            <div class="text-block"><?= $text ?></div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if ($dialogs->count() == 0) { ?>
+                    <div class="no-dialogs-message">С выбранным вами пользователем переписка не велась</div>
+                <?php } ?>
+            </table>
+
+        </td></tr></table>
+
+
+<form class = "chat_control" action = "/dialog/send" method = "post" name = "send-msg-form" enctype = "multipart/form-data" id = "send-msg-form">
+    <div class = "ms_smile">
+        <div class = " smile"></div>
+    </div>
+    <input required = "true" class = "ms_txt" name = "text" type = "text" placeholder = "Введите ваше сообщение" value = "">
+    <input class = "ms_send" type = "submit" name = "submit" value = "Отправить">
+    <input type = "hidden" class = "selectedUserId" name = "selectedUserId" value = "<?php echo $this->selectedUserId; ?>">
+</form>
+
+<script>
+    $(document).ready(function() {
+        $(window).load(function() {
+            $("html, body").animate({scrollTop: $(document).height()}, 0);
+        });
+    });
+</script>

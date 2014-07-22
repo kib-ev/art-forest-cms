@@ -1,0 +1,69 @@
+<?php
+$form = $this->form;
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+
+<dl>
+    <dt>
+    <?php if ($this->error) : ?>
+        <p class="errors">
+            Логин или пароль введен неправильно.
+        </p>
+    <?php endif ?>
+    </dt>
+
+    <dt><?php echo $this->formLabel($form->get('email')); ?></dt>
+    <dd>
+        <?php echo $this->formElement($form->get('email')); ?>
+        <span class="errors"><?php echo $this->formElementErrors($form->get('email')); ?>
+        </span></dd>
+
+    <dt><?php echo $this->formLabel($form->get('password')); ?></dt>
+    <dd>
+        <?php echo $this->formElement($form->get('password')); ?>
+        <span class="errors"><?php echo $this->formElementErrors($form->get('password')); ?>
+        </span></dd>
+
+    <dt>&nbsp;</dt>
+    <dd>
+        <?php echo $this->formElement($form->get('submit')); ?>
+        <span class="errors"><?php echo $this->formElementErrors($form->get('submit')); ?>
+        </span></dd>
+    <dt><a href="/users/auth/forgot" class="forget-pass">
+        Забыли пароль?
+    </a></dt>  
+</dl>
+
+<div class="send-mail-message"><?= isset($message) ? $message : ''; ?></div>
+
+
+<?php echo $this->form()->closeTag(); ?>
+
+<style>
+    .send-mail-message {
+        display: none;
+        position: relative;
+        top: -200px;
+        border: 1px solid #5cb85c;
+        color: #5cb85c;
+        width: 340px;
+        text-align: center;
+        line-height: 25px;
+        margin: 0 auto;
+    }
+
+</style>
+
+<script>
+    $(document).ready(function() {
+        
+        if ($('.send-mail-message').text() !== '') {
+            $('.send-mail-message').show();
+            $('.send-mail-message').fadeOut(4000);
+            
+        }
+
+    });
+</script>

@@ -1,0 +1,50 @@
+<section class="user-manager-edit">
+    <h2> EDIT User </h2>
+    <?php if ($this->error) : ?>
+        <p class="error">
+            There were one or more issues with your submission.
+            Please correct them as indicated below.
+        </p>
+    <?php endif ?>
+
+    <?php
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url(NULL, array(
+                'controller' => 'user-manager',
+                'action' => 'process',
+            ))
+    );
+
+    echo $this->form()->openTag($form);
+    ?>
+    <dl class="user-edit-form">
+        <dd>
+            <?php
+            echo $this->formElement($form->get('user_id'));
+            echo $this->formElementErrors($form->get('user_id'));
+            ?>
+        </dd>
+        <dt><?php echo $this->formLabel($form->get('username')); ?></dt>
+        <dd>
+            <?php
+            echo $this->formElement($form->get('username'));
+            echo $this->formElementErrors($form->get('username'));
+            ?>
+        </dd>
+        <dt><?php echo $this->formLabel($form->get('email')); ?></dt>
+        <dd>
+            <?php
+            echo $this->formElement($form->get('email'));
+            echo $this->formElementErrors($form->get('email'));
+            ?>
+        </dd>
+        <dt>&nbsp;</dt>
+        <dd>
+            <?php
+            echo $this->formElement($form->get('submit'));
+            echo $this->formElementErrors($form->get('submit'));
+            ?>
+        </dd>
+    </dl>
+</section>

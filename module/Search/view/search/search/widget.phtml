@@ -1,0 +1,150 @@
+<style>
+    #block-search-result {
+        border-left: 1px solid #E1DFDD;
+        border-right: 1px solid #E1DFDD;
+        border-bottom: 1px solid #EAEAEA;
+        width: 739px;
+        height:  auto;
+        background-color: white;
+        position: fixed;
+        z-index: 10004;
+        display: none;
+        margin-top: 30px;
+        margin-left: 430px;
+    }
+
+    .highlight {
+        font-weight: bold;
+        color: #333;
+    }
+
+    #list-search-result > li { 
+        height: 25px;
+        overflow: hidden;
+    }
+
+    .block-title-price > a{
+        margin-top: 10px;
+        display: block;  
+        font-size: 14px;
+        color: #dadada;
+        padding: 0 5px;
+    }
+    .block-title-price > a:hover{
+        text-decoration: none;  
+    }
+
+    #search-noresult{
+
+        color: #E96767;
+        font: 13px sans-serif;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: inline-block;     
+    }
+
+    #search-more{
+        color: #287FC3;
+        font: 13px sans-serif;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: inline-block;    
+    }
+</style>
+
+<?php echo $this->form()->openTag($form); ?>
+<div class="sfi">
+    <?php echo $this->formElement($form->get('query')); ?> 
+</div><div class="sfb">
+    <?php echo $this->formElement($form->get('submit')); ?>
+</div>
+<?php echo $this->form()->closeTag(); ?> 
+
+
+<div id="block-search-result">
+    <ul id="list-search-result">
+
+
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var delay = (function() {
+            var timer = 0;
+            return function(callback, ms) {
+                clearTimeout(timer);
+                timer = setTimeout(callback, ms);
+            };
+        })();
+
+        $('#search-form .search').on('keyup', function() {
+            var input_search = $(this).val();
+            delay(function() {
+                if (input_search.length > 0 && input_search.length < 150) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/search/list",
+                        data: {"q": input_search},
+                        dataType: "html",
+                        cache: false,
+                        success: function(data) {
+                            $("#block-search-result").show(); // Показываем блок с результатом.
+                            $("#list-search-result").html(data);
+                            $('.block-title-price').on('click', t);
+                            if (!$('#list-search-result > li').size()) {
+                                $("#block-search-result").hide();
+                            }
+                        }
+                    });
+                } else {
+                    $("#block-search-result").hide();
+                }
+            }, 700);
+        });
+
+        $('#search-form .submit').on('click', function() {
+
+            var country = $("<input>")
+                    .attr("type", "hidden")
+                    .attr("name", "country").val($.cookie('ardfo_fltr_cnt_id'));
+
+            var region = $("<input>")
+                    .attr("type", "hidden")
+                    .attr("name", "region").val($.cookie('ardfo_fltr_rgn_id'));
+
+            var city = $("<input>")
+                    .attr("type", "hidden")
+                    .attr("name", "city").val($.cookie('ardfo_fltr_cty_id'));
+
+            $('#search-form').append(country);
+            $('#search-form').append(region);
+            $('#search-form').append(city);
+
+        });
+
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.block-title-price').on('click', t = function() {
+        });
+
+        $(this).on('click', function(event) {
+            var t = event.target || event.srcElement;
+            if (t.className !== "search" && t.className !== "element-result") {
+                $("#block-search-result").hide();
+            }
+
+        });
+
+        $('.search').on('focus', function() {
+            var input_search = $(this).val();
+            if (input_search.length) {
+                $("#block-search-result").show();
+            }
+        });
+
+    });
+</script>
