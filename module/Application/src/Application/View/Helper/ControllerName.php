@@ -20,11 +20,11 @@ class ControllerName extends AbstractHelper
             $action = $this->routeMatch->getParam('action');
             list($module,, $controller) = explode(DIRECTORY_SEPARATOR, $controllerParam);
 
-            $moduleName = strtolower($module) . '-module';
-            $actionName = strtolower($action) . '-action';
-            $controllerName = strtolower($controller) . '-controller';
+            $moduleName = 'module-' . strtolower($module);
+            $controllerName = 'controller-' . strtolower($controller);
+            $actionName = 'action-' . strtolower($action);
 
-            return strtolower($controller) . ' ' . $moduleName . ' ' . $controllerName . ' ' . $actionName;
+            return $moduleName . ' ' . $controllerName . ' ' . $actionName;
         }
     }
 
