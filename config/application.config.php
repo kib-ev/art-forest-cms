@@ -4,7 +4,7 @@ $modules = array(
     'DoctrineModule',
     'DoctrineORMModule');
 
-$env = getenv('APP_ENV') ? : 'production';
+$env = getenv('APPLICATION_ENV') ? : 'production';
 if ($env == 'development') {
     $modules[] = 'ZendDeveloperTools';
 }
