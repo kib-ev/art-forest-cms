@@ -31,7 +31,9 @@
                     <div class="menu"></div>
                 </div>
                 <div class="wrap-content">
-                    <div class="content"></div>
+                    <div class="content">
+                        <?php echo $this->content; ?>
+                    </div>
                 </div> 
                 <div class="wrap-sidebar">
                     <div class="sidebar"></div>
@@ -42,5 +44,8 @@
         <div class="wrap-footer">
             <div class="footer"></div>
         </div>
+
+        <?php echo $this->inlineScript() ?>
+
     </body>
 </html>
