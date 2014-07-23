@@ -1,2 +1,13 @@
-<?php 
-echo '/module/Application/view/application/index/index.phtml';
+<?php
+$sm = $this->getServiceManager();
+$userTable = $sm->get('user_table');
+$loggedInUserId = $sm->get('logged_in_user_id');
+//echo $loggedInUserId;
+$user = $userTable->getUserById($loggedInUserId);
+//echo json_encode($user->getArrayCopy());
+//echo $user->get('email');
+?>
+<a href="/user/login">войти</a><br/>
+<a href="/user/register">регистрация</a><br/>
+<a href="/user/logout">выйти</a><br/>
+<?php echo isset($user) ? 'вы вошли как: ' . $user->get('email') : ''; ?><br/>
