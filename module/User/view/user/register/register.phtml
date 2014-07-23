@@ -1,0 +1,17 @@
+<?php
+$sm = $this->getServiceManager();
+$sm->get('zend_auth_service')->clearIdentity();
+
+echo 'register';
+?>
+
+<form method="post" action="/user/register/process">
+    <dl>
+        <dt>Введите Email</dt>
+        <dd><input name="email" type="text"/></dd>
+        <dt>Введите пароль</dt>
+        <dd><input name="password" type="password"/></dd>
+        <dt>&nbsp;</dt>
+        <dd><input name="submit" type="submit" value="Регистрация"/></dd>
+    </dl>
+</form>

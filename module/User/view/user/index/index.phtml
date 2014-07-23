@@ -1,0 +1,9 @@
+<?php 
+
+
+$sm = $this->getServiceManager();
+
+$userTable = $sm->get('user_table');
+$user = $userTable->getUserById(1);
+
+echo $user->get('username');
