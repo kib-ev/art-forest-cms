@@ -6,8 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Users\Model\User;
 
-class RegisterController extends AbstractActionController
-{
+class RegisterController extends AbstractActionController {
     const PHYSICAL_REG_TYPE = 1;
     const INDIVIDUAL_REG_TYPE = 2;
     const LEGAL_REG_TYPE = 3;
@@ -17,25 +16,22 @@ class RegisterController extends AbstractActionController
     protected $authservice;
     protected $userTable;
 
-    public function getAuthService()
-    {
+    public function getAuthService() {
         if (!$this->authservice) {
             $this->authservice = $this->getServiceLocator()->get('zend_auth_service');
         }
         return $this->authservice;
     }
 
-    public function getUserTable()
-    {
+    public function getUserTable() {
         if (!$this->userTable) {
             $this->userTable = $this->getServiceLocator()->get('users_table');
         }
         return $this->userTable;
     }
-
     /* регистрация юридичских лиц */
-    public function legalAction()
-    {
+
+    public function legalAction() {
         $authService = $this->getServiceLocator()->get('zend_auth_service');
         $authService->clearIdentity();
 
@@ -43,10 +39,9 @@ class RegisterController extends AbstractActionController
         $view = new ViewModel(array('form' => $form));
         return $view;
     }
-
     /* регистрация физических лиц */
-    public function physicalAction()
-    {
+
+    public function physicalAction() {
         $authService = $this->getServiceLocator()->get('zend_auth_service');
         $authService->clearIdentity();
 
@@ -54,10 +49,9 @@ class RegisterController extends AbstractActionController
         $view = new ViewModel(array('form' => $form));
         return $view;
     }
-
     /* регистрация ИП */
-    public function individualAction()
-    {
+
+    public function individualAction() {
         $authService = $this->getServiceLocator()->get('zend_auth_service');
         $authService->clearIdentity();
 
@@ -66,8 +60,7 @@ class RegisterController extends AbstractActionController
         return $view;
     }
 
-    public function legalProcessAction()
-    {
+    public function legalProcessAction() {
         if (!$this->request->isPost()) {
             return $this->redirect()->toRoute(NULL, array(
                         'controller' => 'register',
@@ -129,8 +122,7 @@ class RegisterController extends AbstractActionController
         ));
     }
 
-    public function individualProcessAction()
-    {
+    public function individualProcessAction() {
         if (!$this->request->isPost()) {
             return $this->redirect()->toUrl(RegisterController::INDEX_ACTION);
         }
@@ -188,8 +180,7 @@ class RegisterController extends AbstractActionController
         ));
     }
 
-    public function physicalProcessAction()
-    {
+    public function physicalProcessAction() {
         if (!$this->request->isPost()) {
             return $this->redirect()->toUrl(RegisterController::INDEX_ACTION);
         }
@@ -252,8 +243,7 @@ class RegisterController extends AbstractActionController
         ));
     }
 
-    protected function createUser(array $data)
-    {
+    protected function createUser(array $data) {
 
         if (!$this->isUserExists($data['email'])) {
 
@@ -272,19 +262,16 @@ class RegisterController extends AbstractActionController
         }
     }
 
-    protected function isUserExists($email)
-    {
+    protected function isUserExists($email) {
         $user = $this->getUserTable()->getUserByEmail($email);
         return $user ? true : false;
     }
 
-    public function confirmAction()
-    {
+    public function confirmAction() {
         return array();
     }
 
-    public function authenticate($sm, $post)
-    {
+    public function authenticate($sm, $post) {
         $form = $sm->get('LoginForm');
         $form->setData($post);
 
@@ -309,8 +296,7 @@ class RegisterController extends AbstractActionController
         }
     }
 
-    public function sendMail($post, $template)
-    {
+    public function sendMail($post, $template) {
         $options = new \Zend\Mail\Transport\SmtpOptions(array(
             "name" => "atservers",
             "host" => "ox20m.atservers.net",
@@ -355,5 +341,4 @@ class RegisterController extends AbstractActionController
         $transport->setOptions($options);
         $transport->send($mail);
     }
-
 }

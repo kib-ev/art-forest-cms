@@ -39,7 +39,7 @@ class Module implements AutoloaderProviderInterface
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $eventManager->attach('route', array($this, 'onRoute'), -100);
+        //$eventManager->attach('route', array($this, 'onRoute'), -100);
     }
 
     public function onRoute(\Zend\EventManager\EventInterface $e)
@@ -184,13 +184,13 @@ class Module implements AutoloaderProviderInterface
             return $filter;
         },
                 /* auth service */
-                'zend_auth_service' => function ($sm) {
-            $dbAdapter = $sm->get('zend_db_adapter');
-            $dbTableAuthAdapter = new \Zend\Authentication\Adapter\DbTable($dbAdapter, 'users', 'email', 'password', 'md5(?)');
-            $authService = new \Zend\Authentication\AuthenticationService();
-            $authService->setAdapter($dbTableAuthAdapter);
-            return $authService;
-        },
+//                'zend_auth_service' => function ($sm) {
+//            $dbAdapter = $sm->get('zend_db_adapter');
+//            $dbTableAuthAdapter = new \Zend\Authentication\Adapter\DbTable($dbAdapter, 'user', 'email', 'password', ''); // md5(?)
+//            $authService = new \Zend\Authentication\AuthenticationService();
+//            $authService->setAdapter($dbTableAuthAdapter);
+//            return $authService;
+//        },
                 /* get current logged in user */
                 'logged_in_user' => function ($sm) {
             $authService = $sm->get('zend_auth_service');
