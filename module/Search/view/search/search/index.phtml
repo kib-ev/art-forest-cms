@@ -1,236 +1,19 @@
-<style>
-    .block-search-result{
-        height: auto;
-        width: 100%;
-        background-color: white;
-        z-index: 9999;
-        top: 189px;
-    }
+<?php $sm = $this->getServiceManager(); ?>
 
-    .block_result {
-        height: 72px;
-
-        border-bottom: 1px solid #dbdbdb;
-    }
-
-    .search_title > a{
-        /*        font: 15px sans-serif;
-                color: #287FC3;
-                margin-top: 5px;
-                display: block;  */
-    }
-    .block-title-text > a:hover{
-        /*text-decoration: none;*/ 
-    }
-
-    .search-noresult{
-        color: #E96767;
-        font: 13px sans-serif;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        display: inline-block;     
-    }
-    /*    .search_img {
-            height: 53px;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            width: 10%;
-            display: none;
-            float: left;
-        }*/
-    .search-result {
-        margin-top: 70px;
-        border-left: 1px solid #dbdbdb;
-        border-right: 1px solid #dbdbdb;
-        min-height: 308px;
-        overflow: auto;
-        overflow-y: hidden;
-        width: 641px;
-        font-size: 12px;
-    }
-
-    /* view-list, s */
-    .search-result[data-view="small-icon"] .search_date_price_chaffer,
-    .search-result[data-view="list"] .search_date_price_chaffer {
-        border-left: 1px solid #dbdbdb;
-        float: right;
-        height: 72px;
-        width: 97px;
-    }
-    .search-result[data-view="small-icon"] .search_price,
-    .search-result[data-view="list"] .search_price { 
-        color: #da3232;
-        font-size: 14px;
-        margin: 10px 0px 1px 0px;
-        text-align: center;
-        height: 16px;
-    }
-    .search-result[data-view="large-icon"] .search_price {
-        color: #da3232;
-        font-size: 13px;
-        margin: 0px 0px 0px 0px;
-        text-align: center;
-        height: 16px;
-    }
-    .search-result[data-view="large-icon"] .search_chaffer,
-    .search-result[data-view="small-icon"] .search_chaffer,
-    .search-result[data-view="list"] .search_chaffer {
-        font-size: 11px;
-        margin: 0px 0px 0px;
-        text-align: center;
-        height: 12px;
-    }
-    .search-result[data-view="large-icon"] .search_date,
-    .search-result[data-view="small-icon"] .search_date,
-    .search-result[data-view="list"] .search_date {
-        font-size: 10px;
-        margin: 2px 4px 0px;
-        text-align: center;
-        height: 12px;
-    }
-
-    .search-result[data-view="list"] .search_title_text {
-        height: 72px;
-        width: 543px;
-        float: left;
-
-    }
-    .search-result[data-view="small-icon"] .search-text,
-    .search-result[data-view="list"] .search-text {
-        text-overflow: clip;
-        overflow: hidden;
-        word-wrap: break-word;
-        line-height: 15px;
-        font-size: 12px;
-        height: 40px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .search-result[data-view="large-icon"] .search_title,
-    .search-result[data-view="small-icon"] .search_title,
-    .search-result[data-view="list"] .search-title {
-        font-weight: bold;
-        overflow: hidden;
-        word-wrap: break-word;
-        word-break: break-word;
-        line-height: 12px;
-        height: 12px;
-        font-size: 12px;
-    }
-    .search-result[data-view="large-icon"] .search-title {
-        text-align: center;
-    }
-    .search-result[data-view="list"] .search_img {
-        display: none;
-    }
-    .search-result[data-view="small-icon"] .search_img {
-        display: block;
-        border-right: 1px solid #dbdbdb;
-        height: 72px;
-        width: 72px;
-        float: left;
-    }
-    .search-result[data-view="small-icon"] .search_img div.small_image {
-        display: block;
-        height: 45px;
-        width: 60px;
-        background-size: 100%;
-        margin: 14px 0px 0px 6px;
-        border: 1px solid #dbdbdb;
-    }
-    .search-result[data-view="small-icon"] .search_img div.large_image {
-        display: none;
-    }
-    .search-result[data-view="small-icon"] .search_title_text {
-        height: 72px;
-        width: 470px;
-        float: left;
-
-    }
-    .search-result[data-view="large-icon"] .search_title_text {
-        width: 100%;
-        height: 16px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .search-result[data-view="large-icon"] .search_img {
-        display: block;
-        width: 100%;
-        height: 90px;
-    }
-    .search-result[data-view="large-icon"] .search_img div.large_image {
-        display: block;
-        height: 90px;
-        width: 120px;
-        background-size: 100%;
-        background-size: cover;
-        margin: 5px 0px 0px 19px;
-        border: 1px solid #dbdbdb;
-    }
-    .search-result[data-view="large-icon"] .search_img div.small_image {
-        display: none;
-    }
-    .search-result[data-view="large-icon"] .search-title {
-        width: 147px;
-    }
-    .search-result[data-view="large-icon"] .search-text {
-        display: none;
-    }
-    .search-result[data-view="large-icon"] .block_result {
-        border-right: 1px solid #dbdbdb;
-        float: left;
-        height: 155px;
-        width: 159.5px;
-    }
-    .search-result[data-view="large-icon"] .block_result:nth-of-type(4n) {
-        border-right: none;
-    }
-
-    .block_result {
-        margin-bottom: -1px;
-        float: left;
-    }
-    .block_result .search-title {
-        font-weight: bold;
-        padding: 3px 5px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-    .block_result .search-text {
-        padding: 3px 5px;
-    }
-</style>
-
-<?php
-//
-$sm = $this->getServiceManager();
-//
-?>
-
-<?php include 'filter.phtml'; ?>
+<form name="search-form" action="/post/search/">
+    <input name="query" type="text" placeholder="Что искать?">
+    <input type="button" value="Найти" onclick="submit()">
+</form>
 
 <div class="search-result" data-order="ASC" data-view="">
     <?php if (count($searchResults)) : ?>
-        <div class="block-search-result">
 
             <?php foreach ($searchResults as $searchResult) { ?>
-                <div class="block_result" onclick="window.location.href = '/post/details/<?= $searchResult->id ?>'" style="cursor: pointer;">
+                <div class="search-result-item" onclick="window.location.href = '/post/details/<?= $searchResult->id ?>'" style="cursor: pointer;">
                     <?php
                     //Image
                     $src = '/img/358x238_none.jpg';
-                    $attachments = $this->attachmentTable->getAttachmentById($searchResult->id);
 
-                    foreach ($attachments as $attachment) {
-
-                        if ($attachment->getType() == 'image') {
-                            $src = $this->uploadFileManager->getFilePath($attachment->getUploadId());
-                            break;
-                        }
-                    }
-                    //end image 
                     ?>
 
                     <div class="search_img">
@@ -252,7 +35,6 @@ $sm = $this->getServiceManager();
                 </div>
             <?php } ?>
 
-        </div>
     <?php else : ?> 
 
         <div class="search-not-found"><?php echo $this->translate('Sorry, your search did not match, please try again.'); ?></div>
@@ -260,53 +42,4 @@ $sm = $this->getServiceManager();
     <?php endif; ?>
 
 </div>
-
-<script>
-    $(document).ready(function() {
-        //count resaults
-
-
-        $('.by_date').on('click', function(e) {
-            e.preventDefault();
-            var cnt_id = $('.cnt_lnk').data('id');
-            var rgn_id = $('.rgn_lnk').data('id');
-            var cty_id = $('.cty_lnk').data('id');
-            var order = $('.search-result').data("order");
-            $(".search-result").load("/search/index .search-result > *", {"query": '<?= $query; ?>', "order_by": 'create_date', "order": order, "country": cnt_id, 'region': rgn_id, 'city': cty_id,
-            }, function() {
-                $('.search-link').on('click', t);
-                var count = document.getElementsByClassName("block_result").length;
-                $('.search-count').text(count);
-                if (!count) {
-                    $('.view-list').text(' <div class="search-not-found"><?php echo $this->translate('Sorry, your search did not match, please try again.'); ?></div>');
-                }
-                setStyle();
-            });
-            if (order === "ASC") {
-                $('.search-result').data("order", 'DESC');
-            } else {
-                $('.search-result').data("order", 'ASC');
-            }
-
-        });
-
-        $('.by_cost').on('click', function(e) {
-            e.preventDefault();
-            var cnt_id = $('.cnt_lnk').data('id');
-            var rgn_id = $('.rgn_lnk').data('id');
-            var cty_id = $('.cty_lnk').data('id');
-            var order = $('.search-result').data("order");
-            $(".search-result").load("/search/index .search-result > *", {"query": '<?= $query; ?>', "order_by": 'price', "order": order, "country": cnt_id, 'region': rgn_id, 'city': cty_id,
-            }, function() {
-            });
-            if (order === "ASC") {
-                $('.search-result').data("order", 'DESC');
-            } else {
-                $('.search-result').data("order", 'ASC');
-            }
-        });
-
-        $('.search-result').hide().show();
-    });
-</script>
 

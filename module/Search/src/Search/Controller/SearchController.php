@@ -3,73 +3,30 @@
 namespace Search\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-//
-use ZendSearch\Lucene;
-use ZendSearch\Lucene\Document;
-//
-use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
-use ZendSearch\Lucene\Search\QueryParser;
-use ZendSearch\Lucene\Analysis\Analyzer\Common\Utf8Num\CaseInsensitive;
-use Zend\Db\Sql\Select;
-use Zend\View\Helper\EscapeHtml;
 
 class SearchController extends AbstractActionController {
-
-    protected $options;
 
     public function displayAction() {
         return $this->redirect()->toUrl('search/index');
     }
 
     public function indexAction() {
-        Analyzer::setDefault(new CaseInsensitive());
-        QueryParser::setDefaultEncoding('utf-8');
+        $query = $this->params()->fromQuery('query');
+        \Application\Log\Logger::info('query=' . $query);
 
-        $uploadFileManager = $this->getServiceLocator()->get('uploads_manager');
-        $attachmentTable = $this->getServiceLocator()->get('attachment_table');
-        $request = $this->getRequest();
 
-        if ($request->isPost()) {
+        $postTable = $this->getServiceLocator()->get('post_table');
+        $searchResults = $postTable->searchAjax($query);
 
-            $queryText = $request->getPost()->get('query');
-            $postTable = $this->getServiceLocator()->get('post_table');
 
-            $country = $request->getPost()->get('country');
-            $region = $request->getPost()->get('region');
-            $city = $request->getPost()->get('city');
-
-            if (isset($_COOKIE['ardfo_fltr_cnt_id'])) {
-                $country = $_COOKIE['ardfo_fltr_cnt_id'];
-            }
-            if (isset($_COOKIE['ardfo_fltr_rgn_id'])) {
-                $region = $_COOKIE['ardfo_fltr_rgn_id'];
-            }
-            if (isset($_COOKIE['ardfo_fltr_cty_id'])) {
-                $city = $_COOKIE['ardfo_fltr_cty_id'];
-            }
-
-            $order_by = $request->getPost()->get('order_by') ?
-                    $request->getPost()->get('order_by') : 'create_date';
-
-            $order = $request->getPost()->get('order') ?
-                    $request->getPost()->get('order') : Select::ORDER_DESCENDING;
-            //request in db
-            $searchResults = $postTable->search($queryText, $order_by, $order, $country, $region, $city);
-            
-            
-            return array(
-                'query' => $queryText,
-                'uploadFileManager' => $uploadFileManager,
-                'searchResults' => $searchResults,
-                'attachmentTable' => $attachmentTable,
-            );
-        }
-        $searchResults = array();
         return array(
-            'uploadFileManager' => $uploadFileManager,
+            'query' => $query,
+//            'uploadFileManager' => $uploadFileManager,
             'searchResults' => $searchResults,
-            'attachmentTable' => $attachmentTable,
+//            'attachmentTable' => $attachmentTable,
         );
+
+
     }
 
     public function filterAction() {
@@ -159,23 +116,22 @@ class SearchController extends AbstractActionController {
         }
 
         if ($searchResults->count()) {
-            
+
             foreach ($searchResults as $searchResult) {
                 $highlight_word = preg_replace('/' . $queryText . '/ui', '<span class="highlight">\\0</span>', $searchResult->title);
 
                 echo '
                         <li class="element-result">
                             <div class="block-title-price">
-                            <a class="search-link" href="/post/details/' . $searchResult->id . '">'.$highlight_word.'</a>
+                            <a class="search-link" href="/post/details/' . $searchResult->id . '">' . $highlight_word . '</a>
                             </div>
                         </li>
                     ';
             }
             return $response;
         } else {
-                  
+            
         }
         return $response;
     }
-    
 }

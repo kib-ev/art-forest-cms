@@ -7,6 +7,18 @@ body {
     width: 100%;
     clear: both;
 }
+/* input */
+input[type=text],
+input[type=url],
+input[type=tel],
+input[type=number],
+input[type=color],
+input[type=email],
+input[type=button]{
+    border: 1px solid #ccc;
+    margin:5px;
+    padding: 5px;
+}
 /* header */
 .wrap-header .header {
     width: 1000px;
@@ -46,6 +58,15 @@ body {
 .wrap-body .body .wrap-sidebar .sidebar {
     background-color: #f3f3f3;
     min-height: 500px;
+}
+/* search result */
+.search-result-item {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+.search-result-item:hover {
+    
 }
 /* footer */
 .wrap-footer .footer {
