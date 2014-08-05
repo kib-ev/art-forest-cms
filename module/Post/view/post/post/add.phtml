@@ -1,70 +1,17 @@
 <?php
 $form = $this->form;
 $form->prepare();
-
-echo $this->form()->openTag($form);
 ?>
 
-<?php
-echo $this->formLabel($form->get('title'));
-echo $this->formElement($form->get('title'));
-echo $this->formElementErrors($form->get('title'));
-?>
-
-<?php
-echo $this->formLabel($form->get('text'));
-echo $this->formElement($form->get('text'));
-echo $this->formElementErrors($form->get('text'));
-?>
-
-<?php
-echo $this->formLabel($form->get('price'));
-echo $this->formElement($form->get('price'));
-echo $this->formElementErrors($form->get('price'));
-?>
-
-<?php
-echo $this->formLabel($form->get('chaffer'));
-echo $this->formElement($form->get('chaffer'));
-echo $this->formElementErrors($form->get('chaffer'));
-?>
-
-
-<?php
-echo $this->formElement($form->get('submit'));
-echo $this->formElementErrors($form->get('submit'));
-?>
-
+<?php echo $this->form()->openTag($form); ?>
+<div class="form-list">
+    <?php $index = 0; ?>
+    <?php foreach ($form as $element) : ?>
+        <div class="form-list-item-<?php echo ++$index . ' field-' . $element->getName(); ?>">
+            <div class="title"><?php echo $this->formLabel($element); ?></div>
+            <div class="error"><?php echo $this->formElementErrors($element); ?></div>
+            <div class="field"><?php echo $this->formElement($element); ?></div>
+        </div>
+    <?php endforeach; ?>
+</div>
 <?php echo $this->form()->closeTag() ?>
-
-
-<div id="my-awesome-dropzone" style="width:500px;height:500px; background-color: #ccc;border:10px dotted #555; " ></div>
-<button id="do-it" >GO</button>
-
-<script>
-    Dropzone.options.myAwesomeDropzone = {
-        paramName: "file",
-        parallelUploads: 6,
-        autoProcessQueue: false,
-        maxFiles: 2,
-        addRemoveLinks: true,
-        uploadMultiple: true,
-        acceptedFiles: "image/*",
-        accept: function(file, done) {
-            if (file.name == "justinbieber.jpg") {
-                done();
-            }
-            else {
-                done();
-            }
-        }
-    };
-    var myDropzone = new Dropzone("#my-awesome-dropzone", {url: "/"});
-
-    $('#do-it').on('click', function() {
-        myDropzone.processQueue();
-    })
-    </script>
-
-
-

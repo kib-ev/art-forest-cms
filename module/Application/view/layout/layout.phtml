@@ -29,7 +29,11 @@
         <div class="wrap-body">
             <div class="body">
                 <div class="wrap-menu">
-                    <div class="menu"></div>
+                    <div class="menu">
+                         <a href="/post/search">search</a><br/>
+                         <a href="/post/search/?user=<?php echo $this->getServiceManager()->get('logged_in_user_id'); ?>">my</a><br/>
+                        <a href="/post/add">post+</a>
+                    </div>
                 </div>
                 <div class="wrap-content">
                     <div class="content">

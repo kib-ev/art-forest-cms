@@ -12,11 +12,14 @@ class SearchController extends AbstractActionController {
 
     public function indexAction() {
         $query = $this->params()->fromQuery('query');
-        \Application\Log\Logger::info('query=' . $query);
+        $userId = $this->params()->fromQuery('user');
 
-
+//        if (!$query) {
+//            return array('searchResults' => null,);
+//        }
+        
         $postTable = $this->getServiceLocator()->get('post_table');
-        $searchResults = $postTable->searchAjax($query);
+        $searchResults = $postTable->search($userId, $query);
 
 
         return array(

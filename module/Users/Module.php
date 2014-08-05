@@ -198,8 +198,7 @@ class Module implements AutoloaderProviderInterface
             return isset($user) ? $user : new \Users\Model\User();
         },
                 'is_activated' => function ($sm) {
-            $loggedInUser = $sm->get('logged_in_user');
-            $userId = $loggedInUser->user_id;
+                $userId = $sm->get('logged_in_user_id');
             $userTable = $sm->get('users_table');
             $user = $userTable->getUserById($userId);
 
@@ -210,22 +209,22 @@ class Module implements AutoloaderProviderInterface
             }
         },
                 'acl' => function ($sm) {
-            $config = $sm->get('config');
-            return new \Users\Acl\Acl($config);
-        },
+                    $config = $sm->get('config');
+                    return new \Users\Acl\Acl($config);
+                },
                 'user_data_table_gateway' => function ($sm) {
-            $dbAdapter = $sm->get('zend_db_adapter');
-            $resultSetPrototype = new ResultSet();
-            $userData = new \Users\Model\UserData();
-            $resultSetPrototype->setArrayObjectPrototype($userData);
-            $userDataTableGateway = new TableGateway('user_data', $dbAdapter, null, $resultSetPrototype);
-            return $userDataTableGateway;
-        },
+                    $dbAdapter = $sm->get('zend_db_adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $userData = new \Users\Model\UserData();
+                    $resultSetPrototype->setArrayObjectPrototype($userData);
+                    $userDataTableGateway = new TableGateway('user_data', $dbAdapter, null, $resultSetPrototype);
+                    return $userDataTableGateway;
+                },
                 'user_data_table' => function ($sm) {
-            $userDataTableGateway = $sm->get('user_data_table_gateway');
-            $userDataTable = new \Users\Model\UserDataTable($userDataTableGateway);
-            return $userDataTable;
-        },
+                    $userDataTableGateway = $sm->get('user_data_table_gateway');
+                    $userDataTable = new \Users\Model\UserDataTable($userDataTableGateway);
+                    return $userDataTable;
+                },
             ),
         );
     }

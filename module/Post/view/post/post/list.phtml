@@ -1,29 +1,5 @@
-<?php
-/**
- * Умная обрезка строки
- * @param string $str - исходная строка
- * @param int $lenght - желаемая длина результирующей строки
- * @param string $end - завершение длинной строки
- * @param string $charset - кодировка
- * @param string $token - символ усечения
- * @return string - обрезанная строка
- */
-function cutStr($str, $lenght = 100, $end = '&nbsp;&hellip;', $charset = 'UTF-8', $token = '~')
-{
-    $str = strip_tags($str);
-    if (mb_strlen($str, $charset) >= $lenght) {
-        $wrap = wordwrap($str, $lenght, $token);
-        $str_cut = mb_substr($wrap, 0, mb_strpos($wrap, $token, 0, $charset), $charset);
-        return $str_cut .= $end;
-    } else {
-        return $str;
-    }
-}
-?>
-<?php
-//
+    <?php
 $sm = $this->getServiceManager();
-//$user = $this->idenity();
 ?>
 
 <section class="tape">
@@ -143,7 +119,7 @@ $sm = $this->getServiceManager();
                             <?php if ($imagesCount > 1) : ?>
                                 <div class="small_imgs">
                                     <?php for ($i = 1; $i < $imagesCount; $i++) : $src = $this->uploadfilemanager->getFilePath($imagesArray[$i]['upload_id']); ?>
-                                    <div class="small_img" data-src="<?php echo $src; ?>" style="background-image: url('<?php echo $this->thumb($src, 65, 45.5); ?>');"></div>
+                                        <div class="small_img" data-src="<?php echo $src; ?>" style="background-image: url('<?php echo $this->thumb($src, 65, 45.5); ?>');"></div>
                                     <?php endfor; ?>
                                 </div>
                             <?php endif; ?>
@@ -314,8 +290,8 @@ if (!$sm->get('is_activated')) {
     });
 </script>
 
-<?php $this->headScript()->appendFile($this->basePath()."/js/jquery.tosrus.min.all.js", 'text/javascript');?>
-<?php $this->headLink()->appendStylesheet($this->basePath().'/css/jquery.tosrus.all.css');?>
+<?php $this->headScript()->appendFile($this->basePath() . "/js/jquery.tosrus.min.all.js", 'text/javascript'); ?>
+<?php $this->headLink()->appendStylesheet($this->basePath() . '/css/jquery.tosrus.all.css'); ?>
 
 <script>
     $(document).ready(function() {

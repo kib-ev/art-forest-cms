@@ -8,10 +8,13 @@ use Post\Model\Comment;
 use Post\Form\CommentForm;
 use Post\Model\Post;
 
-class PostController extends AbstractActionController
-{
-    public function listAction()
-    {
+class PostController extends AbstractActionController {
+
+    public function listAction() {
+        $userId = (int) $this->params()->fromRoute('id');
+    }
+
+    public function listAction_() {
         //UserId from route!
         $userId = (int) $this->params()->fromRoute('id', 0);
         if (!$userId) {
@@ -45,126 +48,89 @@ class PostController extends AbstractActionController
         );
     }
 
-    public function deleteAction()
-    {
-        $request = $this->getRequest();
-        $response = $this->getResponse();
+    public function deleteAction() {
+        $sm = $this->getServiceLocator();
 
-        if ($request->isPost()) {
-            $postData = $request->getPost();
-            $id = (int) $postData->id;
-            if ($id) {
-                $user = $this->getServiceLocator()->get('logged_in_user');
-                $postTable = $this->getServiceLocator()->get('post_table');
-                $favoriteTable = $this->getServiceLocator()->get('favorite_table');
-                //delete post
-                $postTable->deletePost($id, $user->getId());
-                //delete favorites
-                $favoriteTable->deleteFavorite($id);
-                $status = 'ok';
-            } else {
-                $status = 'bad';
-            }
+        $postId = (int) $this->params()->fromRoute('id');
+
+        $userId = $sm->get('logged_in_user_id');
+        $postTable = $sm->get('post_table');
+        $post = $postTable->getPostById($postId);
+
+        if ($post && $post->get('userId') != $userId) {
+            $this->getResponse()->setStatusCode(404);
+            return;
         }
-        $answer = array('status' => $status, 'userid' => $user->getId());
-        $response->setContent(\Zend\Json\Json::encode($answer));
-        $response->getHeaders()->addHeaders(array('Content-Type' => 'application/json'));
-        return $response;
+
+        $postTable->deletePostById($postId);
+        return $this->redirect()->toUrl("/post/search/?user=$userId");
     }
 
-    public function addAction()
-    {
-        if (!$this->getServiceLocator()->get('is_activated')) { //temp
-            return $this->redirect()->toUrl('/users/activate');
-        }
-
-        $user = $this->getServiceLocator()->get('logged_in_user');
-        //add new, empty, not active post and redirect on edit page
-        $postTable = $this->getServiceLocator()->get('post_table');
-        $post = new Post();
-        $post->setUserId($user->getId());
-        $id = $postTable->savePost($post);
-        return $this->redirect()->toUrl('/post/edit/' . $id[key($id)]);
-    }
-
-    public function editAction()
-    {
-        if (!$this->getServiceLocator()->get('is_activated')) { //temp
-            return $this->redirect()->toUrl('/users/activate');
-        }
-
-        $user = $this->getServiceLocator()->get('logged_in_user');
-        $file = null;
-        $uploadfilemanager = $this->getServiceLocator()->get('uploads_manager');
-        $attachmentTable = $this->getServiceLocator()->get('attachment_table');
-
-        $post_id = (int) $this->params()->fromRoute('id', 0);
-
-        if (!$post_id) {
-            return $this->redirect()->toRoute('post', array('action' => 'add'));
-        }
-        $request = $this->getRequest();
-        $postTable = $this->getServiceLocator()->get('post_table');
-        $postForm = new PostForm();
-        $post = $postTable->fetchByIdAndUserId($post_id, $user->getId());
-        if (!$post) {
-            return $this->redirect()->toRoute('application', array('action' => 'index'));
-        }
-        $postForm->bind($post);
-
-        if ($request->isPost()) {
-            if (empty($_FILES)) {
-                $post = new Post();
-                $postForm->setData($request->getPost());
-
-                if ($postForm->isValid()) {
-                    $post = $postForm->getData();
-                    $post->setUserId($user->getId());
-                    $post->setIsActive('1');
-                    $this->addAddressFromUserToPost($post);
-
-                    $postTable->savePost($post);
-                    return $this->redirect()->toUrl('/post/details/' . $post_id);
-                }
-            } else {
-                $countImages = $attachmentTable->countImages($post_id);
-                $countFiles = $attachmentTable->countFiles($post_id);
-                $filetype = substr($_FILES['file']['type'], 0, strpos($_FILES['file']['type'], '/'));
-                if ($countImages <= 5 && $filetype == 'image') {
-                    $file = $uploadfilemanager->saveFile($request, $user->getId());
-                    $attachmentTable->saveAttachment($file->getId(), $post_id, $file->getType());
-                } elseif ($countFiles <= 3 && $filetype != 'image') {
-                    $file = $uploadfilemanager->saveFile($request, $user->getId());
-                    $attachmentTable->saveAttachment($file->getId(), $post_id, $file->getType());
-                }
-
-                $response = $this->getResponse();
-                if ($file) {
-                    $answer = array(
-                        'status' => 'ok',
-                        'src' => $file->getFilepath(),
-                        'upload_id' => $file->getId(),
-                        'filename' => $file->getFilename(),
-                    );
-                    $response->setContent(\Zend\Json\Json::encode($answer));
-                    $response->getHeaders()->addHeaders(array('Content-Type' => 'application/json'));
-                    return $response;
-                }
-            }
-        }
-        $files = $attachmentTable->fetchAllByPostId($post_id);
+    public function addAction() {
         return array(
-            'form' => $postForm,
-            'id' => $post_id,
-            'files' => $files,
-            'uploadfilemanager' => $uploadfilemanager
+            'form' => new \Post\Form\PostForm(),
         );
     }
 
-    public function detailsAction()
-    {
-        $id = (int) $this->params()->fromRoute('id');
-        if (!$id) {
+    public function processAction() {
+        if (!$this->request->isPost()) {
+            return $this->redirect()->toUrl('/post/add');
+        }
+
+        $sm = $this->getServiceLocator();
+        $userId = $sm->get('logged_in_user_id');
+
+        $data = $this->request->getPost();
+
+        if (false) { // todo valid form
+            // redirect
+        } else {
+            $data['createDate'] = time();
+            $data['userId'] = $userId;
+
+            $post = new \Post\Model\Post();
+            $post->exchangeArray($data);
+
+            $postTable = $sm->get('post_table');
+            $postTable->savePost($post);
+
+            $postId = $postTable->getLastUserPost($userId)->get('id');
+
+            return $this->redirect()->toUrl("/post/view/$postId");
+        }
+    }
+
+    public function editAction() {
+        $sm = $this->getServiceLocator();
+        $userId = $sm->get('logged_in_user_id');
+
+        $postId = (int) $this->params()->fromRoute('id');
+
+        if (!$postId) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $postTable = $sm->get('post_table');
+        $post = $postTable->getPostById($postId);
+
+        if (!$post || $post->get('userId') != $userId) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $postForm = new PostForm();
+        $postForm->bind($post);
+
+        return array(
+            'form' => $postForm,
+            'postId' => $postId,
+        );
+    }
+
+    public function detailsAction() {
+        $postId = (int) $this->params()->fromRoute('id');
+        if (!$postId) {
             return $this->redirect()->toRoute('post');
         }
 
@@ -175,18 +141,18 @@ class PostController extends AbstractActionController
         $commentTable = $this->getServiceLocator()->get('comment_table');
 
         //details for this post
-        $post = $postTable->fetchById($id);
+        $post = $postTable->fetchById($postId);
         //post comments
-        $post_comments = $commentTable->fetchAllByPostId($id);
+        $post_comments = $commentTable->fetchAllByPostId($postId);
 
         //form
         $commentForm = new CommentForm();
-        $commentForm->setData(array('post_id' => $id));
+        $commentForm->setData(array('post_id' => $postId));
 
         //files
         $attachmentTable = $this->getServiceLocator()->get('attachment_table');
         $uploadfilemanager = $this->getServiceLocator()->get('uploads_manager');
-        $files = $attachmentTable->fetchAllByPostId($id);
+        $files = $attachmentTable->fetchAllByPostId($postId);
         return array(
             'post' => $post,
             'user' => $user,
@@ -199,8 +165,32 @@ class PostController extends AbstractActionController
         );
     }
 
-    public function addAddressFromUserToPost($post) // todo temp method
-    {
+    public function viewAction() {
+        $sm = $this->getServiceLocator();
+        $userId = $sm->get('logged_in_user_id');
+
+        $postId = (int) $this->params()->fromRoute('id');
+
+        if (!$postId) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $postTable = $sm->get('post_table');
+        $post = $postTable->getPostById($postId);
+
+        if (!$post) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        return array(
+            'post' => $post,
+            'userId' => $userId,
+        );
+    }
+
+    public function addAddressFromUserToPost($post) { // todo temp method
         $user = $this->getServiceLocator()->get('logged_in_user');
 
         $post->country = $user->country;
@@ -208,8 +198,7 @@ class PostController extends AbstractActionController
         $post->city = $user->city;
     }
 
-    public function refreshAction()
-    {
+    public function refreshAction() {
         if (!$this->getServiceLocator()->get('is_activated')) { //temp
             return $this->redirect()->toUrl('/users/activate');
         }
@@ -236,8 +225,7 @@ class PostController extends AbstractActionController
         return $response;
     }
 
-    public function tagsAction()
-    {
+    public function tagsAction() {
         //echo 'tag';
         $tag = $_GET['t'];
 
@@ -267,6 +255,4 @@ class PostController extends AbstractActionController
             'uploadfilemanager' => $uploadfilemanager
         );
     }
-
-
 }

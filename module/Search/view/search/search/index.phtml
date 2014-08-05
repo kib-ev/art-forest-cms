@@ -8,32 +8,43 @@
 <div class="search-result" data-order="ASC" data-view="">
     <?php if (count($searchResults)) : ?>
 
-            <?php foreach ($searchResults as $searchResult) { ?>
-                <div class="search-result-item" onclick="window.location.href = '/post/details/<?= $searchResult->id ?>'" style="cursor: pointer;">
-                    <?php
-                    //Image
-                    $src = '/img/358x238_none.jpg';
-
-                    ?>
-
-                    <div class="search_img">
-                        <div class="small_image" style="background-image: url('<?= $this->thumb($src, 60, 45); ?>'); background-size: cover; "></div>
-                        <div class="large_image" style="background-image: url('<?= $this->thumb($src, 120, 90); ?>'); background-size: cover; "></div>
+        <?php foreach ($searchResults as $searchResult) { ?>
+            <div class="search-result-item" onclick="window.location.href = '/post/view/<?= $searchResult->id ?>'" style="cursor: pointer;">
+                <?php
+                //Image
+                $src = '/img/358x238_none.jpg';
+                ?>
+                <div class="author">
+                    <div class="">
+                        <a href="/post/search/?user=<?php echo $searchResult->userId; ?>">userId = <?php echo $searchResult->userId; ?></a>
                     </div>
-
-                    <div class="search_title_text">
-                        <div class="search-title"><?= $this->escapeHtml($searchResult->title) ?></div>
-                        <div class="search-text"><?= $this->escapeHtml($searchResult->text); ?></div>
-                    </div>        
-
-                    <div class="search_date_price_chaffer">
-                        <div class="search_price"><?= $this->escapeHtml($searchResult->price) . " у.е." ?></div>
-                        <div class="search_chaffer"><?php if ($searchResult->chaffer) echo "Договорная"; ?></div>
-                        <div class="search_date"><?= $searchResult->create_date ?></div>
-                    </div>  
-
                 </div>
-            <?php } ?>
+
+                <div class="post-id">
+                    postId = <?php echo $searchResult->id; ?>
+                </div>
+
+                <div class="post-image">
+                    <div class="small_image" style="background-image: url('<?= $this->thumb($src, 60, 45); ?>'); background-size: cover; "></div>
+                    <div class="large_image" style="background-image: url('<?= $this->thumb($src, 120, 90); ?>'); background-size: cover; "></div>
+                </div>
+
+                <div class="post-title">
+                    <?= $this->escapeHtml($searchResult->title) ?>
+                </div>        
+
+                <div class="post-text">
+                    <?= $this->escapeHtml($searchResult->text); ?>
+                </div>
+
+                <div class="search_date_price_chaffer">
+                    <div class="price"><?= $this->escapeHtml($searchResult->price) . " у.е." ?></div>
+                    <div class="public"><?php if ($searchResult->public) echo "опубликовано"; ?></div>
+                    <div class="create-date"><?= $searchResult->createDate ?></div>
+                </div>  
+
+            </div>
+        <?php } ?>
 
     <?php else : ?> 
 

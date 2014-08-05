@@ -1,0 +1,24 @@
+<?php if ($post->get('userId') == $userId) : ?>
+
+    <a href="/post/edit/<?php echo $post->get('id'); ?>">edit</a>
+    <a href="/post/delete/<?php echo $post->get('id'); ?>">del</a>
+    
+<?php endif; ?>
+
+<div class="post">
+    <div class="post-id">
+        <?php echo $post->get('id'); ?>
+    </div>
+    <div class="post-title">
+        <?php echo $post->get('title'); ?>
+    </div>
+    <div class="post-text">
+        <?php echo $post->get('text'); ?>
+    </div>
+    <div class="post-public">
+        <?php echo $post->get('public'); ?>
+    </div>
+    <div class="post-tags">
+        <?php echo $post->get('tags'); ?>
+    </div>
+</div>

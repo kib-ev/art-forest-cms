@@ -57,10 +57,18 @@ class Module {
                     $postsTableGateway = new TableGateway('posts', $dbAdapter, null, $resultSetPrototype);
                     return $postsTableGateway;
                 },
+                'post_table_gateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $post = new \Post\Model\Post();
+                    $resultSetPrototype->setArrayObjectPrototype($post);
+                    $postTableGateway = new TableGateway('post', $dbAdapter, null, $resultSetPrototype);
+                    return $postTableGateway;
+                },
                         
                 'post_table' => function ($sm) {
-                    $postsTableGateway = $sm->get('posts_table_gateway');
-                    $postTable = new \Post\Model\PostTable($postsTableGateway);
+                    $postTableGateway = $sm->get('post_table_gateway');
+                    $postTable = new \Post\Model\PostTable($postTableGateway);
                     return $postTable;
                 },
                 

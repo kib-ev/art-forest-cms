@@ -3,7 +3,6 @@
 namespace Post\Form;
 
 use Zend\Form\Form;
-use Zend\Form\Element;
 
 class PostForm extends Form {
 
@@ -11,12 +10,18 @@ class PostForm extends Form {
         parent::__construct('Post');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
-        $this->setAttribute('class', 'post-add');
-        $this->setAttribute('action', '/post/add');
+        $this->setAttribute('class', 'form-add-post');
+        $this->setAttribute('action', '/post/process');
 
         $this->add(array(
             'name' => 'id',
-            'type' => 'Hidden',
+            'attributes' => array(
+                'type' => 'text',
+                'readonly' => 'readonly',
+            ),
+            'options' => array(
+                'label' => "id",
+            ),
         ));
 
         $this->add(array(
@@ -62,16 +67,18 @@ class PostForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'chaffer',
+            'name' => 'public',
             'type' => 'Zend\Form\Element\Checkbox',
             'options' => array(
-                'label' => "Договорная",
-                'use_hidden_element'=> true,
+                'use_hidden_element' => true,
                 'checked_value' => '1',
                 'unchecked_value' => '0',
             ),
+            'options' => array(
+                'label' => "public",
+            ),
         ));
-        
+
         $this->add(array(
             'name' => 'tags',
             'attributes' => array(
@@ -90,6 +97,9 @@ class PostForm extends Form {
                 'type' => 'submit',
                 'value' => 'Сохранить',
                 'class' => 'btn btn-lg submit',
+            ),
+            'options' => array(
+                'label' => "submit",
             ),
         ));
     }

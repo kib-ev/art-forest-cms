@@ -23,7 +23,7 @@ class RegisterController extends AbstractActionController {
             'createDate' => time(),
         );
 
-        if (true) {
+        if (true) { //todo
             $user = new \User\Model\User();
             $user->exchangeArray($data);
 
