@@ -16,6 +16,12 @@ class User {
     protected $lastLoginDate;
     protected $createDate;
 
+    public function __construct($data = null) {
+        if ($data) {
+            $this->exchangeArray($data);
+        }
+    }
+
     public function exchangeArray($data) {
         $vars = $this->getArrayCopy();
         for ($i = 0; $i < count($vars); $i++) {

@@ -24,8 +24,7 @@ class RegisterController extends AbstractActionController {
         );
 
         if (true) { //todo
-            $user = new \User\Model\User();
-            $user->exchangeArray($data);
+            $user = new \User\Model\User($data);
 
             $sm = $this->getServiceLocator();
             $userTable = $sm->get('user_table');
