@@ -15,7 +15,7 @@ return array(
             'post' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/post[/][:action][/:id]',
+                    'route' => '/post[/][:action][/][:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
@@ -28,7 +28,7 @@ return array(
             'attachment' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/attachment[/][:action][/:id]',
+                    'route' => '/attachment[/][:action][/][:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',

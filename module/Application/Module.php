@@ -68,13 +68,17 @@ class Module
             'factories' => array(
                 // the array key here is the name you will call the view helper by in your view scripts
                 'getServiceManager' => function($vhm) {
-            $sm = $vhm->getServiceLocator(); // $vhm is the view helper manager, so we need to fetch the main service manager
-            return new \Application\View\Helper\ServiceManager($sm);
-        },
+                    $sm = $vhm->getServiceLocator(); // $vhm is the view helper manager, so we need to fetch the main service manager
+                    return new \Application\View\Helper\ServiceManager($sm);
+                },
+                'getServiceLocator' => function($vhm) {
+                    $sm = $vhm->getServiceLocator(); // $vhm is the view helper manager, so we need to fetch the main service manager
+                    return new \Application\View\Helper\ServiceManager($sm);
+                },
                 'thumb' => function($vhm) {
-            $sm = $vhm->getServiceLocator(); // $vhm is the view helper manager, so we need to fetch the main service manager
-            return new \Application\View\Helper\Thumb($sm);
-        },
+                    $sm = $vhm->getServiceLocator(); // $vhm is the view helper manager, so we need to fetch the main service manager
+                    return new \Application\View\Helper\Thumb($sm);
+                },
             ),
         );
     }

@@ -54,8 +54,7 @@ class PostForm extends Form {
         $this->add(array(
             'name' => 'price',
             'attributes' => array(
-                'type' => 'number',
-                'class' => 'form-control price',
+                'class' => 'ui-spinner',
                 'placeholder' => 'Цена у.е.',
                 'maxlength' => 10,
                 'max' => 999999999,
@@ -96,7 +95,7 @@ class PostForm extends Form {
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Сохранить',
-                'class' => 'btn btn-lg submit',
+                'class' => 'btn btn-lg submit ui-button-text ui-button',
             ),
             'options' => array(
                 'label' => "submit",

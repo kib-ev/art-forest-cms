@@ -1,17 +1,16 @@
 <?php
-$sm = $this->getServiceManager();
-$sm->get('zend_auth_service')->clearIdentity();
-
-echo 'login';
+$form = $this->form;
+$form->prepare();
 ?>
 
-<form method="post" action="/user/login/process">
-    <dl>
-        <dt>Введите Email</dt>
-        <dd><input name="email" type="email"/></dd>
-        <dt>Введите пароль</dt>
-        <dd><input name="password" type="password"/></dd>
-        <dt>&nbsp;</dt>
-        <dd><input name="submit" type="submit" value="Вход"/></dd>
-    </dl>
-</form>
+<?php echo $this->form()->openTag($form); ?>
+<div class="form-list">
+    <?php foreach ($form as $element) : ?>
+        <div class="<?php echo 'block-' . $element->getName(); ?>">
+            <div class="label"><?php echo $this->formLabel($element); ?></div>
+            <div class="error"><?php echo $this->formElementErrors($element); ?></div>
+            <div class="field"><?php echo $this->formElement($element); ?></div>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php echo $this->form()->closeTag(); ?>

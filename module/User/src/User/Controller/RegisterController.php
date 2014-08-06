@@ -7,13 +7,20 @@ use Zend\Mvc\Controller\AbstractActionController;
 class RegisterController extends AbstractActionController {
 
     public function registerAction() {
-        return array();
+        $form = new \User\Form\RegisterForm();
+        $inputFilter = new \User\Form\RegisterInputFilter();
+        $form->setInputFilter($inputFilter);
+
+        return array('form' => $form);
     }
 
     public function processAction() {
         if (!$this->request->isPost()) {
             return $this->redirect()->toUrl('/user/register');
         }
+
+        $sm = $this->getServiceLocator();
+        $sm->get('zend_auth_service')->clearIdentity();
 
         $post = $this->request->getPost();
 
@@ -23,17 +30,22 @@ class RegisterController extends AbstractActionController {
             'createDate' => time(),
         );
 
-        if (true) { //todo
-            $user = new \User\Model\User($data);
+        $form = new \User\Form\RegisterForm();
+        $form->setInputFilter(new \User\Form\RegisterInputFilter());
+        $form->setData($data);
 
-            $sm = $this->getServiceLocator();
-            $userTable = $sm->get('user_table');
-            $userTable->saveUser($user);
-
-            return $this->redirect()->toUrl('/user/register/confirm');
+        if (!$form->isValid()) {
+            $view = new \Zend\View\Model\ViewModel();
+            $view->setTemplate('/user/register/register');
+            $view->setVariable('form', $form);
+            return $view;
         }
 
-        return $this->redirect()->toUrl('/user/register/error');
+        $user = new \User\Model\User($data);
+        $userTable = $sm->get('user_table');
+        $userTable->saveUser($user);
+
+        return $this->redirect()->toUrl('/user/register/confirm');
     }
 
     public function errorAction() {

@@ -7,7 +7,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 class LoginController extends AbstractActionController {
 
     public function loginAction() {
-        return array();
+        $form = new \User\Form\LoginForm();
+        return array('form' => $form);
     }
 
     public function processAction() {
@@ -15,9 +16,11 @@ class LoginController extends AbstractActionController {
             return $this->redirect()->toUrl('/user/login');
         }
 
+        $sm = $this->getServiceLocator();
+        $sm->get('zend_auth_service')->clearIdentity();
+
         $post = $this->request->getPost();
 
-        $sm = $this->getServiceLocator();
         $sm->get('zend_auth_service')->getAdapter()
                 ->setIdentity($post->email)
                 ->setCredential($post->password);

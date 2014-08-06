@@ -7,7 +7,7 @@ $form->prepare();
 <div class="form-list">
     <?php foreach ($form as $element) : ?>
         <div class="<?php echo 'block-' . $element->getName(); ?>">
-            <div class="title"><?php echo $this->formLabel($element); ?></div>
+            <div class="label"><?php echo $this->formLabel($element); ?></div>
             <div class="error"><?php echo $this->formElementErrors($element); ?></div>
             <div class="field"><?php echo $this->formElement($element); ?></div>
         </div>

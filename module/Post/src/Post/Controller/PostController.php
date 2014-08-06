@@ -11,13 +11,20 @@ use Post\Model\Post;
 class PostController extends AbstractActionController {
 
     public function listAction() {
-        $selectUserId = (int) $this->params()->fromRoute('id');
-       
-        
+        $selectUserId = $this->params()->fromRoute('id');
+
+        $sm = $this->getServiceLocator();
+        $userId = $sm->get('logged_in_user_id');
+         
+        if (empty($selectUserId)) {
+            return $this->redirect()->toUrl("/post/list/$userId");
+        }
+        $selectUserId = (int) $selectUserId;
+
         $sm = $this->getServiceLocator();
         $postTable = $sm->get('post_table');
         $posts = $postTable->getPostsByUserId($selectUserId);
-        
+
         return array('posts' => $posts);
     }
 
@@ -70,7 +77,7 @@ class PostController extends AbstractActionController {
         }
 
         $postTable->deletePostById($postId);
-        return $this->redirect()->toUrl("/post/search/?user=$userId");
+        return $this->redirect()->toUrl("/post/list/$userId");
     }
 
     public function addAction() {

@@ -7,6 +7,13 @@ body {
     width: 100%;
     clear: both;
 }
+.error {
+    color: #ff0000;
+    font-size: 12px;
+}
+.label {
+    color: #ccc;
+}
 /* input */
 input[type=text],
 input[type=url],
@@ -15,6 +22,9 @@ input[type=number],
 input[type=color],
 input[type=email],
 input[type=button],
+input[type=submit],
+input[type=password],
+input[type=file],
 textarea {
     border: 1px solid #ccc;
     padding: 5px;

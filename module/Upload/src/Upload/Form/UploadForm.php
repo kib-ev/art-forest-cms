@@ -14,16 +14,6 @@ class UploadForm extends Form {
         $this->setAttribute('action', '/upload/process');
 
         $this->add(array(
-            'name' => 'file',
-            'attributes' => array(
-                'type' => 'file',
-            ),
-            'options' => array(
-                'label' => "file",
-            ),
-        ));
-         
-        $this->add(array(
             'name' => 'id',
             'attributes' => array(
                 'type' => 'text',
@@ -33,6 +23,17 @@ class UploadForm extends Form {
                 'label' => "id",
             ),
         ));
+
+        $this->add(array(
+            'name' => 'file',
+            'attributes' => array(
+                'type' => 'file',
+            ),
+            'options' => array(
+                'label' => "file",
+            ),
+        ));
+
 
         $this->add(array(
             'name' => 'title',
@@ -73,7 +74,7 @@ class UploadForm extends Form {
             ),
         ));
 
-        
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
