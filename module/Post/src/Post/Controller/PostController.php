@@ -11,7 +11,14 @@ use Post\Model\Post;
 class PostController extends AbstractActionController {
 
     public function listAction() {
-        $userId = (int) $this->params()->fromRoute('id');
+        $selectUserId = (int) $this->params()->fromRoute('id');
+       
+        
+        $sm = $this->getServiceLocator();
+        $postTable = $sm->get('post_table');
+        $posts = $postTable->getPostsByUserId($selectUserId);
+        
+        return array('posts' => $posts);
     }
 
     public function listAction_() {
@@ -67,16 +74,12 @@ class PostController extends AbstractActionController {
     }
 
     public function addAction() {
-        $sm = $this->getServiceLocator();
-        $userId = $sm->get('logged_in_user_id');
-
-        if ($userId == 0) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
+        $form = new \Post\Form\PostForm();
+        $inputFilter = new \Post\Form\PostInputFilter();
+        $form->setInputFilter($inputFilter);
 
         return array(
-            'form' => new \Post\Form\PostForm(),    
+            'form' => $form,
         );
     }
 
@@ -90,8 +93,18 @@ class PostController extends AbstractActionController {
 
         $data = $this->request->getPost();
 
-        if (false) { // todo valid form
-            // redirect
+        $form = new \Post\Form\PostForm();
+        $inputFilter = new \Post\Form\PostInputFilter();
+        $form->setInputFilter($inputFilter);
+
+        $form->setData($data);
+
+        if (!$form->isValid()) { // todo valid form
+            $view = new \Zend\View\Model\ViewModel();
+            $view->setTemplate('/post/post/add');
+            $view->setVariable('form', $form);
+
+            return $view;
         } else {
             $data['createDate'] = time();
             $data['userId'] = $userId;

@@ -88,28 +88,10 @@ class PostTable {
         return $row;
     }
 
-    public function searchByUserId($userId) {
-        $userId = (int) $userId;
+    public function search($input) {
 
         $sql = "SELECT * FROM post WHERE title LIKE '%$input%'"
-                . "AND userId = $userId ORDER BY createDate DESC LIMIT 200 ";
-
-        $rowset = $this->tableGateway->adapter->query($sql, array());
-        return $rowset;
-    }
-
-    public function search($userId, $input) {
-
-        \Application\Log\Logger::info('search $userId = ' . $userId);
-        \Application\Log\Logger::info('search $input = ' . $input);
-        $userId = (int) $userId;
-
-        if ($userId == 0) {
-            $sql = "SELECT * FROM post WHERE title LIKE '%$input%' ORDER BY createDate DESC LIMIT 200 ";
-        } else {
-            $sql = "SELECT * FROM post WHERE title LIKE '%$input%'"
-                    . "AND userId = $userId ORDER BY createDate DESC LIMIT 200 ";
-        }
+                . "ORDER BY createDate DESC LIMIT 200 ";
 
         $rowset = $this->tableGateway->adapter->query($sql, array());
         return $rowset;

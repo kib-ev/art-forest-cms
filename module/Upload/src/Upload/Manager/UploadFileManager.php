@@ -96,7 +96,7 @@ class UploadFileManager {
             $fileUrl = "/uploads/user$userId/$fileNameTranslit$fileExt";
 
             $data = array(
-                'name' => $fileName,
+                'name' => $fileName . $fileExt,
                 'userId' => $userId,
                 'path' => $filePath,
                 'url' => $fileUrl,

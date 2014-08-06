@@ -18,6 +18,7 @@ class PostForm extends Form {
             'attributes' => array(
                 'type' => 'text',
                 'readonly' => 'readonly',
+                'class' => 'hide'
             ),
             'options' => array(
                 'label' => "id",
@@ -29,7 +30,7 @@ class PostForm extends Form {
             'attributes' => array(
                 'type' => 'text',
                 'class' => 'form-control title',
-                'required' => 'required',
+//                'required' => 'required',
                 'placeholder' => ' Название темы',
                 'maxlength' => 70,
             ),
@@ -43,7 +44,6 @@ class PostForm extends Form {
             'attributes' => array(
                 'type' => 'textarea',
                 'class' => 'form-control desc',
-                'required' => 'required',
                 'placeholder' => 'Описание темы',
             ),
             'options' => array(

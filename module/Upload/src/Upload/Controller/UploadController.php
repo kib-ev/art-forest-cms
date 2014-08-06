@@ -50,12 +50,13 @@ class UploadController extends AbstractActionController {
 
     public function saveUpload($request) {
         if ($request->isPost()) {
-
             $sm = $this->getServiceLocator();
-            $upTable = $sm->get('upload_table');
-            $ufm = new \Upload\Manager\UploadFileManager($upTable);
+            
+            $userId = $sm->get('logged_in_user_id');
+            $uploadTalbe = $sm->get('upload_table');
+            $ufm = new \Upload\Manager\UploadFileManager($uploadTalbe);
 
-            $ufm->saveFile($request, 8);
+            $ufm->saveFile($request, $userId);
         }
     }
 

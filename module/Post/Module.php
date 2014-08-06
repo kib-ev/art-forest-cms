@@ -113,7 +113,8 @@ class Module {
                     $favoritesTableGateway = $sm->get('favorites_table_gateway');
                     $favoriteTable = new \Post\Model\FavoriteTable($favoritesTableGateway);
                     return $favoriteTable;
-                }  
+                },
+
             ),
         );
     }

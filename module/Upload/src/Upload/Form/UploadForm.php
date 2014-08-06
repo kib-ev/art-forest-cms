@@ -66,7 +66,6 @@ class UploadForm extends Form {
             'attributes' => array(
                 'type' => 'textarea',
                 'class' => 'form-control desc',
-                'required' => 'required',
                 'placeholder' => 'Описание темы',
             ),
             'options' => array(

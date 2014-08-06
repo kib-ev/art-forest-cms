@@ -8,7 +8,7 @@
                 <th>name</th>
                 <th>path</th>
                 <th>url</th>
-                <th>Image</th>
+                <th>link</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,8 +22,8 @@
                     <td><?= $upload->get('path'); ?></td>
                     <td><?= $upload->get('url'); ?></td>
                     <td>
-                        <div class="lol">
-                            <img class="lol" src="<?= $upload->get('url'); ?>">
+                        <div class="">
+                            <a href="<?= $upload->get('url'); ?>"><?= $upload->get('name'); ?></a>
                         </div>
                     </td>
                     <td class="del" data-id="<?= $upload->get('id'); ?>" 

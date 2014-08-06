@@ -12,31 +12,12 @@ class SearchController extends AbstractActionController {
 
     public function indexAction() {
         $query = $this->params()->fromQuery('query');
-        $userId = (int) $this->params()->fromQuery('user');
-
         $postTable = $this->getServiceLocator()->get('post_table');
-
-        if ($userId != 0 && $query) {
-            $searchResults = $postTable->search($userId, $query);
-        }
-
-        if ($userId != 0 && !$query) {
-            $searchResults = $postTable->search($userId, '');
-        }
-        
-        if ($userId == 0 && $query) {
-            $searchResults = $postTable->search('', $query);
-        }
-        
-        if ($userId == 0 && !$query) {
-            $searchResults = $postTable->search('', '');
-        }
+        $searchResults = $query ? $postTable->search($query) : null;
 
         return array(
             'query' => $query,
-//            'uploadFileManager' => $uploadFileManager,
             'searchResults' => $searchResults,
-//            'attachmentTable' => $attachmentTable,
         );
     }
 

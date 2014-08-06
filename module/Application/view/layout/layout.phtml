@@ -30,10 +30,12 @@
             <div class="body">
                 <div class="wrap-menu">
                     <div class="menu">
+                        <a href="/">main</a><br/>
                          <a href="/post/search">search</a><br/>
-                         <a href="/post/search/?user=<?php echo $this->getServiceManager()->get('logged_in_user_id'); ?>">my</a><br/>
+                         <a href="/post/list/<?php echo $this->getServiceManager()->get('logged_in_user_id'); ?>">my</a><br/>
                         <a href="/post/add">post+</a><br/>
                         <a href="/upload">upload</a>
+                        <a href="/upload/add">upload+</a>
                     </div>
                 </div>
                 <div class="wrap-content">

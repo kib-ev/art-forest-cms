@@ -5,7 +5,7 @@
     <input type="button" value="Найти" onclick="submit()">
 </form>
 
-<div class="search-result" data-order="ASC" data-view="">
+<div class="posts search-result" data-order="ASC" data-view="">
     <?php if (count($searchResults)) : ?>
 
         <?php foreach ($searchResults as $searchResult) { ?>
@@ -16,7 +16,7 @@
                 ?>
                 <div class="author">
                     <div class="">
-                        <a href="/post/search/?user=<?php echo $searchResult->userId; ?>">userId = <?php echo $searchResult->userId; ?></a>
+                        <a href="/post/list/<?php echo $searchResult->userId; ?>">userId = <?php echo $searchResult->userId; ?></a>
                     </div>
                 </div>
 
