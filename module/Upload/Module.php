@@ -33,26 +33,22 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                // database
-                'uploads_table_gateway' => function ($sm) {
-            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-            $resultSetPrototype = new ResultSet();
-            $upload = new \Upload\Model\Upload();
-            $resultSetPrototype->setArrayObjectPrototype($upload);
-            $uploadsTableGateway = new TableGateway('uploads', $dbAdapter, null, $resultSetPrototype);
-            return $uploadsTableGateway;
-        },
-                'uploads_table' => function ($sm) {
-            $uploadsTableGateway = $sm->get('uploads_table_gateway');
-            $uploadTable = new \Upload\Model\UploadTable($uploadsTableGateway);
-            return $uploadTable;
-            },
-                'uploads_path' => function () {
-                    $path = '/uploads/';
-                    return $path;
+                'upload_table_gateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $upload = new \Upload\Model\Upload();
+                    $resultSetPrototype->setArrayObjectPrototype($upload);
+                    $uploadTableGateway = new TableGateway('upload', $dbAdapter, null, $resultSetPrototype);
+                    return $uploadTableGateway;
                 },
-                'uploads_manager' => function ($sm) {
-                    $uploadsTable = $sm->get('uploads_table');
+               
+                'upload_table' => function ($sm) {
+                    $uploadTableGateway = $sm->get('upload_table_gateway');
+                    $uploadTable = new \Upload\Model\UploadTable($uploadTableGateway);
+                    return $uploadTable;
+                 },
+                'upload_manager' => function ($sm) {
+                    $uploadsTable = $sm->get('upload_table');
                     $uploadsManager = new \Upload\Manager\UploadFileManager($uploadsTable);
                     return $uploadsManager;
                 }

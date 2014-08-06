@@ -7,7 +7,7 @@ use Zend\Form\Form;
 class PostForm extends Form {
 
     public function __construct($name = null) {
-        parent::__construct('Post');
+        parent::__construct('form-add-post');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setAttribute('class', 'form-add-post');

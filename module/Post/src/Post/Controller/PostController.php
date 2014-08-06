@@ -67,8 +67,16 @@ class PostController extends AbstractActionController {
     }
 
     public function addAction() {
+        $sm = $this->getServiceLocator();
+        $userId = $sm->get('logged_in_user_id');
+
+        if ($userId == 0) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
         return array(
-            'form' => new \Post\Form\PostForm(),
+            'form' => new \Post\Form\PostForm(),    
         );
     }
 

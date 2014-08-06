@@ -1,29 +1,17 @@
+<?php
+$form = $this->form;
+$form->prepare();
+?>
 
-<div id="my-awesome-dropzone" style="width:500px;height:500px; background-color: #ccc;border:10px dotted #555; " ></div>
-<button id="do-it">Go</button>
-
-
-
-
-
-<script>
-Dropzone.options.myAwesomeDropzone = {
-paramName: "file",    
-parallelUploads: 6,
-autoProcessQueue: true,
-maxFiles: 2,
-addRemoveLinks: true,
-uploadMultiple: true,
-accept: function(file, done) {
-if (file.name == "justinbieber.jpg") {
-done();
-}
-else { done(); }
-}
-};
-var myDropzone = new Dropzone("#my-awesome-dropzone", { url: "/upload/add"});
-
-$('#do-it').on('click', function(){
-myDropzone.processQueue();
-})	
-</script>
+<?php echo $this->form()->openTag($form); ?>
+<div class="form-list">
+    <?php $index = 0; ?>
+    <?php foreach ($form as $element) : ?>
+        <div class="form-list-item-<?php echo ++$index . ' field-' . $element->getName(); ?>">
+            <div class="title"><?php echo $this->formLabel($element); ?></div>
+            <div class="error"><?php echo $this->formElementErrors($element); ?></div>
+            <div class="field"><?php echo $this->formElement($element); ?></div>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php echo $this->form()->closeTag() ?>

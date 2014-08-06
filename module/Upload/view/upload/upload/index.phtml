@@ -1,16 +1,13 @@
-<style>
-    .lol {
-        width: 150px;
-    }
-</style>
-<div id="content">
+
+<a href="/upload/add">add</a>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>User_id</th>
-                <th>filename</th>
-                <th>filepath</th>
+                <th>name</th>
+                <th>path</th>
+                <th>url</th>
                 <th>Image</th>
                 <th></th>
             </tr>
@@ -19,22 +16,24 @@
             <?php foreach ($this->uploads as $upload) { ?>
 
                 <tr>
-                    <td class="text"><?= $upload->getId(); ?></td>
-                    <td><?= $upload->getUserId(); ?></td>
-                    <td><?= $upload->getFilename(); ?></td>
-                    <td><?= $upload->getFilepath(); ?></td>
+                    <td class="text"><?= $upload->get('id'); ?></td>
+                    <td><?= $upload->get('userId'); ?></td>
+                    <td><?= $upload->get('name'); ?></td>
+                    <td><?= $upload->get('path'); ?></td>
+                    <td><?= $upload->get('url'); ?></td>
                     <td>
                         <div class="lol">
-                            <img class="lol" src="<?= $upload->getFilepath(); ?>">
+                            <img class="lol" src="<?= $upload->get('url'); ?>">
                         </div>
                     </td>
-                    <td class="del" data-id="<?= $upload->getId(); ?>" 
-                        data-full_filename="<?= $upload->getFullFilename(); ?>">Delete</td>
+                    <td class="del" data-id="<?= $upload->get('id'); ?>" 
+                        data-full_filename="<?= $upload->get('path'); ?>">Delete ajax<br/>
+                        <a href="/upload/delete/<?= $upload->get('id'); ?>">Delete</a>
+                    </td>
                 </tr>
             <?php } ?>
         </tbody>
     </table>
-</div>
 
 
 <script>
