@@ -14,14 +14,26 @@ class PostForm extends Form {
         $this->setAttribute('action', '/post/process');
 
         $this->add(array(
-            'name' => 'id',
+            'name' => 'user_id',
             'attributes' => array(
                 'type' => 'text',
                 'readonly' => 'readonly',
                 'class' => 'hide'
             ),
             'options' => array(
-                'label' => "id",
+                'label' => "user_id",
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'post_id',
+            'attributes' => array(
+                'type' => 'text',
+                'readonly' => 'readonly',
+                'class' => 'hide'
+            ),
+            'options' => array(
+                'label' => "post_id",
             ),
         ));
 

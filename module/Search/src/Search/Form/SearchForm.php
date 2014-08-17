@@ -4,27 +4,25 @@ namespace Search\Form;
 
 use Zend\Form\Form;
 
-class SearchForm extends Form
-{
-    public function __construct($name = null)
-    {
+class SearchForm extends Form {
+
+    public function __construct($name = null) {
         parent::__construct('search'); // this name is not used 
         $this->setAttribute('id', 'search-form');
-        $this->setAttribute('method', 'post');
+        $this->setAttribute('method', 'get');
         $this->setAttribute('enctype', 'multipart/form-data');
-        $this->setAttribute('action', '/search/index');
+        $this->setAttribute('action', '/post/search/');
 
         $this->add(array(
             'name' => 'query',
             'attributes' => array(
-                'class' => 'search',
                 'type' => 'search',
                 'required' => 'required',
-                'placeholder' => 'Ищем на ardfo',
-                'autocomplete' => "off" ,
+                'placeholder' => '',
+                'autocomplete' => "off",
             ),
             'options' => array(
-                'label' => 'Search String',
+                'label' => 'search',
             ),
         ));
         $this->add(array(
@@ -34,7 +32,9 @@ class SearchForm extends Form
                 'value' => 'Найти',
                 'class' => 'submit',
             ),
+            'options' => array(
+                'label' => 'submit',
+            ),
         ));
     }
-
 }

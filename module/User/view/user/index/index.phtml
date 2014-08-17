@@ -1,9 +1,10 @@
-<?php 
+<?php
 
+use User\Model\User;
 
 $sm = $this->getServiceManager();
-
+$userId = $sm->get('logged_in_user_id');
 $userTable = $sm->get('user_table');
-$user = $userTable->getUserById(1);
+$user = $userTable->getUserById($userId);
 
-echo $user->get('username');
+echo $user->get(User::USER_NAME);

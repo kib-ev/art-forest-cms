@@ -2,7 +2,8 @@
 
 $modules = array(
     'DoctrineModule',
-    'DoctrineORMModule');
+    'DoctrineORMModule',
+);
 
 $env = getenv('APPLICATION_ENV') ? : 'production';
 if ($env == 'development') {

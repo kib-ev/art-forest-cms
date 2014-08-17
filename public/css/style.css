@@ -14,6 +14,9 @@ body {
 .label {
     color: #ccc;
 }
+.block-id, .block-user_id, .block-post_id {
+    display: none;
+}
 /* input */
 input[type=text],
 input[type=url],
@@ -25,6 +28,7 @@ input[type=button],
 input[type=submit],
 input[type=password],
 input[type=file],
+input[type=search],
 textarea {
     border: 1px solid #ccc;
     padding: 5px;
@@ -59,7 +63,7 @@ textarea {
 }
 .wrap-content .content {
     min-height: 500px;
-    background-color: #fff;
+    background-color: #F7F3F7;
 }
 .wrap-body .body .wrap-sidebar {
     width: 200px;
@@ -85,4 +89,16 @@ textarea {
     margin: 0px auto;
     border-top: 5px solid #313031;
     background-color: #424542;
+}
+.widget {
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    width: 90%;
+    margin: 10px;
+
+}
+.widget-title {
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #e5e5e5;
 }

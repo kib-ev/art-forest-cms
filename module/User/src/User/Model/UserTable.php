@@ -3,6 +3,7 @@
 namespace User\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use User\Model\User;
 
 class UserTable {
 
@@ -19,7 +20,7 @@ class UserTable {
      */
     public function getUserById($userId) {
         $userId = (int) $userId;
-        $rowset = $this->tableGateway->select(array('id' => $userId));
+        $rowset = $this->tableGateway->select(array(User::USER_ID => $userId));
         $row = $rowset->current();
         return $row ? $row : null;
     }
@@ -30,7 +31,7 @@ class UserTable {
      * @return \Zend\Db\ResultSet\ResultSet $row or null
      */
     public function getUserByEmail($email) {
-        $rowset = $this->tableGateway->select(array('email' => $email));
+        $rowset = $this->tableGateway->select(array(User::EMAIL => $email));
         $row = $rowset->current();
         return $row ? $row : null;
     }
@@ -42,14 +43,14 @@ class UserTable {
     public function saveUser(User $user) {
         $data = $user->getArrayCopy();
 
-        unset($data['id']);
-        $userId = (int) $user->get('id');
+        unset($data[User::USER_ID]);
+        $userId = (int) $user->get(User::USER_ID);
 
         if ($userId == 0) {
             $this->tableGateway->insert($data);
         } else {
             if ($this->getUserById($userId)) {
-                $this->tableGateway->update($data, array('id' => $userId));
+                $this->tableGateway->update($data, array(User::USER_ID => $userId));
             }
         }
     }

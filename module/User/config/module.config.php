@@ -14,6 +14,20 @@ return array(
             'User' => __DIR__ . '/../view',
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            'user_module_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/User/Model')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'User\Model' => 'user_module_entities'
+                )
+            )
+        )
+    ),
     'router' => array(
         'routes' => array(
             'user' => array(

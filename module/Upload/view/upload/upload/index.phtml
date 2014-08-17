@@ -1,39 +1,42 @@
+<?php
+
+use \Upload\Model\Upload; ?>
 
 <a href="/upload/add">add</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>User_id</th>
-                <th>name</th>
-                <th>path</th>
-                <th>url</th>
-                <th>link</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($this->uploads as $upload) { ?>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>User_id</th>
+            <th>name</th>
+            <th>path</th>
+            <th>url</th>
+            <th>link</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->uploads as $upload) { ?>
 
-                <tr>
-                    <td class="text"><?= $upload->get('id'); ?></td>
-                    <td><?= $upload->get('userId'); ?></td>
-                    <td><?= $upload->get('name'); ?></td>
-                    <td><?= $upload->get('path'); ?></td>
-                    <td><?= $upload->get('url'); ?></td>
-                    <td>
-                        <div class="">
-                            <a href="<?= $upload->get('url'); ?>"><?= $upload->get('name'); ?></a>
-                        </div>
-                    </td>
-                    <td class="del" data-id="<?= $upload->get('id'); ?>" 
-                        data-full_filename="<?= $upload->get('path'); ?>">Delete ajax<br/>
-                        <a href="/upload/delete/<?= $upload->get('id'); ?>">Delete</a>
-                    </td>
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+            <tr>
+                <td class="text"><?= $upload->get(Upload::UPLOAD_ID); ?></td>
+                <td><?= $upload->get(Upload::USER_ID); ?></td>
+                <td><?= $upload->get(Upload::FILE_NAME); ?></td>
+                <td><?= $upload->get(Upload::FILE_PATH); ?></td>
+                <td><?= $upload->get(Upload::FILE_URI); ?></td>
+                <td>
+                    <div class="">
+                        <a href="<?= $upload->get(Upload::FILE_URI); ?>"><?= $upload->get(Upload::FILE_NAME); ?></a>
+                    </div>
+                </td>
+                <td class="del" data-id="<?= $upload->get(Upload::UPLOAD_ID); ?>" 
+                    data-full_filename="<?= $upload->get(Upload::FILE_PATH); ?>">Delete ajax<br/>
+                    <a href="/upload/delete/<?= $upload->get(Upload::UPLOAD_ID); ?>">Delete</a>
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
 
 
 <script>

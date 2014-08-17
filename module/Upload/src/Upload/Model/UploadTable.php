@@ -17,22 +17,22 @@ class UploadTable {
     public function getUploadsByUserId($userId) {
         $userId = (int) $userId;
         $rowset = $this->tableGateway->select(
-                array('userId' => $userId)
+                array(Upload::USER_ID => $userId)
         );
         return $rowset;
     }
 
-    public function getUploadByPath($uploadPath) {
+    public function getUploadByFilePath($uploadPath) {
         $rowset = $this->tableGateway->select(
-                array('path' => $uploadPath)
+                array(Upload::FILE_PATH => $uploadPath)
         );
         $row = $rowset->current();
         return $row ? $row : null;
     }
 
-    public function getUploadByUrl($uploadUrl) {
+    public function getUploadByFileUri($uploadUri) {
         $rowset = $this->tableGateway->select(
-                array('url' => $uploadUrl)
+                array(Upload::FILE_URI => $uploadUri)
         );
         $row = $rowset->current();
         return $row ? $row : null;
@@ -41,25 +41,25 @@ class UploadTable {
     public function saveUpload(Upload $upload) {
         $data = $upload->getArrayCopy();
 
-        unset($data['id']);
-        $uploadId = (int) $upload->get('id');
+        unset($data[Upload::UPLOAD_ID]);
+        $uploadId = (int) $upload->get(Upload::UPLOAD_ID);
 
         if ($uploadId == 0) {
             $this->tableGateway->insert($data);
         } else {
             if ($this->getUploadById($uploadId)) {
-                $this->tableGateway->update($data, array('id' => $uploadId));
+                $this->tableGateway->update($data, array(Upload::UPLOAD_ID => $uploadId));
             }
         }
     }
 
     public function deleteUploadById($uploadId) {
-        $this->tableGateway->delete(array('id' => $uploadId));
+        $this->tableGateway->delete(array(Upload::UPLOAD_ID => $uploadId));
     }
 
     public function getUploadById($uploadId) {
         $uploadId = (int) $uploadId;
-        $rowset = $this->tableGateway->select(array('id' => $uploadId));
+        $rowset = $this->tableGateway->select(array(Upload::UPLOAD_ID => $uploadId));
         $row = $rowset->current();
         return $row ? $row : null;
     }

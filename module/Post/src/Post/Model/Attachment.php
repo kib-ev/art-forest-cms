@@ -5,106 +5,58 @@ namespace Post\Model;
 use Doctrine\ORM\Mapping as ORM;
 
 /** @ORM\Entity 
- * @ORM\Table(name="attachments")
+ * @ORM\Table(name="attachment")
  */
 class Attachment {
+
+    const ATTACHMENT_ID = 'attachment_id';
+    const USER_ID = 'user_id';
+    const UPLOAD_ID = 'upload_id';
+    const POST_ID = 'post_id';
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
-    protected $id;
-    
-    /** @ORM\Column(type="integer") */
+    protected $attachment_id;
+
+    /**
+     * @ORM\Column(type="integer") 
+     */
+    protected $user_id;
+
+    /**
+     * @ORM\Column(type="integer") 
+     */
     protected $upload_id;
 
-    /** @ORM\Column(type="integer") */
+    /**
+     * @ORM\Column(type="integer") 
+     */
     protected $post_id;
-    
-    /** @ORM\Column(type="text") */
-    protected $type;
-    
-     public function exchangeArray($data) {
-        $this->id = (!empty($data['id'])) ? $data['id'] : null;
-        $this->upload_id = (!empty($data['upload_id'])) ? $data['upload_id'] : null;
-        $this->post_id = (!empty($data['post_id'])) ? $data['post_id'] : null;
-        $this->type = (!empty($data['type'])) ? $data['type'] : null;
-     }
-     
-     public function getArrayCopy() {
+
+    public function __construct($data = null) {
+        if ($data) {
+            $this->exchangeArray($data);
+        }
+    }
+
+    public function exchangeArray($data) {
+        $vars = $this->getArrayCopy();
+        for ($i = 0; $i < count($vars); $i++) {
+            $varName = key($vars);
+            $this->$varName = (isset($data[$varName])) ? $data[$varName] : NULL;
+            next($vars);
+        }
+    }
+
+    public function getArrayCopy() {
         return get_object_vars($this);
     }
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId() {
-        return $this->id;
-    }
-
-    /**
-     * Set id.
-     *
-     * @param int $id
-     */
-    public function setId($id) {
-        $this->id = (int) $id;
-    }
-
-    /**
-     * Get upload id.
-     *
-     * @return int
-     */
-    public function getUploadId() {
-        return $this->upload_id;
-    }
-
-    /**
-     * Set upload id.
-     *
-     * @param int $upload_id
-     */
-    public function setUploadId($uploadId) {
-        $this->upload_id = (int) $uploadId;
-    }
-
-    /**
-     * Get post id.
-     *
-     * @return int
-     */
-    public function getPostId() {
-        return $this->post_id;
-    }
-
-    /**
-     * Set post id.S
-     *
-     * @param int $resipientId
-     */
-    public function setPostId($postId) {
-        $this->post_id = (int) $postId;
-    }
-    
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType() {
-        return $this->type;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     */
-    public function setType($type) {
-        $this->type = (int) $type;
+    public function get($varName) {
+        $vars = $this->getArrayCopy();
+        return $vars[$varName];
     }
 }

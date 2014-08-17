@@ -22,12 +22,12 @@ class PostTable {
 
     public function getPostsByUserId($userId) {
 
-        return $this->tableGateway->select(array('userId' => $userId));
+        return $this->tableGateway->select(array('user_id' => $userId));
     }
 
     public function deletePostById($postId) {
 
-        $this->tableGateway->delete(array('id' => $postId));
+        $this->tableGateway->delete(array('post_id' => $postId));
     }
 
     /**
@@ -37,7 +37,7 @@ class PostTable {
      */
     public function getPostById($postId) {
         $postId = (int) $postId;
-        $rowset = $this->tableGateway->select(array('id' => $postId));
+        $rowset = $this->tableGateway->select(array('post_id' => $postId));
         $row = $rowset->current();
         return $row ? $row : null;
     }
@@ -50,13 +50,13 @@ class PostTable {
         $data = $post->getArrayCopy();
 
         unset($data['id']);
-        $postId = (int) $post->get('id');
+        $postId = (int) $post->get('post_id');
 
         if ($postId == 0) {
             $this->tableGateway->insert($data);
         } else {
             if ($this->getPostById($postId)) {
-                $this->tableGateway->update($data, array('id' => $postId));
+                $this->tableGateway->update($data, array('post_id' => $postId));
             }
         }
     }
@@ -65,8 +65,8 @@ class PostTable {
         $result = $this->tableGateway->select(
                 function (\Zend\Db\Sql\Select $select) use ($userId) {
             $select->where->
-                    equalTo('userId', $userId);
-            $select->order('createDate DESC');
+                    equalTo('user_id', $userId);
+            $select->order('create_date DESC');
         });
 
         $row = $result->current();
@@ -76,25 +76,34 @@ class PostTable {
     public function fetchByIdAndUserId($postId, $userId) {
         $postId = (int) $postId;
         $userId = (int) $userId;
-        $rowset = $this->tableGateway->select(array('id' => $postId, 'user_id' => $userId));
+        $rowset = $this->tableGateway->select(array('post_id' => $postId, 'user_id' => $userId));
         $row = $rowset->current();
         return $row;
     }
 
     public function fetchById($postId) {
         $postId = (int) $postId;
-        $rowset = $this->tableGateway->select(array('id' => $postId));
+        $rowset = $this->tableGateway->select(array('post_id' => $postId));
         $row = $rowset->current();
         return $row;
     }
 
-    public function search($input) {
+    public function search($data) {
 
-        $sql = "SELECT * FROM post WHERE title LIKE '%$input%'"
-                . "ORDER BY createDate DESC LIMIT 200 ";
+        \Application\Log\Logger::info(json_encode($data));
+        $rowset = $this->tableGateway->select(function(Select $select) use ($data) {
 
-        $rowset = $this->tableGateway->adapter->query($sql, array());
-        return $rowset;
+            $title = $data['query'];
+            if (!empty($title)) {
+                $select->where->like('title', '%' . $title . '%');
+            }
+
+            $user_id = $data['user_id'];
+            if (isset($user_id)) {
+                $select->where->equalTo('user_id', $user_id);
+            }
+        });
+        return $rowset ? $rowset : null;
     }
 
 //    public function search_($input, $order_by, $order, $country = null, $region = null, $city = null) {
@@ -122,7 +131,7 @@ class PostTable {
 
         $this->tableGateway->update(
                 $data, array(
-            'id' => $id,
+            'post_id' => $id,
             'user_id' => $userId
                 )
         );

@@ -34,47 +34,6 @@ class UploadForm extends Form {
             ),
         ));
 
-
-        $this->add(array(
-            'name' => 'title',
-            'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control title',
-//                'required' => 'required',
-                'placeholder' => '',
-                'maxlength' => 70,
-            ),
-            'options' => array(
-                'label' => "Заголовок",
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'description',
-            'attributes' => array(
-                'type' => 'textarea',
-                'class' => 'form-control desc',
-                //'required' => 'required',
-                'placeholder' => 'Описание темы',
-            ),
-            'options' => array(
-                'label' => "Описание",
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'alt',
-            'attributes' => array(
-                'type' => 'textarea',
-                'class' => 'form-control desc',
-                'placeholder' => 'Описание темы',
-            ),
-            'options' => array(
-                'label' => "Атрибут alt",
-            ),
-        ));
-
-
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(

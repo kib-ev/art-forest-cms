@@ -1,27 +1,24 @@
 <?php $sm = $this->getServiceManager(); ?>
 
-<form name="search-form" action="/post/search/">
-    <input name="query" type="text" placeholder="Что искать?">
-    <input type="button" value="Найти" onclick="submit()">
-</form>
+<?php echo $this->searchWidget(); ?>
 
 <div class="posts search-result" data-order="ASC" data-view="">
-    <?php if (count($searchResults)) : ?>
+    <?php if (count($posts)) : ?>
 
-        <?php foreach ($searchResults as $searchResult) { ?>
-            <div class="search-result-item" onclick="window.location.href = '/post/view/<?= $searchResult->id ?>'" style="cursor: pointer;">
+        <?php foreach ($posts as $post) { ?>
+            <div class="search-result-item" onclick="window.location.href = '/post/view/<?= $post->get('post_id') ?>'" style="cursor: pointer;">
                 <?php
                 //Image
                 $src = '/img/358x238_none.jpg';
                 ?>
                 <div class="author">
                     <div class="">
-                        <a href="/post/list/<?php echo $searchResult->userId; ?>">userId = <?php echo $searchResult->userId; ?></a>
+                        <a href="/post/search/?user_id=<?php echo $post->get('user_id'); ?>">userId = <?php echo $post->get('user_id'); ?></a>
                     </div>
                 </div>
 
                 <div class="post-id">
-                    postId = <?php echo $searchResult->id; ?>
+                    postId = <?php echo $post->get('post_id'); ?>
                 </div>
 
                 <div class="post-image">
@@ -30,17 +27,17 @@
                 </div>
 
                 <div class="post-title">
-                    <?= $this->escapeHtml($searchResult->title) ?>
+                    <?= $this->escapeHtml($post->get('title')) ?>
                 </div>        
 
                 <div class="post-text">
-                    <?= $this->escapeHtml($searchResult->text); ?>
+                    <?= $this->escapeHtml($post->get('text')); ?>
                 </div>
 
                 <div class="search_date_price_chaffer">
-                    <div class="price"><?= $this->escapeHtml($searchResult->price) . " у.е." ?></div>
-                    <div class="public"><?php if ($searchResult->public) echo "опубликовано"; ?></div>
-                    <div class="create-date"><?= $searchResult->createDate ?></div>
+                    <div class="price"><?= $this->escapeHtml($post->get('price')) . " у.е." ?></div>
+                    <div class="public"><?php if ($post->get('public')) echo "опубликовано"; ?></div>
+                    <div class="create-date"><?= $post->get('create_date'); ?></div>
                 </div>  
 
             </div>

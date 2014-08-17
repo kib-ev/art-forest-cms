@@ -86,18 +86,18 @@ class Module {
                     $likeTable = new \Post\Model\LikeTable($likesTableGateway);
                     return $likeTable;
                 },
-                'attachments_table_gateway' => function ($sm) {
+                'attachment_table_gateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $attachment = new \Post\Model\Attachment();
                     $resultSetPrototype->setArrayObjectPrototype($attachment);
-                    $attachmentsTableGateway = new TableGateway('attachments', $dbAdapter, null, $resultSetPrototype);
-                    return $attachmentsTableGateway;
+                    $attachmentTableGateway = new TableGateway('attachment', $dbAdapter, null, $resultSetPrototype);
+                    return $attachmentTableGateway;
                 },
                         
                 'attachment_table' => function ($sm) {
-                    $attachmentsTableGateway = $sm->get('attachments_table_gateway');
-                    $attachmentTable = new \Post\Model\AttachmentTable($attachmentsTableGateway);
+                    $attachmentTableGateway = $sm->get('attachment_table_gateway');
+                    $attachmentTable = new \Post\Model\AttachmentTable($attachmentTableGateway);
                     return $attachmentTable;
                 },
                 'favorites_table_gateway' => function ($sm) {
@@ -118,5 +118,27 @@ class Module {
             ),
         );
     }
-
+    
+    public function getViewHelperConfig() {
+        return array(
+            'factories' => array(
+                'viewAttachmentWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $attachmentViewWidget = new \Post\View\Helper\ViewAttachmentWidget($sm);
+                    $userId = $sm->get('logged_in_user_id');
+                    $attachmentViewWidget->setUserId($userId);
+                    $attachmentViewWidget->setViewTemplate('/helper/attachment/view');
+                    return $attachmentViewWidget;
+                },
+                'addAttachmentWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $attachmentAddWidget = new \Post\View\Helper\AddAttachmentWidget($sm);
+                    $userId = $sm->get('logged_in_user_id');
+                    $attachmentAddWidget->setUserId($userId);
+                    $attachmentAddWidget->setViewTemplate('/helper/attachment/add');
+                    return $attachmentAddWidget;
+                },
+            ),
+        );
+    }
 }

@@ -1,24 +1,33 @@
-<?php if ($post->get('userId') == $userId) : ?>
+<?php
 
-    <a href="/post/edit/<?php echo $post->get('id'); ?>">edit</a>
-    <a href="/post/delete/<?php echo $post->get('id'); ?>">del</a>
-    
+use \Post\Model\Post;
+
+$sm = $this->getServiceLocator();
+?>
+
+<?php if ($post->get('user_id') == $sm->get('logged_in_user_id')) : ?>
+
+    <a href="/post/edit/<?php echo $post->get(Post::POST_ID); ?>">edit</a>
+    <a href="/post/delete/<?php echo $post->get(Post::POST_ID); ?>">del</a>
+
 <?php endif; ?>
 
 <div class="post">
     <div class="post-id">
-        <?php echo $post->get('id'); ?>
+        <?php echo $post->get(Post::POST_ID); ?>
     </div>
     <div class="post-title">
-        <?php echo $post->get('title'); ?>
+        <?php echo $post->get(Post::TITLE); ?>
     </div>
     <div class="post-text">
-        <?php echo $post->get('text'); ?>
+        <?php echo $post->get(Post::TEXT); ?>
     </div>
     <div class="post-public">
-        <?php echo $post->get('public'); ?>
+        <?php echo $post->get(Post::PUBISH); ?>
     </div>
     <div class="post-tags">
-        <?php echo $post->get('tags'); ?>
+        <?php echo $post->get(Post::TAGS); ?>
     </div>
 </div>
+
+<?php echo $this->viewAttachmentWidget($post->get(Post::POST_ID)); ?>

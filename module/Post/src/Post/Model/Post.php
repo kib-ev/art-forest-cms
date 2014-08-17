@@ -2,17 +2,69 @@
 
 namespace Post\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/** @ORM\Entity 
+ * @ORM\Table(name="post")
+ */
 class Post {
 
-    protected $id;
-    protected $userId;
+    const POST_ID = 'post_id';
+    const USER_ID = 'user_id';
+    const TITLE = 'title';
+    const TEXT = 'text';
+    const PRICE = 'price';
+    const PUBISH = 'public';
+    const ACTIVE = 'active';
+    const TAGS = 'tags';
+    const CREATE_DATE = 'create_date';
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    protected $post_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $user_id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     protected $title;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     protected $text;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     protected $price;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     protected $public;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     protected $tags;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     protected $active;
-    protected $createDate;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    protected $create_date;
 
     public function __construct($data = null) {
         if ($data) {

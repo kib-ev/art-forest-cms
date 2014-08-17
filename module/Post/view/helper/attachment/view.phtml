@@ -1,0 +1,76 @@
+<?php
+
+use \Upload\Model\Upload;
+
+$sm = $this->getServiceLocator();
+?>
+
+<div class="widget">
+
+    <div class="widget-title"><h3>Attachment View Widget</h3></div>
+
+    <div class="widget-body">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>image</th>
+                    <th>link</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $attachmentTable = $sm->get('attachment_table'); ?>
+                <?php foreach ($this->uploads as $upload) { ?>
+
+                    <?php
+                    $uploadId = $upload->get('upload_id');
+                    $attachment = $attachmentTable->getAttachmentByUploadId($uploadId);
+                    $attachmentId = $attachment->get('attachment_id');
+                    ?>
+
+
+                    <tr>
+                        <td>
+                            <image src="<?php echo $this->thumb($upload->get(Upload::FILE_URI), 100, 100); ?>"/>
+                        </td>
+                        <td>
+                            <div class="">
+                                <a href="<?= $upload->get(Upload::FILE_URI); ?>"><?= $upload->get(Upload::FILE_NAME); ?></a>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="/attachment/delete/?attachment_id=<?= $attachmentId; ?>&post_id=<?= $postId; ?>">Delete</a>
+
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+
+
+        <script>
+            $(document).ready(function() {
+                $('.del').on('click', function() {
+                    var row = $(this).parent();
+                    var id = $(this).parent().children('.del').data("id");
+                    var full_filename = $(this).parent().children('.del').data("full_filename");
+                    $.ajax({
+                        type: "POST",
+                        url: "/upload/delete",
+                        data: {"id": id, "full_filename": full_filename},
+                        cache: false,
+                        success: function(response) {
+                            if (response && response.status === 'ok') {
+                                row.remove();
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+    </div>
+
+</div>

@@ -3,6 +3,7 @@
 namespace User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use User\Model\User;
 
 class RegisterController extends AbstractActionController {
 
@@ -24,10 +25,16 @@ class RegisterController extends AbstractActionController {
 
         $post = $this->request->getPost();
 
+        if ($this->isEmailExists($post->email)) {
+            return $this->redirect()->toUrl('/user/register/error');
+        }
+
         $data = array(
-            'email' => $post->email,
-            'password' => $post->password,
-            'createDate' => time(),
+            User::EMAIL => $post->email,
+            User::PASSWORD => md5($post->password),
+            User::USER_NAME => strtok($post->email, "@"),
+            User::DISPLAY_NAME => strtok($post->email, "@"),
+            User::CREATE_DATE => time(),
         );
 
         $form = new \User\Form\RegisterForm();
@@ -46,6 +53,14 @@ class RegisterController extends AbstractActionController {
         $userTable->saveUser($user);
 
         return $this->redirect()->toUrl('/user/register/confirm');
+    }
+
+    public function isEmailExists($email) {
+        $sm = $this->getServiceLocator();
+        $userTable = $sm->get('user_table');
+        $user = $userTable->getUserByEmail($email);
+
+        return $user == null ? false : true;
     }
 
     public function errorAction() {

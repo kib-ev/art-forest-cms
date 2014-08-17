@@ -67,7 +67,11 @@ class UploadFileManager {
     }
 
     //save file
-    public function saveFile($request, $userId) {
+    public function saveUserFile($userId, $file) {
+        
+    }
+
+    public function saveUserFileFromRequest($userId, $request) {
         $ds = DIRECTORY_SEPARATOR;
 
         // create dir md5 user_id if not exist
@@ -96,17 +100,17 @@ class UploadFileManager {
             $fileUrl = "/uploads/user$userId/$fileNameTranslit$fileExt";
 
             $data = array(
-                'name' => $fileName . $fileExt,
-                'userId' => $userId,
-                'path' => $filePath,
-                'url' => $fileUrl,
-                'type' => $file['type'],
+                'user_id' => $userId,
+                'file_name' => $fileName . $fileExt,
+                'file_path' => $filePath,
+                'file_uri' => $fileUrl,
+                'file_type' => $file['type'],
             );
 
             $upload = new \Upload\Model\Upload($data);
             $this->uploadsTable->saveUpload($upload);
 
-            return $this->uploadsTable->getUploadByPath($filePath);
+            return $this->uploadsTable->getUploadByFilePath($filePath);
         }
     }
 
@@ -126,19 +130,21 @@ class UploadFileManager {
         return $status;
     }
 
-    public function deleteUploadById($id) {
-        $id = (int) $id;
-        if ($id) {
-            $fullFilename = $this->uploadsTable->getUploadById($id)->full_filename;
-            $this->uploadsTable->deleteUpload($id);
+    public function deleteUploadById($uploadId) {
+        $uploadId = (int) $uploadId;
+        
+        if ($uploadId) {
+
+            $uploadTable = $this->uploadsTable;
+            $upload = $uploadTable->getUploadById($uploadId);
+            $filePath = $upload->get(Upload::FILE_PATH);
+
+            $uploadTable->deleteUploadById($uploadId);
             $status = 'ok';
-            if (file_exists($fullFilename)) {
-                unlink($fullFilename);
+            if (file_exists($filePath)) {
+                unlink($filePath);
             }
-        } else {
-            $status = 'bad';
         }
-        return $status;
     }
 
     function rus2translit($string) {

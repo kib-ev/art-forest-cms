@@ -10,15 +10,34 @@ return array(
             'Post\Controller\Favorite' => 'Post\Controller\FavoriteController',
         ),
     ),
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'Post' => __DIR__ . '/../view',
+        ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            'post_module_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/Post/Model')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'Post\Model' => 'post_module_entities'
+                )
+            )
+        )
+    ),
     'router' => array(
         'routes' => array(
             'post' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/post[/][:action][/][:id]',
+                    'route' => '/post[/][:action][/][:post_id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
+                        'post_id' => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Post\Controller\Post',
@@ -28,10 +47,10 @@ return array(
             'attachment' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/attachment[/][:action][/][:id]',
+                    'route' => '/attachment[/][:action][/][:post_id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
+                        'post_id' => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Post\Controller\Attachment',
@@ -77,31 +96,6 @@ return array(
                     ),
                 ),
             ),
-            
         ),
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'DbAdapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
-        ),
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            'Post' => __DIR__ . '/../view',
-        ),
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            'post_module_entities' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/Post/Model')
-            ),
-            'orm_default' => array(
-                'drivers' => array(
-                    'Post\Model' => 'post_module_entities'
-                )
-            )
-        )
     ),
 );

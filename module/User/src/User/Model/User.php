@@ -2,19 +2,63 @@
 
 namespace User\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/** @ORM\Entity 
+ * @ORM\Table(name="user")
+ */
 class User {
 
-    protected $id;
+    const USER_ID = 'user_id';
+    const USER_NAME = 'username';
+    const DISPLAY_NAME = 'display_name';
+    const EMAIL = 'email';
+    const PASSWORD = 'password';
+    const STATE = 'state';
+    const CREATE_DATE = 'create_date';
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    protected $user_id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     protected $username;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    protected $display_name;
+
+    /**
+     *  @ORM\Column(type="text", nullable=true) 
+     */
     protected $email;
+
+    /**
+     *  @ORM\Column(type="text", nullable=true) 
+     */
     protected $password;
-    protected $activationToken;
-    protected $forgotPasswordToken;
-    protected $active;
-    protected $lastLoginIp;
-    protected $failedLoginIp;
-    protected $lastLoginDate;
-    protected $createDate;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    protected $state;
+
+//    protected $activationToken;
+//    protected $forgotPasswordToken;
+//    protected $lastLoginIp;
+//    protected $failedLoginIp;
+//    protected $lastLoginDate;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    protected $create_date;
 
     public function __construct($data = null) {
         if ($data) {

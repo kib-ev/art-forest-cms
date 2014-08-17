@@ -1,3 +1,5 @@
+<a href="/post/view/<?php echo $post->get('post_id'); ?>">View Post</a>
+
 <?php
 $form = $this->form;
 $form->prepare();
@@ -14,3 +16,7 @@ $form->prepare();
     <?php endforeach; ?>
 </div>
 <?php echo $this->form()->closeTag(); ?>
+
+<?php echo $this->viewAttachmentWidget($post->get('post_id')); ?>
+
+<?php echo $this->addAttachmentWidget($post->get('post_id')); ?>

@@ -3,6 +3,7 @@
 namespace User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use User\Model\User;
 
 class LoginController extends AbstractActionController {
 
@@ -23,14 +24,14 @@ class LoginController extends AbstractActionController {
 
         $sm->get('zend_auth_service')->getAdapter()
                 ->setIdentity($post->email)
-                ->setCredential($post->password);
+                ->setCredential(md5($post->password));
 
         $result = $sm->get('zend_auth_service')->authenticate();
 
         if ($result->isValid()) {
             $userTable = $sm->get('user_table');
             $user = $userTable->getUserByEmail($post->email);
-            $sm->get('zend_auth_service')->getStorage()->write($user->get('id'));
+            $sm->get('zend_auth_service')->getStorage()->write($user->get(User::USER_ID));
             return $this->redirect()->toUrl('/user/login/confirm');
         }
 

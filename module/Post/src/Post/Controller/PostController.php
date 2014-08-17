@@ -10,84 +10,85 @@ use Post\Model\Post;
 
 class PostController extends AbstractActionController {
 
-    public function listAction() {
-        $selectUserId = $this->params()->fromRoute('id');
-
-        $sm = $this->getServiceLocator();
-        $userId = $sm->get('logged_in_user_id');
-         
-        if (empty($selectUserId)) {
-            return $this->redirect()->toUrl("/post/list/$userId");
-        }
-        $selectUserId = (int) $selectUserId;
-
-        $sm = $this->getServiceLocator();
-        $postTable = $sm->get('post_table');
-        $posts = $postTable->getPostsByUserId($selectUserId);
-
-        return array('posts' => $posts);
-    }
-
-    public function listAction_() {
-        //UserId from route!
-        $userId = (int) $this->params()->fromRoute('id', 0);
-        if (!$userId) {
-            return $this->redirect()->toRoute('application', array('action' => 'index'));
-        }
-
-        $favoriteTable = $this->getServiceLocator()->get('favorite_table');
-        $userTable = $this->getServiceLocator()->get('users_table');
-        $postTable = $this->getServiceLocator()->get('post_table');
-        $likeTable = $this->getServiceLocator()->get('like_table');
-        $commentTable = $this->getServiceLocator()->get('comment_table');
-        $attachmentTable = $this->getServiceLocator()->get('attachment_table');
-        $uploadfilemanager = $this->getServiceLocator()->get('uploads_manager');
-
-        $userExist = $userTable->getUserById($userId);
-        if (!$userExist) {
-            return $this->redirect()->toRoute('application', array('action' => 'index'));
-        }
-
-        $posts = $postTable->fetchAllByUserId($userId);
-        $users = $userTable->getUser($userId);
-        return array(
-            'count' => $posts->count(),
-            'posts' => $posts,
-            'users' => $users,
-            'likeTable' => $likeTable,
-            'commentTable' => $commentTable,
-            'favoriteTable' => $favoriteTable,
-            'attachmentTable' => $attachmentTable,
-            'uploadfilemanager' => $uploadfilemanager
-        );
-    }
+//    public function listAction() {
+//        $selectUserId = (int) $this->params()->fromRoute('id');
+//
+//        $sm = $this->getServiceLocator();
+//
+//        $postTable = $sm->get('post_table');
+//        $posts = $postTable->getPostsByUserId($selectUserId);
+//
+//        return array('posts' => $posts);
+//    }
+//    public function listAction_() {
+//        //UserId from route!
+//        $userId = (int) $this->params()->fromRoute('id', 0);
+//        if (!$userId) {
+//            return $this->redirect()->toRoute('application', array('action' => 'index'));
+//        }
+//
+//        $favoriteTable = $this->getServiceLocator()->get('favorite_table');
+//        $userTable = $this->getServiceLocator()->get('users_table');
+//        $postTable = $this->getServiceLocator()->get('post_table');
+//        $likeTable = $this->getServiceLocator()->get('like_table');
+//        $commentTable = $this->getServiceLocator()->get('comment_table');
+//        $attachmentTable = $this->getServiceLocator()->get('attachment_table');
+//        $uploadfilemanager = $this->getServiceLocator()->get('uploads_manager');
+//
+//        $userExist = $userTable->getUserById($userId);
+//        if (!$userExist) {
+//            return $this->redirect()->toRoute('application', array('action' => 'index'));
+//        }
+//
+//        $posts = $postTable->fetchAllByUserId($userId);
+//        $users = $userTable->getUser($userId);
+//        return array(
+//            'count' => $posts->count(),
+//            'posts' => $posts,
+//            'users' => $users,
+//            'likeTable' => $likeTable,
+//            'commentTable' => $commentTable,
+//            'favoriteTable' => $favoriteTable,
+//            'attachmentTable' => $attachmentTable,
+//            'uploadfilemanager' => $uploadfilemanager
+//        );
+//    }
 
     public function deleteAction() {
         $sm = $this->getServiceLocator();
 
-        $postId = (int) $this->params()->fromRoute('id');
+        $postId = (int) $this->params()->fromRoute(Post::POST_ID);
 
         $userId = $sm->get('logged_in_user_id');
         $postTable = $sm->get('post_table');
         $post = $postTable->getPostById($postId);
 
-        if ($post && $post->get('userId') != $userId) {
+        if ($post && $post->get(Post::USER_ID) != $userId) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
 
         $postTable->deletePostById($postId);
-        return $this->redirect()->toUrl("/post/list/$userId");
+        return $this->redirect()->toUrl("/post/search/?user_id=$userId");
     }
 
     public function addAction() {
-        $form = new \Post\Form\PostForm();
-        $inputFilter = new \Post\Form\PostInputFilter();
-        $form->setInputFilter($inputFilter);
+        $sm = $this->getServiceLocator();
+        $userId = $sm->get('logged_in_user_id');
 
-        return array(
-            'form' => $form,
+        $data = array(
+            Post::USER_ID => $userId,
+            Post::CREATE_DATE => time(),
         );
+        $postTable = $sm->get('post_table');
+
+        $post = new \Post\Model\Post($data);
+        $postTable->savePost($post);
+
+        $savedPost = $postTable->getLastUserPost($userId);
+        $savedPostId = $savedPost->get(Post::POST_ID);
+
+        return $this->redirect()->toUrl("/post/edit/$savedPostId");
     }
 
     public function processAction() {
@@ -113,8 +114,8 @@ class PostController extends AbstractActionController {
 
             return $view;
         } else {
-            $data['createDate'] = time();
-            $data['userId'] = $userId;
+            $data[Post::CREATE_DATE] = time();
+            $data[Post::USER_ID] = $userId;
 
             $post = new \Post\Model\Post();
             $post->exchangeArray($data);
@@ -122,17 +123,41 @@ class PostController extends AbstractActionController {
             $postTable = $sm->get('post_table');
             $postTable->savePost($post);
 
-            $postId = $postTable->getLastUserPost($userId)->get('id');
+            $postId = $postTable->getLastUserPost($userId)->get(Post::POST_ID);
 
-            return $this->redirect()->toUrl("/post/view/$postId");
+            
+
+            return $this->redirect()->toUrl("/post/edit/$postId");
         }
     }
+
+//    public function saveUpload($request) {
+//        
+////        //save upload file
+////            $upload = $this->saveUpload($this->request);
+////            $uploadId = $upload->get(\Upload\Model\Upload::UPLOAD_ID);
+////
+////            $attachmentTable = $sm->get('attachment_table');
+////            $attachmentTable->saveAttachment($userId, $postId, $uploadId);
+//            
+//        if ($request->isPost()) {
+//            $sm = $this->getServiceLocator();
+//
+//            $userId = $sm->get('logged_in_user_id');
+//            $uploadTalbe = $sm->get('upload_table');
+//
+//            $fileManager = new \Upload\Manager\UploadFileManager($uploadTalbe);
+//            $upload = $fileManager->saveUserFileFromRequest($userId, $request);
+//
+//            return $upload;
+//        }
+//    }
 
     public function editAction() {
         $sm = $this->getServiceLocator();
         $userId = $sm->get('logged_in_user_id');
 
-        $postId = (int) $this->params()->fromRoute('id');
+        $postId = (int) $this->params()->fromRoute(Post::POST_ID);
 
         if (!$postId) {
             $this->getResponse()->setStatusCode(404);
@@ -142,7 +167,7 @@ class PostController extends AbstractActionController {
         $postTable = $sm->get('post_table');
         $post = $postTable->getPostById($postId);
 
-        if (!$post || $post->get('userId') != $userId) {
+        if (!$post || $post->get(Post::USER_ID) != $userId) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
@@ -152,12 +177,12 @@ class PostController extends AbstractActionController {
 
         return array(
             'form' => $postForm,
-            'postId' => $postId,
+            'post' => $post,
         );
     }
 
     public function detailsAction() {
-        $postId = (int) $this->params()->fromRoute('id');
+        $postId = (int) $this->params()->fromRoute(Post::POST_ID);
         if (!$postId) {
             return $this->redirect()->toRoute('post');
         }
@@ -197,7 +222,7 @@ class PostController extends AbstractActionController {
         $sm = $this->getServiceLocator();
         $userId = $sm->get('logged_in_user_id');
 
-        $postId = (int) $this->params()->fromRoute('id');
+        $postId = (int) $this->params()->fromRoute(Post::POST_ID);
 
         if (!$postId) {
             $this->getResponse()->setStatusCode(404);
@@ -214,7 +239,6 @@ class PostController extends AbstractActionController {
 
         return array(
             'post' => $post,
-            'userId' => $userId,
         );
     }
 
