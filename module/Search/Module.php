@@ -43,9 +43,9 @@ class Module
         return array(
             'factories' => array(
                 // the array key here is the name you will call the view helper by in your view scripts
-                'searchWidget' => function($vhm) {
+                'searchFormWidget' => function($vhm) {
                     $sm = $vhm->getServiceLocator(); // $vhm is the view helper manager, so we need to fetch the main service manager
-                    return new \Search\View\Helper\SearchWidget($sm);
+                    return new \Search\View\Helper\SearchFormWidget($sm);
                 },
             ),
         );

@@ -4,7 +4,7 @@ namespace Search\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 
-class SearchWidget extends AbstractHelper
+class SearchFormWidget extends AbstractHelper
 {
     protected $sm;
 
@@ -17,10 +17,12 @@ class SearchWidget extends AbstractHelper
     {
         $form = new \Search\Form\SearchForm(); // todo place in the sm
         
-        return $this->getView()->partial('search/search/widget', 
-                array(
-                    'form' => $form,
-                ));
+        $view = new \Zend\View\Model\ViewModel();
+        
+        $view->setTemplate('helper/search/form');
+        $view->setVariable('form', $form);
+        
+        return $this->getView()->render($view);
     }
 
 }
