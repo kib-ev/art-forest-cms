@@ -1,61 +1,6 @@
 <?php
 
-use \Upload\Model\Upload; ?>
+echo $this->uploadViewWidget($currentUserId);
+echo $this->uploadAddWidget($currentUserId);
 
-<a href="/upload/add">add</a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User_id</th>
-            <th>name</th>
-            <th>path</th>
-            <th>url</th>
-            <th>link</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($this->uploads as $upload) { ?>
-
-            <tr>
-                <td class="text"><?= $upload->get(Upload::UPLOAD_ID); ?></td>
-                <td><?= $upload->get(Upload::USER_ID); ?></td>
-                <td><?= $upload->get(Upload::FILE_NAME); ?></td>
-                <td><?= $upload->get(Upload::FILE_PATH); ?></td>
-                <td><?= $upload->get(Upload::FILE_URI); ?></td>
-                <td>
-                    <div class="">
-                        <a href="<?= $upload->get(Upload::FILE_URI); ?>"><?= $upload->get(Upload::FILE_NAME); ?></a>
-                    </div>
-                </td>
-                <td class="del" data-id="<?= $upload->get(Upload::UPLOAD_ID); ?>" 
-                    data-full_filename="<?= $upload->get(Upload::FILE_PATH); ?>">Delete ajax<br/>
-                    <a href="/upload/delete/<?= $upload->get(Upload::UPLOAD_ID); ?>">Delete</a>
-                </td>
-            </tr>
-        <?php } ?>
-    </tbody>
-</table>
-
-
-<script>
-    $(document).ready(function() {
-        $('.del').on('click', function() {
-            var row = $(this).parent();
-            var id = $(this).parent().children('.del').data("id");
-            var full_filename = $(this).parent().children('.del').data("full_filename");
-            $.ajax({
-                type: "POST",
-                url: "/upload/delete",
-                data: {"id": id, "full_filename": full_filename},
-                cache: false,
-                success: function(response) {
-                    if (response && response.status === 'ok') {
-                        row.remove();
-                    }
-                }
-            });
-        });
-    });
-</script>
+?>

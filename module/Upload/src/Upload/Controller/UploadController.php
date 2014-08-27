@@ -14,11 +14,10 @@ class UploadController extends AbstractActionController {
 
         $uploadsTable = $sm->get('upload_table');
         $userId = $sm->get('logged_in_user_id');
-        return array('uploads' => $uploadsTable->getUploadsByUserId($userId));
-    }
-
-    public function addAction() {
-        return array('form' => new \Upload\Form\UploadForm());
+        return array(
+            'uploads' => $uploadsTable->getUploadsByUserId($userId),
+            'currentUserId' => $userId,
+        );
     }
 
     public function processAction() {

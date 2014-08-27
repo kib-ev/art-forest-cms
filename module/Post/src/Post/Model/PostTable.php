@@ -15,14 +15,22 @@ class PostTable {
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchAll() {
-
-        return $this->tableGateway->select(array('is_active' => '1'));
-    }
+//    public function fetchAll() {
+//
+//        return $this->tableGateway->select(array('is_active' => '1'));
+//    }
 
     public function getPostsByUserId($userId) {
-
         return $this->tableGateway->select(array('user_id' => $userId));
+    }
+
+    public function deleteEmptyPostsByUserId($userId) {
+        $this->tableGateway->delete(
+                array(
+                    Post::USER_ID => $userId,
+                    Post::TITLE => null,
+                )
+        );
     }
 
     public function deletePostById($postId) {
@@ -30,11 +38,6 @@ class PostTable {
         $this->tableGateway->delete(array('post_id' => $postId));
     }
 
-    /**
-     * 
-     * @param int $postId
-     * @return \Zend\Db\ResultSet\ResultSet $row or null
-     */
     public function getPostById($postId) {
         $postId = (int) $postId;
         $rowset = $this->tableGateway->select(array('post_id' => $postId));
@@ -42,10 +45,6 @@ class PostTable {
         return $row ? $row : null;
     }
 
-    /**
-     * 
-     * @param \Post\Model\Post $post
-     */
     public function savePost(Post $post) {
         $data = $post->getArrayCopy();
 

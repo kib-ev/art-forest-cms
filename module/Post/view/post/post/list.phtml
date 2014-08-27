@@ -3,43 +3,11 @@
 <div class="posts search-result" data-order="ASC" data-view="">
     <?php if (count($posts)) : ?>
 
-        <?php foreach ($posts as $post) { ?>
-            <div class="search-result-item" onclick="window.location.href = '/post/view/<?= $post->get('post_id') ?>'" style="cursor: pointer;">
-                <?php
-                //Image
-                $src = '/img/358x238_none.jpg';
-                ?>
-                <div class="author">
-                    <div class="">
-                        <a href="/post/search/?user=<?php echo $post->get('user_id'); ?>">userId = <?php echo $post->get('user_id'); ?></a>
-                    </div>
-                </div>
-
-                <div class="post-id">
-                    postId = <?php echo $post->get('post_id'); ?>
-                </div>
-
-                <div class="post-image">
-                    <div class="small_image" style="background-image: url('<?= $this->thumb($src, 60, 45); ?>'); background-size: cover; "></div>
-                    <div class="large_image" style="background-image: url('<?= $this->thumb($src, 120, 90); ?>'); background-size: cover; "></div>
-                </div>
-
-                <div class="post-title">
-                    <?= $this->escapeHtml($post->get('title')) ?>
-                </div>        
-
-                <div class="post-text">
-                    <?= $this->escapeHtml($post->get('text')); ?>
-                </div>
-
-                <div class="search_date_price_chaffer">
-                    <div class="price"><?= $this->escapeHtml($post->get('price')) . " у.е." ?></div>
-                    <div class="public"><?php if ($post->get('public')) echo "опубликовано"; ?></div>
-                    <div class="create-date"><?= $post->get('create_date'); ?></div>
-                </div>  
-
-            </div>
-        <?php } ?>
+        <?php foreach ($posts as $post) : ?>
+           
+            <?php echo $this->postExcerptViewWidget($post->get('post_id')); ?> 
+    
+        <?php endforeach; ?>
 
     <?php else : ?> 
 

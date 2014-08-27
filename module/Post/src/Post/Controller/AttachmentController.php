@@ -35,7 +35,6 @@ class AttachmentController extends AbstractActionController {
 
     public function saveUpload($request) {
 
-
         if ($request->isPost()) {
             $sm = $this->getServiceLocator();
 
@@ -69,6 +68,6 @@ class AttachmentController extends AbstractActionController {
             return $this->redirect()->toUrl("/post/edit/$postId");
         }
         
-        return $this->redirect()->toUrl("/post/view/$postId");
+        return $this->redirect()->toUrl("/post/edit/$postId");
     }
 }

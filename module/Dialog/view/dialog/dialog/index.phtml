@@ -1,0 +1,67 @@
+<?php
+$sm = $this->getServiceManager();
+
+$userTable = $sm->get('user_table');
+//
+?>
+
+<?php foreach ($this->dialogs as $dialog): ?> 
+
+    <?php
+    // get users id
+    $loggedInUserId = $sm->get('logged_in_user_id');
+
+    if ($loggedInUserId == $dialog->sender_id) {
+        $selectedUserId = $dialog->recipient_id;
+    } else {
+        $selectedUserId = $dialog->sender_id;
+    }
+    $selectedUser = $userTable->getUserById($selectedUserId);
+
+    // check: is message new to set background
+    $is_new_line = null;
+    $is_new_sub_line = null;
+    if ($dialog->is_unread) {
+        if ($loggedInUserId !== $dialog->sender_id) {
+            $is_new_line = 'is_new';
+        } else {
+            $is_new_sub_line = 'is_new';
+        }
+    }
+
+    // check: whose message is last to show sender avatar
+//    $small_ava_url = null;
+//    if ($loggedInUserId == $dialog->sender_id) {
+//        $small_ava_url = $this->getUserData($loggedInUserId)->avatar_url;
+//    }
+
+    // set private dialog link
+    $chatUrl = ($loggedInUser->get('user_id') == $dialog->sender_id) ?
+            '/dialog/open/' . $dialog->recipient_id :
+            '/dialog/open/' . $dialog->sender_id;
+    ?>
+    <?php
+    $sender = $userTable->getUserById($dialog->sender_id);
+    ?>
+
+    <table class="line item <?= $is_new_line; ?>" cellpadding="0" cellspacing="0" onclick="window.location = '<?php echo $chatUrl; ?>'">
+        <tr>
+            <td rowspan="2">
+                <div class="delete_block">
+                    <a class="delete icon" href="/dialog/delete/<?= $selectedUserId ?>"></a>
+                </div>
+            </td>
+            <?php 
+            //$avatar_url = $this->getUserData($selectedUserId)->avatar_url;
+            ?>
+            <td rowspan="2"><div class="sender_image" style="background-image: url('<?php echo isset($avatar_url) ? $avatar_url : '/img/default_avatar.png';  ?>'); width: 37px; height: 37px;"></div></td>
+            <td colspan="2"><span class="sender"><?php echo $this->escapeHtml($selectedUser->get('display_name')); ?></span></td>
+            <td rowspan="2"><div class="date"><?php echo $this->escapeHtml($dialog->create_date); ?></div></td>
+        </tr>
+        <tr>
+            <td class="last-sender-ava-block"><div class="last-sender-ava" style="background-image: url(<?= $small_ava_url; ?>); background-size: 100%;"></div></td>
+            <td class="text-block"><div class="text <?= $is_new_sub_line; ?>"><?php echo $this->escapeHtml($dialog->text); ?></div></td>
+        </tr>
+    </table>
+
+<?php endforeach; ?>

@@ -7,7 +7,7 @@ use Zend\Form\Form;
 class UploadForm extends Form {
 
     public function __construct($name = null) {
-        parent::__construct('form-file-upload');
+        parent::__construct('upload-form');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setAttribute('class', 'form-add-post');

@@ -32,9 +32,7 @@ class AddAttachmentWidget extends AbstractHelper {
             array_push($uploads, $upload);
         }
 
-
         $form = new \Upload\Form\UploadForm();
-       
 
         $view = new \Zend\View\Model\ViewModel(
                 array(

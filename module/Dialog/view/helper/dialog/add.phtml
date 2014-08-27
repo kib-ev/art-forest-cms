@@ -1,17 +1,20 @@
-<?php
-
-use \Upload\Model\Upload; ?>
-
 <div class="widget">
-
-    <div class="widget-title">add attachment widget</div>
+    <div class="widget-title">dialog input form widget for <?php echo "[u:$currentUserId]"; ?> and <?php echo "[u:$selectedUserId]"; ?></div>
 
     <div class="widget-body">
-        
+
+        <?php
+        $messages = $this->flashMessenger()->getMessagesFromNamespace($form->getName());
+        if (count($messages)) {
+            foreach ($messages as $message) {
+                $form->setMessages($message);
+            }
+        }
+        ?>
+
         <?php
         $form = $this->form;
         $form->prepare();
-        $form->setAttribute('action', "/attachment/process/$postId");
         ?>
 
         <?php echo $this->form()->openTag($form); ?>
@@ -24,9 +27,7 @@ use \Upload\Model\Upload; ?>
                 </div>
             <?php endforeach; ?>
         </div>
-        <?php echo $this->form()->closeTag() ?>
-
+        <?php echo $this->form()->closeTag(); ?>
 
     </div>
-
 </div>

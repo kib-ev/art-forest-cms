@@ -10,16 +10,20 @@ use Post\Model\Post;
 
 class PostController extends AbstractActionController {
 
-//    public function listAction() {
-//        $selectUserId = (int) $this->params()->fromRoute('id');
-//
-//        $sm = $this->getServiceLocator();
-//
-//        $postTable = $sm->get('post_table');
-//        $posts = $postTable->getPostsByUserId($selectUserId);
-//
-//        return array('posts' => $posts);
-//    }
+    public function listAction() {
+        $sm = $this->getServiceLocator();
+        $userId = $sm->get('logged_in_user_id');
+        $postTable = $sm->get('post_table');
+        
+        
+        $postTable->deleteEmptyPostsByUserId($userId);
+        $posts = $postTable->getPostsByUserId($userId);
+
+        return array(
+            'currentUserId' => $userId,
+            'posts' => $posts);
+    }
+
 //    public function listAction_() {
 //        //UserId from route!
 //        $userId = (int) $this->params()->fromRoute('id', 0);
@@ -125,7 +129,7 @@ class PostController extends AbstractActionController {
 
             $postId = $postTable->getLastUserPost($userId)->get(Post::POST_ID);
 
-            
+
 
             return $this->redirect()->toUrl("/post/edit/$postId");
         }

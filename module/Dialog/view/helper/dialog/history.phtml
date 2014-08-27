@@ -1,0 +1,15 @@
+<div class="widget">
+    <div class="widget-title">dialog history widget for <?php echo "[u:$currentUserId]"; ?> and <?php echo "[u:$selectedUserId]"; ?></div>
+
+    <div class="widget-body">
+        <?php foreach ($dialogs as $dialog) : ?>
+
+            <div class="dialog-item item">
+                <div class="sender">Sender: <?php echo $dialog->get('sender_id'); ?></div>
+                <div class="message">Message: <?php echo $dialog->get('message'); ?></div>
+                <div class="time">Time: <?php echo $dialog->get('create_date'); ?></div>
+            </div>
+
+        <?php endforeach; ?>
+    </div>
+</div>

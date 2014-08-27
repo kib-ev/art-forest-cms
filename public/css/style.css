@@ -11,12 +11,15 @@ body {
     color: #ff0000;
     font-size: 12px;
 }
+.clear {
+    clear: both;
+}
 .label {
     color: #ccc;
 }
-.block-id, .block-user_id, .block-post_id {
+/*.block-id, .block-user_id, .block-post_id {
     display: none;
-}
+}*/
 /* input */
 input[type=text],
 input[type=url],
@@ -36,9 +39,9 @@ textarea {
 /* header */
 .wrap-header .header {
     width: 1000px;
-    height: 40px;
+    overflow: auto;
     margin: 0px auto;
-    color: #aaa;
+    /*color: #aaa;*/
     background-color: #424542;
     border-bottom: 5px solid #83BF29;
 }
@@ -48,6 +51,7 @@ textarea {
     min-height: 200px;
     margin: 0px auto;
     clear: both;
+    overflow: auto;
 }
 .wrap-menu {
     width: 50px;
@@ -93,12 +97,30 @@ textarea {
 .widget {
     border: 1px solid #e5e5e5;
     background: #fff;
-    width: 90%;
     margin: 10px;
 
+    width: 700px;
+    float: left;
 }
 .widget-title {
     height: 30px;
     line-height: 30px;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 0px 10px;
+}
+.widget-body {
+    padding: 10px;
+    border-top: 1px solid #e5e5e5;
+}
+.dialog-item {
+    border: 1px solid #e5e5e5;
+    padding: 10px
+}
+.item {
+    border: 1px solid #e5e5e5;
+    padding: 10px;
+    margin-bottom: 2px;
+}
+
+.search .widget-body {
+    display: none;
 }

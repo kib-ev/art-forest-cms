@@ -55,5 +55,23 @@ class Module {
             ),
         );
     }
-
+    
+    public function getViewHelperConfig() {
+        return array(
+            'factories' => array(
+                'uploadViewWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $uploadViewWidget = new \Upload\View\Helper\UploadViewWidget($sm);
+                    $uploadViewWidget->setViewTemplate('/helper/upload/view');
+                    return $uploadViewWidget;
+                },
+                'uploadAddWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $uploadAddWidget = new \Upload\View\Helper\UploadAddWidget($sm);
+                    $uploadAddWidget->setViewTemplate('/helper/upload/add');
+                    return $uploadAddWidget;
+                },
+            ),
+        );
+    }
 }

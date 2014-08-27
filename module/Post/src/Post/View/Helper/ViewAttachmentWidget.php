@@ -29,7 +29,12 @@ class ViewAttachmentWidget extends AbstractHelper {
         foreach ($attachments as $attachment) {
             $uploadId = $attachment->get(Attachment::UPLOAD_ID);
             $upload = $uploadTable->getUploadById($uploadId);
-            array_push($uploads, $upload);
+
+            if (!$upload) {
+                $attachmentTable->deleteAttachmentById($attachment->get(Attachment::ATTACHMENT_ID));
+            } else {
+                array_push($uploads, $upload);
+            }
         }
 
         $view = new \Zend\View\Model\ViewModel(

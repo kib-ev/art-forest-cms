@@ -138,6 +138,12 @@ class Module {
                     $attachmentAddWidget->setViewTemplate('/helper/attachment/add');
                     return $attachmentAddWidget;
                 },
+                'postExcerptViewWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $postExcerptViewWidget = new \Post\View\Helper\PostExcerptViewWidget($sm);
+                    return $postExcerptViewWidget;
+                },        
+                
             ),
         );
     }

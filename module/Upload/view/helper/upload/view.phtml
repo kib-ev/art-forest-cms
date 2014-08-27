@@ -1,0 +1,18 @@
+<?php
+
+use \Upload\Model\Upload; ?>
+
+<div class="widget">
+    <div class="widget-title">upload view widget for <?php echo "[u:" . $currentUserId . "]"; ?></div>
+    <div class="widget-body">
+
+        <?php foreach ($uploads as $upload) : ?>
+
+            <div class="item">
+                <a href="<?= $upload->get(Upload::FILE_URI); ?>"><?= $upload->get(Upload::FILE_NAME); ?></a>
+                <a style="float: right" href="/upload/delete/<?= $upload->get(Upload::UPLOAD_ID); ?>">delete</a>
+            </div>
+
+        <?php endforeach; ?>
+    </div>
+</div>

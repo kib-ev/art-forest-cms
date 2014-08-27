@@ -1,0 +1,90 @@
+<?php
+$sm = $this->getServiceManager();
+
+$userTable = $sm->get('user_table');
+//
+?>
+
+<div class="widget">
+    <div class="widget-title"></div>
+
+    <div class="widget-body">
+        <?php foreach ($this->dialogs as $dialog): ?> 
+
+            <?php
+            // get users id
+            $loggedInUserId = $this->currentUserId;
+            $loggedInUser = $userTable->getUserById($loggedInUserId);
+            
+            if (!$loggedInUser) {
+                $loggedInUser = new \User\Model\User(array('user_id' => 0));
+                
+            }
+            
+            if ($loggedInUserId == $dialog->sender_id) {
+                $selectedUserId = $dialog->recipient_id;
+            } else {
+                $selectedUserId = $dialog->sender_id;
+            }
+            $selectedUser = $userTable->getUserById($selectedUserId);
+
+            // check: is message new to set background
+            $is_new_line = null;
+            $is_new_sub_line = null;
+            if ($dialog->is_unread) {
+                if ($loggedInUserId !== $dialog->sender_id) {
+                    $is_new_line = 'is_new';
+                } else {
+                    $is_new_sub_line = 'is_new';
+                }
+            }
+
+            // set private dialog link
+            $chatUrl = ($loggedInUser->get('user_id') == $dialog->sender_id) ?
+                    '/dialog/open/' . $dialog->recipient_id :
+                    '/dialog/open/' . $dialog->sender_id;
+            ?>
+            <?php
+            $senderId = $dialog->sender_id;
+            $lastMessage = $this->escapeHtml($dialog->message);
+            $lastMessageStatus = ($dialog->is_unread) ? 'unread' : 'read';
+            $messageCreateDate = $this->escapeHtml($dialog->create_date);
+            $sender = $userTable->getUserById($senderId);
+            ?>
+
+
+
+            <div class="dialog-item item">
+                <div class="title">
+                    <?php echo "dialog with [u:$selectedUserId]"; ?>
+                </div>
+
+                <div class="last-sender">
+                    <?php echo "last sender [u:$senderId]"; ?>
+                </div>
+
+                <div class="last-message">
+                    <?php echo "last message: $lastMessage"; ?>
+                </div>
+
+                <div class="last-message-time">
+                    <?php echo "time: $messageCreateDate"; ?>
+                </div>
+
+                <div class="last-message-status">
+                    <?php echo "status: $lastMessageStatus"; ?>
+                </div>
+
+                <div class="open-dialog-link">
+                    <a href="/dialog/open/?user_id=<?php echo $selectedUserId; ?>">view</a>
+                </div>
+
+            </div>
+
+        <?php endforeach; ?>
+
+
+    </div>
+
+</div>
+

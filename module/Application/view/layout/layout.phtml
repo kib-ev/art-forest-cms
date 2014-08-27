@@ -22,7 +22,9 @@
             <div class="header">
                 <a href="/">home</a>
                 <div class="logo"></div>
-                <div class="search"></div>
+                <div class="search">
+                    <?php echo $this->searchFormWidget(); ?>
+                </div>
             </div>
         </div>
 
@@ -31,11 +33,10 @@
                 <div class="wrap-menu">
                     <div class="menu">
                         <a href="/">main</a><br/>
-                         <a href="/post/search">search</a><br/>
-                         <a href="/post/search/?user_id=<?php echo $this->getServiceManager()->get('logged_in_user_id'); ?>">my</a><br/>
+                        <a href="/post/list">post</a><br/>
                         <a href="/post/add">post+</a><br/>
                         <a href="/upload">upload</a>
-                        <a href="/upload/add">upload+</a>
+                        <a href="/dialog">dialog</a>
                     </div>
                 </div>
                 <div class="wrap-content">
@@ -55,5 +56,14 @@
 
         <?php echo $this->inlineScript() ?>
 
+        <script>
+            $(document).ready(function() {
+                 $('.widget-title').on('click', function () {
+                     
+                     $(this).parent().children('.widget-body').toggle(100);
+                     
+                 })
+            });
+        </script>
     </body>
 </html>
