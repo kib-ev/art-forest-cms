@@ -6,7 +6,7 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
 use Post\Model\Attachment;
 
-class PostExcerptViewWidget extends AbstractHelper {
+class PostPreviewWidget extends AbstractHelper {
 
     /**
      * $var string template used for view
@@ -31,7 +31,7 @@ class PostExcerptViewWidget extends AbstractHelper {
         );
 
         $view = new ViewModel();
-        $view->setTemplate('/helper/post/excerpt');
+        $view->setTemplate('/helper/post/preview');
         $view->setVariables($data);
 
         return $this->getView()->render($view);

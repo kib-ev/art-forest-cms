@@ -1,6 +1,6 @@
 <div class="widget">
     <div class="widget-title"> 
-        excerpt post view widget
+        post preview widget <?php echo '[p:' . $post->get('post_id') . ']'; ?>
     </div>
     <div class="widget-body">
         <div class="author">
@@ -9,8 +9,11 @@
         <div class="title">
             title: <?= $post->get('title'); ?>
         </div>
-        <div class="post">
-            <div class="text"><?= 'text: ' . $post->get('text'); ?></div>
+        <div class="text">
+            <?= 'text: ' . $post->get('text'); ?>
+        </div>
+        <div class="view-link">
+            <a href="/post/view/<?= $post->get('post_id'); ?>">view</a>
         </div>
     </div>
 </div>

@@ -1,0 +1,28 @@
+<?php
+$form = $this->form;
+$form->prepare();
+?>
+
+<div class="widget">
+    <div class="widget-title"> 
+        post edit widget <?php echo '[p:' . $post->get('post_id') . ']'; ?>
+
+        <div class="view-link" style="float: right;">
+            <a href="/post/view/<?= $post->get('post_id'); ?>">view</a>
+        </div>
+
+    </div>
+    <div class="widget-body">
+        <?php echo $this->form()->openTag($form); ?>
+        <div class="form-list">
+            <?php foreach ($form as $element) : ?>
+                <div class="<?php echo 'block-' . $element->getName(); ?>">
+                    <div class="label"><?php echo $this->formLabel($element); ?></div>
+                    <div class="error"><?php echo $this->formElementErrors($element); ?></div>
+                    <div class="field"><?php echo $this->formElement($element); ?></div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</div>

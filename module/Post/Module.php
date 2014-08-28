@@ -138,12 +138,21 @@ class Module {
                     $attachmentAddWidget->setViewTemplate('/helper/attachment/add');
                     return $attachmentAddWidget;
                 },
-                'postExcerptViewWidget' => function($viewHeplerManager) {
+                'postPreviewWidget' => function($viewHeplerManager) {
                     $sm = $viewHeplerManager->getServiceLocator(); 
-                    $postExcerptViewWidget = new \Post\View\Helper\PostExcerptViewWidget($sm);
-                    return $postExcerptViewWidget;
+                    $postPreviewWidget = new \Post\View\Helper\PostPreviewWidget($sm);
+                    return $postPreviewWidget;
                 },        
-                
+                'postViewWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $postViewWidget = new \Post\View\Helper\PostViewWidget($sm);
+                    return $postViewWidget;
+                }, 
+                'postEditWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $postEditWidget = new \Post\View\Helper\PostEditWidget($sm);
+                    return $postEditWidget;
+                },    
             ),
         );
     }

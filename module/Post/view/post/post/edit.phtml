@@ -1,22 +1,5 @@
-<a href="/post/view/<?php echo $post->get('post_id'); ?>">View Post</a>
+<?php echo $this->postEditWidget($post->get(\Post\Model\Post::POST_ID)); ?>
 
-<?php
-$form = $this->form;
-$form->prepare();
-?>
+<?php echo $this->viewAttachmentWidget($post->get(\Post\Model\Post::POST_ID)); ?>
 
-<?php echo $this->form()->openTag($form); ?>
-<div class="form-list">
-    <?php foreach ($form as $element) : ?>
-        <div class="<?php echo 'block-' . $element->getName(); ?>">
-            <div class="label"><?php echo $this->formLabel($element); ?></div>
-            <div class="error"><?php echo $this->formElementErrors($element); ?></div>
-            <div class="field"><?php echo $this->formElement($element); ?></div>
-        </div>
-    <?php endforeach; ?>
-</div>
-<?php echo $this->form()->closeTag(); ?>
-
-<?php echo $this->viewAttachmentWidget($post->get('post_id')); ?>
-
-<?php echo $this->addAttachmentWidget($post->get('post_id')); ?>
+<?php echo $this->addAttachmentWidget($post->get(\Post\Model\Post::POST_ID)); ?>

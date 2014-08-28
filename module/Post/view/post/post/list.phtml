@@ -4,9 +4,9 @@
     <?php if (count($posts)) : ?>
 
         <?php foreach ($posts as $post) : ?>
-           
-            <?php echo $this->postExcerptViewWidget($post->get('post_id')); ?> 
-    
+
+            <?php echo $this->postPreviewWidget($post->get(\Post\Model\Post::POST_ID)); ?> 
+
         <?php endforeach; ?>
 
     <?php else : ?> 
