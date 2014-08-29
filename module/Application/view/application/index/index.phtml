@@ -10,4 +10,8 @@ $user = $userTable->getUserById($loggedInUserId);
 <a href="/user/login">login</a><br/>
 <a href="/user/register">register</a><br/>
 <a href="/user/logout">logout</a><br/>
-<?php echo isset($user) ? 'вы вошли как: ' . $user->get('email') : ''; ?><br/>
+
+
+<?php if (isset($user)) : ?> 
+    <?php echo "you logged in as: " . $user->get(\User\Model\User::DISPLAY_NAME); ?>
+<?php endif; ?>

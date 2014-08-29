@@ -14,17 +14,6 @@ class UploadForm extends Form {
         $this->setAttribute('action', '/upload/process');
 
         $this->add(array(
-            'name' => 'id',
-            'attributes' => array(
-                'type' => 'text',
-                'readonly' => 'readonly',
-            ),
-            'options' => array(
-                'label' => "id",
-            ),
-        ));
-
-        $this->add(array(
             'name' => 'file',
             'attributes' => array(
                 'type' => 'file',

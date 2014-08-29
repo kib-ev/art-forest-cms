@@ -13,6 +13,7 @@ class User {
     const USER_NAME = 'username';
     const DISPLAY_NAME = 'display_name';
     const EMAIL = 'email';
+    const PHONE = 'phone';
     const PASSWORD = 'password';
     const STATE = 'state';
     const CREATE_DATE = 'create_date';
@@ -60,6 +61,16 @@ class User {
      */
     protected $create_date;
 
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    protected $phone;
+    
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    protected $about;
+
     public function __construct($data = null) {
         if ($data) {
             $this->exchangeArray($data);
@@ -70,7 +81,7 @@ class User {
         $vars = $this->getArrayCopy();
         for ($i = 0; $i < count($vars); $i++) {
             $varName = key($vars);
-            $this->$varName = (isset($data[$varName])) ? $data[$varName] : NULL;
+            $this->$varName = (isset($data[$varName])) ? $data[$varName] : $this->$varName; // todo there is good
             next($vars);
         }
     }

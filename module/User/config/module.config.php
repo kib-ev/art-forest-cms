@@ -3,7 +3,7 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'User\Controller\Index' => 'User\Controller\IndexController',
+            'User\Controller\User' => 'User\Controller\UserController',
             'User\Controller\Login' => 'User\Controller\LoginController',
             'User\Controller\Logout' => 'User\Controller\LogoutController',
             'User\Controller\Register' => 'User\Controller\RegisterController',
@@ -38,7 +38,7 @@ return array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'User\Controller\Index',
+                        'controller' => 'User\Controller\User',
                         'action' => 'index',
                     ),
                 ),
@@ -83,6 +83,20 @@ return array(
                             'defaults' => array(
                                 'controller' => 'User\Controller\Register',
                                 'action' => 'register',
+                            ),
+                        ),
+                    ),
+                    'info' => array(
+                        'type' => 'segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/info[/][:action]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'User\Controller\User',
+                                'action' => 'index',
                             ),
                         ),
                     ),

@@ -8,3 +8,5 @@ $userTable = $sm->get('user_table');
 $user = $userTable->getUserById($userId);
 
 echo $user->get(User::USER_NAME);
+
+echo $this->userViewWidget($userId);

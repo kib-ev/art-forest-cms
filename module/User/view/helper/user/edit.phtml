@@ -1,0 +1,29 @@
+<div class="widget">
+    <div class="widget-title">
+        user edit widget <?php echo "[u:" . $userId . "]"; ?>
+    </div>
+
+    <div class="widget-body">
+        <?php if ($userId != 0) : ?>
+            <?php
+            $form = $this->form;
+            $form->prepare();
+            ?>
+            <?php echo $this->form()->openTag($form); ?>
+            <div class="form-list">
+                <?php foreach ($form as $element) : ?>
+                    <div class="<?php echo 'block-' . $element->getName(); ?>">
+                        <div class="label"><?php echo $this->formLabel($element); ?></div>
+                        <div class="error"><?php echo $this->formElementErrors($element); ?></div>
+                        <div class="field"><?php echo $this->formElement($element); ?></div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php echo $this->form()->closeTag(); ?>
+        <?php else : ?>
+            <div class="error">Ошибка. Нет пользователя с таким id.</div>
+        <?php endif; ?>
+    </div>
+</div>
+
+

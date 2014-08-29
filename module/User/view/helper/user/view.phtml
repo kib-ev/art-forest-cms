@@ -1,0 +1,25 @@
+<div class="widget">
+    <div class="widget-title">
+        user edit widget <?php echo "[u:" . $user->get(\User\Model\User::USER_ID) . "]"; ?>
+    </div>
+
+    <div class="widget-body">
+        <div class="email item">
+            <?php echo $user->get('email'); ?>
+        </div>
+        <div class="display-name item">
+            <?php echo $user->get('display_name'); ?>
+        </div>
+        <div class="phone item">
+            <?php echo $user->get('phone'); ?>
+        </div>
+        <div class="about item">
+            <?php echo $user->get('about'); ?>
+        </div>
+        <div class="edit-link">
+            <a href="/user/info/edit">edit</a>
+        </div>
+    </div>
+</div>
+
+

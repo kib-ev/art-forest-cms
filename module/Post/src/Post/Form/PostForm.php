@@ -41,13 +41,11 @@ class PostForm extends Form {
             'name' => 'title',
             'attributes' => array(
                 'type' => 'text',
-                'class' => 'form-control title',
 //                'required' => 'required',
-                'placeholder' => ' Название темы',
                 'maxlength' => 70,
             ),
             'options' => array(
-                'label' => "Введите заголовок",
+                'label' => "title",
             ),
         ));
 
@@ -56,10 +54,9 @@ class PostForm extends Form {
             'attributes' => array(
                 'type' => 'textarea',
                 'class' => 'form-control desc',
-                'placeholder' => 'Описание темы',
             ),
             'options' => array(
-                'label' => "Введите текст",
+                'label' => "text",
             ),
         ));
 
@@ -67,13 +64,12 @@ class PostForm extends Form {
             'name' => 'price',
             'attributes' => array(
                 'class' => 'ui-spinner',
-                'placeholder' => 'Цена у.е.',
                 'maxlength' => 10,
                 'max' => 999999999,
                 'min' => 0,
             ),
             'options' => array(
-                'label' => "Цена",
+                'label' => "price",
             ),
         ));
 
@@ -94,11 +90,9 @@ class PostForm extends Form {
             'name' => 'tags',
             'attributes' => array(
                 'type' => 'textarea',
-                'class' => 'form-control tags',
-                'placeholder' => 'Введите сопровождающие теги, например: #авто #москвич #прицеп',
             ),
             'options' => array(
-                'label' => "Введите сопровождающие теги",
+                'label' => "tags",
             ),
         ));
 

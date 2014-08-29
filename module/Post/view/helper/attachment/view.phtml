@@ -29,10 +29,9 @@ $sm = $this->getServiceLocator();
                     $attachmentId = $attachment->get('attachment_id');
                     ?>
 
-
-                    <tr>
+                <tr>
                         <td>
-                            <image src="<?php echo $this->thumb($upload->get(Upload::FILE_URI), 100, 100); ?>"/>
+                            <image src="<?php echo $this->thumb($upload->get(Upload::FILE_URI), 680, ''); ?>"/>
                         </td>
                         <td>
                             <div class="">

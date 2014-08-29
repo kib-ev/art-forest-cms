@@ -1,5 +1,6 @@
 <?php echo $this->postEditWidget($post->get(\Post\Model\Post::POST_ID)); ?>
 
+<?php echo $this->addAttachmentWidget($post->get(\Post\Model\Post::POST_ID)); ?>
+
 <?php echo $this->viewAttachmentWidget($post->get(\Post\Model\Post::POST_ID)); ?>
 
-<?php echo $this->addAttachmentWidget($post->get(\Post\Model\Post::POST_ID)); ?>

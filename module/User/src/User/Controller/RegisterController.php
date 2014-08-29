@@ -32,7 +32,7 @@ class RegisterController extends AbstractActionController {
         $data = array(
             User::EMAIL => $post->email,
             User::PASSWORD => md5($post->password),
-            User::USER_NAME => strtok($post->email, "@"),
+            //User::USER_NAME => strtok($post->email, "@"),
             User::DISPLAY_NAME => strtok($post->email, "@"),
             User::CREATE_DATE => time(),
         );

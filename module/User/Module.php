@@ -49,4 +49,23 @@ class Module {
             )
         );
     }
+    
+    public function getViewHelperConfig() {
+        return array(
+            'factories' => array(
+                'userEditWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $userEditWidget = new \User\View\Helper\UserEditWidget($sm);
+                    $userEditWidget->setViewTemplate('/helper/user/edit');
+                    return $userEditWidget;
+                },
+                'userViewWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $userViewWidget = new \User\View\Helper\UserViewWidget($sm);
+                    $userViewWidget->setViewTemplate('/helper/user/view');
+                    return $userViewWidget;
+                },
+            ),
+        );
+    }
 }
