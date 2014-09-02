@@ -51,7 +51,7 @@ class Dialog {
         $vars = $this->getArrayCopy();
         for ($i = 0; $i < count($vars); $i++) {
             $varName = key($vars);
-            $this->$varName = (isset($data[$varName])) ? $data[$varName] : NULL;
+            $this->$varName = (isset($data[$varName])) ? $data[$varName] : $this->$varName;
             next($vars);
         }
     }
