@@ -1,0 +1,16 @@
+<div class="widget category-view">
+    <div class="widget-title">category list</div>
+    <div class="widget-body">
+        <a href="/category/add">add</a>
+        <?php foreach ($categories as $category) : ?>
+            <div class="item">
+                <?php echo $category->get('title'); ?>
+                <?php $categoryId = $category->get('category_id'); ?>
+                <a href="/category/edit/<?= $categoryId; ?>">edit</a>
+                 <a href="/category/delete/<?= $categoryId; ?>">delete</a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+
