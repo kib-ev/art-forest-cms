@@ -3,17 +3,24 @@
         post preview widget <?php echo '[p:' . $post->get('post_id') . ']'; ?>
     </div>
     <div class="widget-body">
-        <div class="author">
-            author <a href="/post/search/?user_id=<?= $post->get('user_id'); ?>"><?php echo '[u:' . $post->get('user_id') . ']'; ?></a>
-        </div>
-        <div class="title">
-            title: <?= $post->get('title'); ?>
-        </div>
-        <div class="text">
-            <?= 'text: ' . $post->get('text'); ?>
-        </div>
-        <div class="view-link">
+        <div class="actions item">
+            <?php $sm = $this->getServiceLocator(); ?>
             <a href="/post/view/<?= $post->get('post_id'); ?>">view</a>
+            <?php if ($post->get('user_id') == $sm->get('logged_in_user_id')) : ?>
+                <a href="/post/edit/<?php echo $post->get(\Post\Model\Post::POST_ID); ?>">edit</a>
+                <a href="/post/delete/<?php echo $post->get(\Post\Model\Post::POST_ID); ?>">del</a>
+            <?php endif; ?>
+        </div>
+        <div class="item">
+            <div class="author">
+                author <a href="/post/search/?user_id=<?= $post->get('user_id'); ?>"><?php echo '[u:' . $post->get('user_id') . ']'; ?></a>
+            </div>
+            <div class="title">
+                title: <?= $post->get('title'); ?>
+            </div>
+            <div class="text">
+                <?= 'text: ' . $post->get('text'); ?>
+            </div>
         </div>
     </div>
 </div>

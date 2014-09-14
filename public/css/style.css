@@ -36,13 +36,14 @@ input[type=submit],
 input[type=password],
 input[type=file],
 input[type=search],
-textarea {
+textarea,
+select {
     border: 1px solid #ccc;
     padding: 5px;
     font-family: inherit;
     font-size: inherit;
 }
-textarea:focus {
+textarea:focus, select:focus {
     border: 1px solid #ccc;
     padding: 5px;
 }
@@ -137,8 +138,12 @@ a {
     border: 1px solid #e5e5e5;
     padding: 10px;
     margin-bottom: 2px;
+    display: block;
 }
 
 .search .widget-body {
     display: none;
+}
+.widget.category-view ul ul {
+    margin-left: 20px;
 }

@@ -1,16 +1,57 @@
+<?php
+$sm = $this->getServiceLocator();
+$categoryTable = $sm->get('category_table');
+?>
+
 <div class="widget category-view">
     <div class="widget-title">category list</div>
     <div class="widget-body">
         <a href="/category/add">add</a>
-        <?php foreach ($categories as $category) : ?>
-            <div class="item">
-                <?php echo $category->get('title'); ?>
-                <?php $categoryId = $category->get('category_id'); ?>
-                <a href="/category/edit/<?= $categoryId; ?>">edit</a>
-                 <a href="/category/delete/<?= $categoryId; ?>">delete</a>
-            </div>
-        <?php endforeach; ?>
+        <ul>
+            <li><span class="item"><?php echo "Все категории"; ?></span>
+                <?php echoList(0, $sm); ?>
+            </li>
+
+        </ul>
     </div>
 </div>
 
+<?php
 
+function echoList($idCat, $sm) {
+    $categoryTable = $sm->get('category_table');
+
+    if (!empty($idCat) || $idCat == '0') {
+
+        $cats = $categoryTable->getChildrenCategories($idCat);
+
+        $i = 0;
+        $more_then_one = false;
+
+        foreach ($cats as $cat) {
+
+            $i = $i + 1;
+            if ($i == 1) {
+                echo '<ul>';
+                $more_then_one = true;
+            }
+
+            $categoryId = $cat->get('category_id');
+
+            echo '<li>';
+            echo '<span class="item">' . $cat->get('title')
+            . "<a href='/category/edit/$categoryId'>" . ' edit' . '</a>'
+            . "<a href='/category/delete/$categoryId'>" . ' delete' . '</a>'
+            . '</span>';
+
+            echoList($cat->get('category_id'), $sm);
+
+            echo "</li>";
+        }
+
+        if ($more_then_one) {
+            echo '</ul>';
+        }
+    }
+}
+?>

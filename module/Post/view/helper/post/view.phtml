@@ -3,23 +3,95 @@
         post view widget <?php echo '[p:' . $post->get('post_id') . ']'; ?>
     </div>
     <div class="widget-body">
-        <div class="author">
-            author <a href="/post/search/?user_id=<?= $post->get('user_id'); ?>"><?php echo '[u:' . $post->get('user_id') . ']'; ?></a>
-        </div>
-        <div class="title">
-            title: <?= $post->get('title'); ?>
-        </div>
-        <div class="text">
-            <?= 'text: ' . $post->get('text'); ?>
-        </div>
-        <div class="public">
-            <?= 'public: ' . $post->get('public'); ?>
-        </div>
-        <div class="actions">
+        <div class="actions item">
             <?php if ($post->get('user_id') == $sm->get('logged_in_user_id')) : ?>
                 <a href="/post/edit/<?php echo $post->get(\Post\Model\Post::POST_ID); ?>">edit</a>
                 <a href="/post/delete/<?php echo $post->get(\Post\Model\Post::POST_ID); ?>">del</a>
             <?php endif; ?>
         </div>
+        <div class="item">
+            <div class="author">
+                author <a href="/post/search/?user_id=<?= $post->get('user_id'); ?>"><?php echo '[u:' . $post->get('user_id') . ']'; ?></a>
+            </div>
+            <div class="title">
+                title: <?= $post->get('title'); ?>
+            </div>
+            <div class="text">
+
+                <?php
+                $array_of_words = array('php', 'PHP', 'xml', 'ООП', 'интерфейс', 'Zend');
+                $text = highlightKeywords($post->get('text'), $array_of_words);
+                ?>
+                <?php
+                echo 'text: <pre>';
+                print_r($text);
+                echo '</pre>';
+                ?>
+            </div>
+            <div class="public">
+                <?= 'public: ' . $post->get('public'); ?>
+            </div>
+        </div>
     </div>
 </div>
+
+<?php
+
+function highlightKeywords($text, array $array_of_words) {
+    // add split char to pattern
+    $text_array = mb_str_split($text);
+
+    foreach ($text_array as $key => $text_element) {
+
+        foreach ($array_of_words as $keyword) {
+            
+            
+            $text_element = preg_match('/[#\\\\]/', $text_element);
+            
+            $start_pos = str_contains($text_element, $keyword);
+            if ($start_pos) {
+                
+                $text_array[$key] = substr_replace($text_element, '{{' . $keyword . '}}', $start_pos-1, mb_strlen($keyword));
+            }
+        }
+    }
+
+
+//    $highlightArray = new ArrayObject($array_of_words);
+//    $copy = $highlightArray->getArrayCopy();
+//    foreach ($textArray as $key => $word) {
+//
+//        if (in_array($word, $array_of_words, false)) {
+//
+//            if (in_array($word, $copy, false)) {
+//                $textArray[$key] = "{{" . $word . "}}";
+//                unset($copy[$word]);
+//            }
+//
+//            $textArray[$key] = "{{" . $word . "}}";
+//        }
+//    }
+//    unset($word);
+
+
+
+    return $text_array;
+}
+
+function mb_str_split($string) {
+    # Split at all position not after the start: ^ 
+    # and not before the end: $ 
+    return mb_split("\s", $string);
+}
+
+/**
+ *  https://php.net/manual/pl/function.strpos.php#41762
+ */
+function str_contains($haystack, $needle, $ignoreCase = true) {
+    if ($ignoreCase) {
+        $haystack = strtolower($haystack);
+        $needle = strtolower($needle);
+    }
+    $needlePos = strpos($haystack, $needle);
+    return ($needlePos === false ? false : ($needlePos + 1));
+}

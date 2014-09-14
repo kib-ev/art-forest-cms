@@ -53,12 +53,17 @@ class CategoryController extends AbstractActionController {
         $userId = $sm->get('logged_in_user_id');
 
         $data = $this->request->getPost();
+        
+        \Application\Log\Logger::info(json_encode($data));
+        
         $form = $sm->get('Category\Form\CategoryForm');
         $form->setData($data);
         
         $categoryId = $data['category_id'];
 
         if (!$form->isValid()) { // todo valid form
+            
+            \Application\Log\Logger::info('FORM CATEGORY NOT VALID');
             $formMessages = $form->getMessages();
             $this->flashMessenger()->setNamespace($form->getName())->addMessage($formMessages);
             return $this->redirect()->toUrl("/category/edit/$categoryId");
@@ -71,8 +76,9 @@ class CategoryController extends AbstractActionController {
 
             $categoryTable = $sm->get('category_table');
             $categoryTable->saveCategory($category);
-
-            $categoryId = $categoryTable->getLastUserCategory($userId)->get('category_id');
+            
+            $lastCategory = $categoryTable->getLastUserCategory($userId);
+            $categoryId = $lastCategory->get('category_id');
 
             return $this->redirect()->toUrl($data['redirect']);
         }

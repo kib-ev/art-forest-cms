@@ -42,10 +42,10 @@ class Module implements AutoloaderProviderInterface {
                     $inputFilter = new \Category\Form\CategoryInputFilter();
                     $form->setInputFilter($inputFilter);
                     
-                    $form->get('parent_id')->setAttribute('options', array(
-                        '' => '',
-                        1 => 'one',
-                        2 => 'two'));
+                    $categoryTable = $sm->get('category_table');
+                   $list = $categoryTable->getCategoryList();
+                   
+                    $form->get('parent_id')->setAttribute('options', $list);
                     
                     $form->get('redirect')->setAttribute('value', '/category/list');
                     

@@ -48,7 +48,7 @@ class PostTable {
     public function savePost(Post $post) {
         $data = $post->getArrayCopy();
 
-        unset($data['id']);
+        unset($data['post_id']);
         $postId = (int) $post->get('post_id');
 
         if ($postId == 0) {

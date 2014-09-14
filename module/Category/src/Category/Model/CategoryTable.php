@@ -56,6 +56,34 @@ class CategoryTable {
         return $row ? $row : null;
     }
 
+    public function getChildrenCategories($categoryId) {
+        $categories = $this->tableGateway->select(
+                function (\Zend\Db\Sql\Select $select) use ($categoryId) {
+            $select->where->
+                    equalTo('parent_id', $categoryId); 
+        });
+        return $categories;
+    }
+
+    public function getCategoryList() {
+        $categories = $this->tableGateway->select(
+                function (\Zend\Db\Sql\Select $select) {
+            $select->where->
+                    notEqualTo('parent_id', -1); //todo magic fix (not null)
+        });
+
+
+        $categoryArray = $categories->toArray();
+        $resultList = array();
+        $resultList[0] = '';
+
+        foreach ($categoryArray as $category) {
+            $resultList[$category['category_id']] = $category['title'];
+        }
+
+        return $resultList;
+    }
+
     public function deleteEmptyCategories() {
         $this->tableGateway->delete(
                 array(
@@ -65,6 +93,13 @@ class CategoryTable {
     }
 
     public function deleteCategoryById($categoryId) {
+        $category = $this->getCategoryById($categoryId);
+        $categoryParentId = $category->get('parent_id');
+        $data = array(
+            'parent_id' => $categoryParentId,
+        );
+        $this->tableGateway->update($data, array('parent_id' => $categoryId));
+
         $this->tableGateway->delete(array('category_id' => $categoryId));
     }
 }

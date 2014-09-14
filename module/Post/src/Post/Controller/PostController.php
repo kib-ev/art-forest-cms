@@ -14,8 +14,8 @@ class PostController extends AbstractActionController {
         $sm = $this->getServiceLocator();
         $userId = $sm->get('logged_in_user_id');
         $postTable = $sm->get('post_table');
-        
-        
+
+
         $postTable->deleteEmptyPostsByUserId($userId);
         $posts = $postTable->getPostsByUserId($userId);
 
@@ -73,7 +73,7 @@ class PostController extends AbstractActionController {
         }
 
         $postTable->deletePostById($postId);
-        return $this->redirect()->toUrl("/post/search/?user_id=$userId");
+        return $this->redirect()->toUrl("/post/list");
     }
 
     public function addAction() {
@@ -129,8 +129,6 @@ class PostController extends AbstractActionController {
 
             $postId = $postTable->getLastUserPost($userId)->get(Post::POST_ID);
 
-
-
             return $this->redirect()->toUrl("/post/edit/$postId");
         }
     }
@@ -158,30 +156,10 @@ class PostController extends AbstractActionController {
 //    }
 
     public function editAction() {
-        $sm = $this->getServiceLocator();
-        $userId = $sm->get('logged_in_user_id');
-
         $postId = (int) $this->params()->fromRoute(Post::POST_ID);
 
-        if (!$postId) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
-
-        $postTable = $sm->get('post_table');
-        $post = $postTable->getPostById($postId);
-
-        if (!$post || $post->get(Post::USER_ID) != $userId) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
-
-        $postForm = new PostForm();
-        $postForm->bind($post);
-
         return array(
-            'form' => $postForm,
-            'post' => $post,
+            'postId' => $postId,
         );
     }
 
