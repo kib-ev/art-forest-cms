@@ -17,6 +17,7 @@ class Post {
     const PUBISH = 'public';
     const ACTIVE = 'active';
     const TAGS = 'tags';
+    const CATEGORY_ID = 'category_id';
     const CREATE_DATE = 'create_date';
 
     /**
@@ -55,6 +56,11 @@ class Post {
      * @ORM\Column(type="text", nullable=true) 
      */
     protected $tags;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    protected $category_id;
 
     /**
      * @ORM\Column(type="text", nullable=true) 

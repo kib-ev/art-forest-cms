@@ -29,7 +29,7 @@ class SearchForm extends Form {
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'search',
+                'value' => 'поиск',
                 'class' => 'submit',
             ),
             'options' => array(

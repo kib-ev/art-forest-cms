@@ -114,7 +114,20 @@ class Module {
                     $favoriteTable = new \Post\Model\FavoriteTable($favoritesTableGateway);
                     return $favoriteTable;
                 },
-
+                        
+                'Post\Form\PostForm' => function ($sm) {
+                    $form = new \Post\Form\PostForm();
+                    
+                    $inputFilter = new \Post\Form\PostInputFilter();
+                    $form->setInputFilter($inputFilter);
+                    
+                    $categoryTable = $sm->get('category_table');
+                    $list = $categoryTable->getCategoryList();
+                   
+                    $form->get('category_id')->setAttribute('options', $list);
+                    
+                    return $form;
+                },            
             ),
         );
     }

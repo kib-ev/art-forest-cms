@@ -105,9 +105,7 @@ class PostController extends AbstractActionController {
 
         $data = $this->request->getPost();
 
-        $form = new \Post\Form\PostForm();
-        $inputFilter = new \Post\Form\PostInputFilter();
-        $form->setInputFilter($inputFilter);
+        $form = $sm->get('Post\Form\PostForm');
 
         $form->setData($data);
 

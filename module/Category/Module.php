@@ -43,10 +43,9 @@ class Module implements AutoloaderProviderInterface {
                     $form->setInputFilter($inputFilter);
                     
                     $categoryTable = $sm->get('category_table');
-                   $list = $categoryTable->getCategoryList();
+                    $list = $categoryTable->getCategoryList();
                    
                     $form->get('parent_id')->setAttribute('options', $list);
-                    
                     $form->get('redirect')->setAttribute('value', '/category/list');
                     
                     return $form;

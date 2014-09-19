@@ -38,6 +38,17 @@ class PostForm extends Form {
         ));
 
         $this->add(array(
+            'name' => 'category_id',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'options' => array(),
+            ),
+            'options' => array(
+                'label' => "category_id",
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'title',
             'attributes' => array(
                 'type' => 'text',

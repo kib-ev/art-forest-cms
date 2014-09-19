@@ -25,7 +25,7 @@ class PostEditWidget extends AbstractHelper {
         $postTable = $sm->get('post_table');
         $post = $postTable->getPostById($postId);
 
-        $postForm = new \Post\Form\PostForm();
+        $postForm = $sm->get('Post\Form\PostForm');
         $postForm->bind($post);
 
         $data = array(

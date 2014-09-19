@@ -15,18 +15,29 @@
                 ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
                 ->prependFile($this->basePath() . '/js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',));
         ?>
-        
+
         <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
-        
+
     </head>
     <body class="<?php echo $this->controllerName(); ?>">
 
         <div class="wrap-header">
             <div class="header">
-                <a href="/">home</a>
-                <div class="logo"></div>
+
+                <div class="logo"><a href="/">home</a></div>
                 <div class="search">
                     <?php echo $this->searchFormWidget(); ?>
+                </div>
+                <div class="menu">
+                    <ul>
+                        <li> <a href="/user/info">user</a></li>
+                        <li> <a href="/post/list">post</a></li>
+                        <li><a href="/post/add">post+</a></li>
+                        <li><a href="/category/list">categ.</a></li>
+                        <li> <a href="/upload">upload</a></li>
+                        <li><a href="/dialog">dialog</a></li>
+                    </ul>
+                    
                 </div>
             </div>
         </div>
@@ -34,15 +45,7 @@
         <div class="wrap-body">
             <div class="body">
                 <div class="wrap-menu">
-                    <div class="menu">
-                        <a href="/">main</a><br/>
-                        <a href="/user/info">user</a>
-                        <a href="/post/list">post</a><br/>
-                        <a href="/post/add">post+</a><br/>
-                         <a href="/category/list">categ.</a><br/>
-                        <a href="/upload">upload</a>
-                        <a href="/dialog">dialog</a>
-                    </div>
+
                 </div>
                 <div class="wrap-content">
                     <div class="content">
@@ -63,11 +66,11 @@
 
         <script>
             $(document).ready(function() {
-                 $('.widget-title').on('click', function () {
-                     
-                     $(this).parent().children('.widget-body').toggle(100);
-                     
-                 })
+                $('.widget-title').on('click', function() {
+
+                    $(this).parent().children('.widget-body').toggle(100);
+
+                })
             });
         </script>
     </body>
