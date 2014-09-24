@@ -101,6 +101,7 @@ a {
 .wrap-body .body .wrap-sidebar .sidebar {
     background-color: #f3f3f3;
     min-height: 500px;
+    opacity: 0.5;
 }
 /* search result */
 .search-result-item {
@@ -162,12 +163,12 @@ a {
     width: 400px;
     float: left;
 }
-.widget.category-view ul ul {
-    margin-left: 20px;
-}
-.widget-title {
+.search-widget .widget-title {
     display: none;
     border: none;
+}
+.widget.category-view ul ul {
+    margin-left: 20px;
 }
 .logo, .search {
     float: left;

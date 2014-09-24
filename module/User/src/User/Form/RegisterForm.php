@@ -37,6 +37,18 @@ class RegisterForm extends Form {
         ));
 
         $this->add(array(
+            'name' => 'redirect',
+            'attributes' => array(
+                'type' => 'text',
+                'readonly' => 'readonly',
+                'class' => ''
+            ),
+            'options' => array(
+                'label' => "redirect",
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
