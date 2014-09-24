@@ -1,12 +1,20 @@
 <?php
 
 use User\Model\User;
-
 $sm = $this->getServiceManager();
 $userId = $sm->get('logged_in_user_id');
 $userTable = $sm->get('user_table');
 $user = $userTable->getUserById($userId);
+?>
+<div class="wrap-content">
+    <div class="content">
+        <?php echo $this->userViewWidget($userId); ?> 
+    </div>
+</div>
 
-echo $user->get(User::USER_NAME);
 
-echo $this->userViewWidget($userId);
+<div class="wrap-sidebar">
+    <div class="sidebar">
+
+    </div>
+</div>

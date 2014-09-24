@@ -15,51 +15,101 @@
                 ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
                 ->prependFile($this->basePath() . '/js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',));
         ?>
-
         <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
-
     </head>
     <body class="<?php echo $this->controllerName(); ?>">
 
         <div class="wrap-header">
             <div class="header">
+                <!-- LOGO HEADER -->
+                <a href="/" class="logo">
+                    <img src="/img/bg/logo.png">
+                </a>
 
-                <div class="logo"><a href="/">home</a></div>
-                <div class="search">
-                    <?php echo $this->searchFormWidget(); ?>
-                </div>
-                <div class="menu">
-                    <ul>
-                        <li> <a href="/user/info">user</a></li>
-                        <li> <a href="/post/list">post</a></li>
-                        <li><a href="/post/add">post+</a></li>
-                        <li><a href="/category/list">categ.</a></li>
-                        <li> <a href="/upload">upload</a></li>
-                        <li><a href="/dialog">dialog</a></li>
-                    </ul>
-                    
-                </div>
+                <?php echo $this->userPanelWidget(); ?>
+
             </div>
+
+        </div>
+
+        <div class="wrap-menu">
+            <div class="menu">
+                <ul>
+                    <li><a href="/">На главную</a></li>
+                    <li><a href="#">Квартиры</a></li>
+                    <li><a href="#">Новостройки</a></li>
+                    <li><a href="#">Коммерческая</a></li>
+                    <li><a href="#">Земля</a></li>
+                    <li><a href="#">Коттеджи, дома, дачи</a></li>
+                    <li><a href="#">Гаражи</a></li>
+                </ul>
+
+
+            </div>
+        </div>
+
+        <div class="spacer-20">
+
         </div>
 
         <div class="wrap-body">
             <div class="body">
-                <div class="wrap-menu">
+                <!--                        <ul>
+                                            <li> <a href="/post/list">post</a></li>
+                                            <li><a href="/category/list">categ.</a></li>
+                                            <li> <a href="/upload">upload</a></li>
+                                            <li><a href="/dialog">dialog</a></li>
+                                        </ul>
+                                        <div class="search">
+                <?php echo $this->searchFormWidget(); ?>
+                                        </div>-->
 
-                </div>
-                <div class="wrap-content">
-                    <div class="content">
-                        <?php echo $this->content; ?>
-                    </div>
-                </div> 
-                <div class="wrap-sidebar">
-                    <div class="sidebar"></div>
-                </div>
+                <?php echo $this->content; ?>
+
             </div>
         </div>
 
+        <div class="spacer-20"></div>
+
         <div class="wrap-footer">
-            <div class="footer"></div>
+            <div class="footer">
+                <div class="footer-column">
+                    <div class="widget">
+                        <div class="widget-title">О проекте</div>
+                        <div class="widget-body">
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation.</p>
+                            <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <div class="widget">
+                        <div class="widget-title">Информация</div>
+                        <div class="widget-body">
+                            <ul>
+                                <li>
+                                    <a href="#">Условия размещения объявлений</a>
+                                </li>
+                                <li>
+                                    <a href="#">Home sales flourishing despite national slump</a>
+                                </li>
+                                <li>
+                                    <a href="#">Duis autem vel eum iriure dolor</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <div class="widget">
+                        <div class="widget-title"></div>
+                        <div class="widget-body"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <?php echo $this->inlineScript() ?>

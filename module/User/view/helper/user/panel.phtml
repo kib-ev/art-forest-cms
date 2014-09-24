@@ -1,0 +1,40 @@
+<?php if ($user) : ?>
+    <div class="widget user-panel-widget">
+
+        <div class="widget-title"></div>
+
+        <div class="widget-body">
+            <div class="user-section">
+                <div class="ad">
+                    <a class="add" rel="nofollow"  href="/post/add">Добавить объявление</a>
+                </div>
+
+                <div class="cab">
+                    <a class="enter" rel="nofollow"  href="/user/info">Личный кабинет</a>
+                    <p class="user"><?php echo $user->get('email'); ?></p>
+                    <a class="exit" rel="nofollow"  href="/user/logout">Выход</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<?php else : ?>
+    <div class="widget user-panel-widget">
+
+        <div class="widget-title"></div>
+
+        <div class="widget-body">
+            <div class="user-section">
+                <div class="ad">
+                    <a class="add" rel="nofollow"  href="/user/login">Добавить объявление</a>
+                </div>
+
+                <div class="cab">
+                    <a class="enter" rel="nofollow"  href="/user/login">Личный кабинет</a>
+                    <a class="reg" rel="nofollow"  href="/user/register">Регистрация</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

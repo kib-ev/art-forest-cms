@@ -65,6 +65,12 @@ class Module {
                     $userViewWidget->setViewTemplate('/helper/user/view');
                     return $userViewWidget;
                 },
+                'userPanelWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $userPanelWidget = new \User\View\Helper\UserPanelWidget($sm);
+                    $userPanelWidget->setViewTemplate('/helper/user/panel');
+                    return $userPanelWidget;
+                },
             ),
         );
     }

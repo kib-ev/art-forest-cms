@@ -7,11 +7,38 @@ $user = $userTable->getUserById($loggedInUserId);
 //echo json_encode($user->getArrayCopy());
 //echo $user->get('email');
 ?>
-<a href="/user/login">login</a><br/>
-<a href="/user/register">register</a><br/>
-<a href="/user/logout">logout</a><br/>
 
 
-<?php if (isset($user)) : ?> 
-    <?php echo "you logged in as: " . $user->get(\User\Model\User::DISPLAY_NAME); ?>
-<?php endif; ?>
+
+
+
+<div class="wrap-content">
+    <div class="content">
+        <div class="widget random-property-widget">
+            <div class="widget-title">Реклама</div>
+            <div class="widget-body">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrap-sidebar">
+    <div class="sidebar">
+        <?php if (isset($user)) : ?> 
+            <?php echo "you logged in as: " . $user->get(\User\Model\User::DISPLAY_NAME); ?>
+        <?php endif; ?>
+    </div>
+</div>

@@ -1,3 +1,15 @@
-<?php echo $this->postViewWidget($post->get(\Post\Model\Post::POST_ID)); ?> 
+<div class="wrap-content">
+    <div class="content">
+        <?php echo $this->postViewWidget($post->get(\Post\Model\Post::POST_ID)); ?> 
+        <?php echo $this->viewAttachmentWidget($post->get(\Post\Model\Post::POST_ID)); ?>
+    </div>
+</div>
 
-<?php echo $this->viewAttachmentWidget($post->get(\Post\Model\Post::POST_ID)); ?>
+
+<div class="wrap-sidebar">
+    <div class="sidebar">
+        <?php if ($post->get('user_id') != 0) : ?>
+            <?php echo $this->userViewWidget($post->get(\Post\Model\Post::USER_ID)); ?>
+        <?php endif; ?>
+    </div>
+</div>
