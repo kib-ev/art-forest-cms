@@ -8,11 +8,14 @@ use User\Model\User;
 class RegisterController extends AbstractActionController {
 
     public function registerAction() {
-        $form = new \User\Form\RegisterForm();
-        $inputFilter = new \User\Form\RegisterInputFilter();
-        $form->setInputFilter($inputFilter);
+        $sm = $this->getServiceLocator();
 
-        return array('form' => $form);
+        $loggedInUserId = (int) $sm->get('logged_in_user_id');
+        if ($loggedInUserId != 0) {
+            return $this->redirect()->toUrl('/');
+        }
+
+        return array();
     }
 
     public function processAction() {

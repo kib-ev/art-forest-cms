@@ -8,8 +8,14 @@ use User\Model\User;
 class LoginController extends AbstractActionController {
 
     public function loginAction() {
-        $form = new \User\Form\LoginForm();
-        return array('form' => $form);
+        $sm = $this->getServiceLocator();
+
+        $loggedInUserId = (int) $sm->get('logged_in_user_id');
+        if ($loggedInUserId != 0) {
+            return $this->redirect()->toUrl('/');
+        }
+
+        return array();
     }
 
     public function processAction() {
@@ -32,7 +38,7 @@ class LoginController extends AbstractActionController {
             $userTable = $sm->get('user_table');
             $user = $userTable->getUserByEmail($post->email);
             $sm->get('zend_auth_service')->getStorage()->write($user->get(User::USER_ID));
-            return $this->redirect()->toUrl('/user/login/confirm');
+            return $this->redirect()->toUrl($post->redirect);
         }
 
         return $this->redirect()->toUrl('/user/login/error');
