@@ -36,12 +36,10 @@
             <div class="menu">
                 <ul>
                     <li><a href="/">На главную</a></li>
-                    <li><a href="#">Квартиры</a></li>
-                    <li><a href="#">Новостройки</a></li>
-                    <li><a href="#">Коммерческая</a></li>
-                    <li><a href="#">Земля</a></li>
-                    <li><a href="#">Коттеджи, дома, дачи</a></li>
-                    <li><a href="#">Гаражи</a></li>
+                    <li><a href="#">Квартиры, новостройки</a></li>
+                    <li><a href="#">Коттеджи, дома, участки</a></li>
+                    <li><a href="#">Коммерческая, гаражи</a></li>
+
                 </ul>
 
 
@@ -115,8 +113,8 @@
         <?php echo $this->inlineScript() ?>
 
         <script>
-            $(document).ready(function() {
-                $('.widget-title').on('click', function() {
+            $(document).ready(function () {
+                $('.widget-title').on('click', function () {
 
                     $(this).parent().children('.widget-body').toggle(100);
 

@@ -1,19 +1,24 @@
 <?php $sm = $this->getServiceManager(); ?>
 
-<div class="posts search-result" data-order="ASC" data-view="">
-    <?php if (count($posts)) : ?>
+<div class="wrap-content">
+    <div class="content">
+        <div class="posts search-result" data-order="ASC" data-view="">
+            <?php if (count($posts)) : ?>
 
-        <?php foreach ($posts as $post) : ?>
+                <?php foreach ($posts as $post) : ?>
 
-            <?php echo $this->postPreviewWidget($post->get(\Post\Model\Post::POST_ID)); ?> 
+                    <?php echo $this->postPreviewWidget($post->get(\Post\Model\Post::POST_ID)); ?> 
+                    <div class="spacer-20"></div>
+                <?php endforeach; ?>
 
-        <?php endforeach; ?>
+            <?php else : ?> 
 
-    <?php else : ?> 
+                <div class="search-not-found"><?php echo $this->translate('Sorry, your search did not match, please try again.'); ?></div>
 
-        <div class="search-not-found"><?php echo $this->translate('Sorry, your search did not match, please try again.'); ?></div>
+            <?php endif; ?>
 
-    <?php endif; ?>
-
+        </div>
+    </div>
 </div>
+
 

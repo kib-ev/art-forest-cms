@@ -9,9 +9,6 @@ $user = $userTable->getUserById($loggedInUserId);
 ?>
 
 
-
-
-
 <div class="wrap-content">
     <div class="content">
         <div class="widget random-property-widget">
@@ -19,14 +16,14 @@ $user = $userTable->getUserById($loggedInUserId);
             <div class="widget-body">
                 <table>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><img src="http://www.elitat.ru/m_stat/500/3.jpg"></td>
+                        <td><img src="http://sy4ok.ru/wp-content/uploads/2013/01/za2.jpg"></td>
+                        <td><img src="http://uraldaily.ru/sites/default/files/foto/index_1.jpeg"></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><img src="http://www.ua.all.biz/img/ua/catalog/middle/1200152.jpeg?rrr=1"></td>
+                        <td><img src="http://www.ee.all.biz/img/ee/catalog/middle/2339.png?rrr=1"></td>
+                        <td><img src="http://www.ru.all.biz/img/ru/catalog/middle/351203.jpeg?rrr=1"></td>
                     </tr>
                 </table>
             </div>
@@ -37,8 +34,9 @@ $user = $userTable->getUserById($loggedInUserId);
 
 <div class="wrap-sidebar">
     <div class="sidebar">
-        <?php if (isset($user)) : ?> 
-            <?php echo "you logged in as: " . $user->get(\User\Model\User::DISPLAY_NAME); ?>
-        <?php endif; ?>
+        <?php echo $this->userViewWidget($user->get('user_id')); ?>
+        <?php //if (isset($user)) : ?> 
+            <?php //echo "you logged in as: " . $user->get(\User\Model\User::DISPLAY_NAME); ?>
+        <?php //endif; ?>
     </div>
 </div>
