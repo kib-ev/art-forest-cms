@@ -1,1 +1,27 @@
-<?php echo $this->categoryListWidget(); ?>
+<div class="wrap-content">
+    <div class="content">
+
+        <?php echo $this->categoryKeyListWidget(); ?>
+
+        <div class="widget">
+            <div class="widget-title">add category key</div>
+            <div class="widget-body">
+
+            </div>
+        </div>
+
+        <?php echo $this->categoryListWidget($this->categoryKeyId); ?>
+
+    </div>
+</div>
+
+
+<div class="wrap-sidebar">
+    <div class="sidebar">
+        <?php //echo $this->userViewWidget($user->get('user_id')); ?>
+        <?php //if (isset($user)) : ?> 
+        <?php //echo "you logged in as: " . $user->get(\User\Model\User::DISPLAY_NAME); ?>
+        <?php //endif; ?>
+    </div>
+</div>
+

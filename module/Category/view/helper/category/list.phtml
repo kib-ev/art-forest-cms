@@ -6,13 +6,24 @@ $categoryTable = $sm->get('category_table');
 <div class="widget category-view">
     <div class="widget-title">category list</div>
     <div class="widget-body">
-        <a href="/category/add">add</a>
-        <ul>
-            <li><span class="item"><?php echo "Все категории"; ?></span>
-                <?php echoList(0, $sm); ?>
-            </li>
+        <a href="/category/add">add item</a><br/>
 
-        </ul>
+        <!--        <ul>
+                    <li><span class="item"><?php echo "Все категории"; ?></span>
+                        
+        <?php //echoList(0, $sm); ?>
+                        
+                    </li>
+        
+                </ul>-->
+
+        <?php foreach ($categories as $category) : ?>
+
+            <div class="item">
+                <?php echo $category->get('title'); ?>
+            </div>
+
+        <?php endforeach; ?>
     </div>
 </div>
 

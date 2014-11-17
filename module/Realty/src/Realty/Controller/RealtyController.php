@@ -57,7 +57,7 @@ class RealtyController extends AbstractActionController {
         $savedRealty = $realtyTable->getLastUserRealty($userId);
         $savedRealtyId = $savedRealty->get(Realty::REALTY_ID);
 
-        return $this->redirect()->toUrl("/realty/edit-step-1/$savedRealtyId");
+        return $this->redirect()->toUrl("/realty/edit/?realty_id=$savedRealtyId");
     }
 
     public function processAction() {
@@ -99,18 +99,30 @@ class RealtyController extends AbstractActionController {
 
             $realtyId = $realtyTable->getLastUserRealty($userId)->get(Realty::REALTY_ID);
 
-            return $this->redirect()->toUrl($data['redirect'] . $realtyId);
+            return $this->redirect()->toUrl($data['redirect'] . '' . $realtyId);
         }
     }
 
     public function editAction() {
-        $realtyId = (int) $this->params()->fromRoute(Realty::REALTY_ID);
+        $realtyId = (int) $this->params()->fromQuery(Realty::REALTY_ID);
 
         $sm = $this->getServiceLocator();
         $realtyTable = $sm->get('realty_table');
         $realty = $realtyTable->getRealtyById($realtyId);
 
-        $form = $sm->get('Realty\Form\RealtyForm');
+        $step = $this->params()->fromQuery('step');
+
+        if ($step == 'type' || empty($step)) {
+            $form = $sm->get('Realty\Form\RealtyTypeForm');
+        } else if ($step == 'contacts') {
+            $form = $sm->get('Realty\Form\RealtyContactsForm');
+        } else if ($step == 'address') {
+            $form = $sm->get('Realty\Form\RealtyAddressForm');
+        } else if ($step == 'map') {
+            $form = $sm->get('Realty\Form\RealtyMapForm');
+        } else if ($step == 'images') {
+            $form = $sm->get('Realty\Form\RealtyMapForm');
+        }
 
         $form->bind($realty);
 
@@ -144,14 +156,14 @@ class RealtyController extends AbstractActionController {
         );
     }
 
-    public function editStep1Action() {
+    public function editTypeAction() {
         $realtyId = (int) $this->params()->fromRoute(Realty::REALTY_ID);
 
         $sm = $this->getServiceLocator();
         $realtyTable = $sm->get('realty_table');
         $realty = $realtyTable->getRealtyById($realtyId);
 
-        $form = $sm->get('Realty\Form\RealtyForm');
+        $form = $sm->get('Realty\Form\RealtyTypeForm');
 
         $form->bind($realty);
 
@@ -161,14 +173,14 @@ class RealtyController extends AbstractActionController {
         );
     }
 
-    public function editStep2Action() {
+    public function editContactsAction() {
         $realtyId = (int) $this->params()->fromRoute(Realty::REALTY_ID);
 
         $sm = $this->getServiceLocator();
         $realtyTable = $sm->get('realty_table');
         $realty = $realtyTable->getRealtyById($realtyId);
 
-        $form = $sm->get('Realty\Form\RealtyFormStep2');
+        $form = $sm->get('Realty\Form\RealtyContactsForm');
 
         $form->bind($realty);
 
@@ -178,14 +190,14 @@ class RealtyController extends AbstractActionController {
         );
     }
 
-    public function editStep3Action() {
+    public function editAddressAction() {
         $realtyId = (int) $this->params()->fromRoute(Realty::REALTY_ID);
 
         $sm = $this->getServiceLocator();
         $realtyTable = $sm->get('realty_table');
         $realty = $realtyTable->getRealtyById($realtyId);
 
-        $form = $sm->get('Realty\Form\RealtyFormStep3');
+        $form = $sm->get('Realty\Form\RealtyAddressForm');
 
         $form->bind($realty);
 
@@ -195,14 +207,31 @@ class RealtyController extends AbstractActionController {
         );
     }
 
-    public function editStep4Action() {
+    public function editMapAction() {
         $realtyId = (int) $this->params()->fromRoute(Realty::REALTY_ID);
 
         $sm = $this->getServiceLocator();
         $realtyTable = $sm->get('realty_table');
         $realty = $realtyTable->getRealtyById($realtyId);
 
-        $form = $sm->get('Realty\Form\RealtyFormStep4Flat');
+        $form = $sm->get('Realty\Form\RealtyMapForm');
+
+        $form->bind($realty);
+
+        return array(
+            'form' => $form,
+            'realtyId' => $realtyId,
+        );
+    }
+
+    public function editFlatAction() {
+        $realtyId = (int) $this->params()->fromRoute(Realty::REALTY_ID);
+
+        $sm = $this->getServiceLocator();
+        $realtyTable = $sm->get('realty_table');
+        $realty = $realtyTable->getRealtyById($realtyId);
+
+        $form = $sm->get('Realty\Form\RealtyFlatForm');
 
         $form->bind($realty);
 

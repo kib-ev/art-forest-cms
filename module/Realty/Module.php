@@ -35,8 +35,15 @@ class Module {
                     return $realtyTable;
                 },
                 'Realty\Form\RealtyForm' => function ($sm) {
-                    $form = new \Realty\Form\RealtyFormStep1();
+                    $form = new \Realty\Form\RealtyForm();
+                    return $form;
+                },
+                'Realty\Form\RealtyTypeForm' => function ($sm) {
+                    $form = new \Realty\Form\RealtyTypeForm();
+                    $form->get('redirect')->setAttribute('value', '/realty/edit-contacts/');
 
+                    $ct = $sm->get('category_table');
+                    $form->get('realty_type')->setAttribute('options', $ct->getCategoryListById(79));
 //                    $inputFilter = new \Post\Form\PostInputFilter();
 //                    $form->setInputFilter($inputFilter);
 //                    
@@ -47,19 +54,30 @@ class Module {
 
                     return $form;
                 },
-                'Realty\Form\RealtyFormStep2' => function ($sm) {
-                    $form = new \Realty\Form\RealtyFormStep2();
+                'Realty\Form\RealtyContactsForm' => function ($sm) {
+                    $form = new \Realty\Form\RealtyContactsForm();
+                    $form->get('redirect')->setAttribute('value', '/realty/edit-address/');
                     return $form;
                 },
-                'Realty\Form\RealtyFormStep3' => function ($sm) {
-                    $form = new \Realty\Form\RealtyFormStep3();
+                'Realty\Form\RealtyAddressForm' => function ($sm) {
+                    $form = new \Realty\Form\RealtyAddressForm();
+                    $form->get('redirect')->setAttribute('value', '/realty/edit-map/');
                     return $form;
                 },
-                'Realty\Form\RealtyFormStep4Flat' => function ($sm) {
-                    $form = new \Realty\Form\RealtyFormStep4Flat();
+                 'Realty\Form\RealtyMapForm' => function ($sm) {
+                    $form = new \Realty\Form\RealtyMapForm();
+                    $form->get('redirect')->setAttribute('value', '/realty/edit-flat/');
                     return $form;
-                },        
-                        
+                },
+                'Realty\Form\RealtyFlatForm' => function ($sm) {
+                    $form = new \Realty\Form\RealtyFlatForm();
+
+                    $ct = $sm->get('category_table');
+                    $form->get('type_of_repair')->setAttribute('options', $ct->getCategoryListById(68));
+                    $form->get('type_of_flat')->setAttribute('options', $ct->getCategoryListById(71));
+
+                    return $form;
+                },
             ),
         );
     }

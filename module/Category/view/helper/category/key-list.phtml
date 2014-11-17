@@ -1,0 +1,16 @@
+<div class="widget">
+    <div class="widget-title">key-list</div>
+    <div class="widget-body">
+        <?php foreach ($categories as $category) : ?>
+
+            <div class="item">
+                <?php echo $category->get('category_id'); ?>&nbsp;
+                <?php echo $category->get('title'); ?>&nbsp;
+                <a href="/category/list?category_id=<?php echo $category->get('category_id'); ?>">
+                    [view items]
+                </a>&nbsp;
+
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

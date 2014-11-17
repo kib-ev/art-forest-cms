@@ -29,6 +29,28 @@ class CategoryTable {
         return $row ? $row : null;
     }
 
+    public function getKeyCategories() {
+        $result = $this->tableGateway->select(
+                function (\Zend\Db\Sql\Select $select) {
+            $select->where->
+                    equalTo('parent_id', '');
+            $select->order('create_date ASC');
+        });
+
+        return $result;
+    }
+
+//    public function getChildrenCategories() {
+//        $result = $this->tableGateway->select(
+//                function (\Zend\Db\Sql\Select $select) {
+//            $select->where->
+//                    equalTo('parent_id', '');
+//            $select->order('create_date ASC');
+//        });
+//
+//        return $result;
+//    }
+
     public function saveCategory(Category $item) {
         $data = $item->getArrayCopy();
 
@@ -60,8 +82,28 @@ class CategoryTable {
         $categories = $this->tableGateway->select(
                 function (\Zend\Db\Sql\Select $select) use ($categoryId) {
             $select->where->
-                    equalTo('parent_id', $categoryId); 
+                    equalTo('parent_id', $categoryId);
         });
+        return $categories;
+    }
+
+    public function getAllChildrenCategories($categoryId) {
+        $categories = array();
+
+        $this->appendChildrenCategories($categories, $categoryId);
+
+        return $categories;
+    }
+
+    private function appendChildrenCategories(&$categories, $categoryId) {
+
+        $cats = $this->getChildrenCategories($categoryId);
+
+        foreach ($cats as $cat) {
+            array_push($categories, $cat);
+            $this->appendChildrenCategories($categories, $cat->get('category_id'));
+        }
+
         return $categories;
     }
 
@@ -69,7 +111,26 @@ class CategoryTable {
         $categories = $this->tableGateway->select(
                 function (\Zend\Db\Sql\Select $select) {
             $select->where->
-                    notEqualTo('parent_id', -1); //todo magic fix (not null)
+                    NotEqualTo('parent_id', -1); // FIX MAGIC
+        });
+
+
+        $categoryArray = $categories->toArray();
+        $resultList = array();
+        $resultList[0] = '';
+
+        foreach ($categoryArray as $category) {
+            $resultList[$category['category_id']] = $category['title'];
+        }
+
+        return $resultList;
+    }
+
+    public function getCategoryListById($parentId) {
+        $categories = $this->tableGateway->select(
+                function (\Zend\Db\Sql\Select $select) use ($parentId) {
+            $select->where->
+                    EqualTo('parent_id', $parentId);
         });
 
 
@@ -102,4 +163,5 @@ class CategoryTable {
 
         $this->tableGateway->delete(array('category_id' => $categoryId));
     }
+
 }

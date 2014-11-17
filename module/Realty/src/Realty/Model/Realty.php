@@ -42,7 +42,28 @@ class Realty {
     /** @ORM\Column(type="text", nullable=true) */
     protected $position_y;
 
+    /** @ORM\Column(type="text", nullable=true) */
+    protected $region; // область
+
+    /** @ORM\Column(type="text", nullable=true) */
+    protected $discrict; // район
+
+    /** @ORM\Column(type="text", nullable=true) */
+    protected $town; // нас. пункт
+
+    /** @ORM\Column(type="text", nullable=true) */
+    protected $street; // улица
+
+    /** @ORM\Column(type="text", nullable=true) */
+    protected $number_of_house; // дом, корпус
+
+    /** @ORM\Column(type="text", nullable=true) */
+    protected $apartment; // квартира, офис
+
     // FLAT ATTR *********************************
+
+    /** @ORM\Column(type="text", nullable=true) */
+    protected $type_of_flat;
 
     /** @ORM\Column(type="text", nullable=true) */
     protected $number_of_rooms;

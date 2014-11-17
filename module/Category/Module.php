@@ -74,7 +74,13 @@ class Module implements AutoloaderProviderInterface {
                     $widget = new \Category\View\Helper\FormWidget($sm);
                     $widget->setViewTemplate('/helper/form/form');
                     return $widget;
-                },        
+                },
+                'categoryKeyListWidget' => function($viewHeplerManager) {
+                    $sm = $viewHeplerManager->getServiceLocator(); 
+                    $widget = new \Category\View\Helper\CategoryKeyListWidget($sm);
+                    $widget->setViewTemplate('/helper/category/key-list');
+                    return $widget;
+                },
             ),
         );
     }

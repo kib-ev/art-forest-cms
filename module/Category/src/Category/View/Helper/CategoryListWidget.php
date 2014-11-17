@@ -14,12 +14,14 @@ class CategoryListWidget extends AbstractHelper {
         $this->sm = $sm;
     }
 
-    public function __invoke() {
+    public function __invoke($categoryId) {
         $sm = $this->sm;
 
         $categoryTable = $sm->get('category_table');
 
-        $categories = $categoryTable->getAllCategories();
+//        $categories = $categoryTable->getAllCategories();
+
+        $categories = $categoryTable->getAllChildrenCategories($categoryId);
 
         $view = new ViewModel(
                 array(
@@ -35,4 +37,5 @@ class CategoryListWidget extends AbstractHelper {
         $this->viewTemplate = $viewTemplate;
         return $this;
     }
+
 }

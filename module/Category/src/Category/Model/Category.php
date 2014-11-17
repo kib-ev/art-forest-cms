@@ -30,6 +30,16 @@ class Category {
     /**
      * @ORM\Column(type="text", nullable=true) 
      */
+    public $key;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
+    public $weight;
+
+    /**
+     * @ORM\Column(type="text", nullable=true) 
+     */
     public $title;
 
     /**
@@ -65,4 +75,5 @@ class Category {
         $vars = $this->getArrayCopy();
         return $vars[$varName];
     }
+
 }
